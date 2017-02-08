@@ -2,11 +2,24 @@
 a + b
 a - b
 a * b
-(a)(b) --also multiplication (maybe)
 a / b
 a % b
 a ** b --exponentiation
 a // b --bth root of a
+
+// booleans
+tru
+fal
+
+// boolean expressions (rel ops)
+!a
+a > b
+a < b
+a >= b
+a <= b
+a == b
+a != b
+
 
 // object
 a :=
@@ -14,6 +27,13 @@ a :=
         expression
     property:
         expression
+
+{
+    property:
+        expression
+    property:
+        expression
+}
 
 a.property = expression
 
@@ -26,10 +46,10 @@ type:varname --declare variable of type
 type:varname = expression
 
 //conditionals
-if bondition:
+if condition:
     block
 
-if bondition:
+if condition:
     block
 elif:
     block
@@ -51,6 +71,9 @@ fun x (a b):
     block --declares function x
 fun x (a b):
     ret b --returns y
+
+(a b): // anonymous literal
+    block
 
 //loop construction
 for var in list:
@@ -88,3 +111,5 @@ class PoliceMan isA Person
     maker (_nameFirst _nameLast _age):
         _occupation = "twelvy"
         ret
+
+// still need lists, comments, class instantiation
