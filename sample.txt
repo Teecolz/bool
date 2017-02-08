@@ -77,7 +77,7 @@ class Person
     _age
     _occupation
 
-    maker (_nameFirst, _nameLast, _age): --sets parameters to field values
+    maker (_nameFirst _nameLast _age): --sets parameters to field values
         ret
 
 class PoliceMan isA Person
@@ -85,6 +85,6 @@ class PoliceMan isA Person
     _nameLast
     _age
 
-    maker (_nameFirst, _nameLast, _age):
+    maker (_nameFirst _nameLast _age):
         _occupation = "twelvy"
         ret

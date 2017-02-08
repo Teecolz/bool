@@ -1,0 +1,59 @@
+program = (ClassDecl | FunDecl | ObjDecl | Stmt)* Exp?
+ClassDecl
+    = "class" id ("isA" id)? ":\n\t"
+        ("_" id "\n\t")*
+        (FunDecl "\n\t")*
+ObjDecl
+    = id ":=\n\t"
+        (id ":\n\t" Exp)+
+
+FunDecl
+    = "fun" id params ":\n\t" Block
+
+FunCall
+    = id params
+
+Block
+    = Stmt*
+
+params
+    = "(" (id (" " id)*)? ")"
+
+Stmt
+    = id "=" Exp "\n" --variable declaration
+    | Conditional
+    | Loop
+
+Conditional
+    = "if" Exp ":\n"
+      "\t" Block
+      ("elif" Exp ":\n" "\t" Block)*
+      ("el" Exp ":\n" "\t" Block)?
+
+Loop
+    = "for" id "in" id ":\n\t" Block --forIn
+    | "while" Exp ":\n\t" Block --while
+    | "do:\n\t" Block "until:\n\t" Exp --doUntil
+    
+Exp
+    = Exp addop Term
+    | id "." AccessExp
+    | Term
+
+AccessExp
+    = id
+    | FunCall
+
+Term
+    = Term mulop Factor
+    | Factor
+
+Factor
+    = "-" Primary --negate
+    | Primary
+
+Primary
+    = numlit
+
+addop = "+" | "-"
+mulop = "*" | "/" | "%" | "**"
