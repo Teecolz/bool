@@ -73,6 +73,9 @@ Bool {
     expop = "**" | "//"
     relop = ">" | "<" | ">=" | "<=" | "!=" | "=="
 
+    Explist = Exp ("," Exp)*
+    list = "[" Explist? "]"
+
     boollit = "tru" | "fal"
     intlit = digit+
     floatlit = digit+ "." (digit+)? | (digit+)? "." digit+
@@ -95,5 +98,8 @@ Bool {
     space      +=  comment
     comment     =  "//" (~"\n" any)* "\n"
 
+
+
     // still need: lists, pattern matching, class instantiation, for loop for ranges, type expressions and types
+
 }
