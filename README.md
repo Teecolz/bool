@@ -69,7 +69,7 @@ fun fibonacci (x):                           var fibonacci = function(x) {
     if (x < 3):                                    c = a + b, a = b, b = c;
        ret 1                                     }
     while ((x += 1) > 0):                          return c;
-       c = a + b                             }
+       c = a + b                             };
        a = b
        b = c
     ret c
