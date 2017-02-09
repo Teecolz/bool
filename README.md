@@ -8,7 +8,12 @@
 
 ### Code Examples
 ````
-// Bool
+// Variable Declarations
+
+foo = 101                                       var foo = 101;
+string:bar = 101                                var bar = "101";
+````
+````
 fun foo (bar):                                 var foo = function(bar) {
   result = 0                                     var result = 0;
   for i in bar:                                  for (var i = 0; i < bar; i += 1) {
