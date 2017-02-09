@@ -68,7 +68,10 @@ while a < 99:                                    while (a < 99) {
 ````
 #### Comments
 ````
-# This is a comment in Bool                       // This is a comment in Javascript
+# This is a comment in Bool                      // This is a comment in Javascript
+
+## If you need more lines, Bool can               /* If you need more lines, Javascript
+   do that too. ##                                   handles it like this. */
 ````
 ## Example Programs
 
