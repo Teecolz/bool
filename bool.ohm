@@ -44,7 +44,7 @@ Bool {
     Loop
         = "for" id "in" id ":\n" INDENT Block DEDENT --forIn
         | "while" Exp ":\n" INDENT Block DEDENT--while
-        | "do:\n\t" Block "until:\n" INDENT Exp DEDENT--doUntil
+        | "do:\n" INDENT Block DEDENT "\nuntil:\n" INDENT Exp DEDENT--doUntil
 
     Exp
         = Exp1 ("or" Exp1)*
@@ -87,8 +87,10 @@ Bool {
                 Block
              DEDENT
 
+    reserved = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do" | "while" | "until" | "class" | "isA" | "in"
+
     // placeholder until we fully define characters
     char = alnum
 
-    // still need: lists, pattern matching, comments, reserved words, class instantiation, for loop for ranges
+    // still need: lists, pattern matching, comments, reserved words, class instantiation, for loop for ranges, type expressions and types
 }
