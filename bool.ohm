@@ -42,7 +42,7 @@ Bool {
           ("el" Exp ":\n" INDENT Block DEDENT)?
 
     Loop
-        = "for" id "in" id ":\n" INDENT Block DEDENT --forIn
+        = "fer" id "in" (list | id) ":\n" INDENT Block DEDENT --forIn
         | "while" Exp ":\n" INDENT Block DEDENT--while
         | "do:\n" INDENT Block DEDENT "\nuntil:\n" INDENT Exp DEDENT--doUntil
 
@@ -74,7 +74,7 @@ Bool {
     relop = ">" | "<" | ">=" | "<=" | "!=" | "=="
 
     Explist = Exp ("," Exp)*
-    list = "[" Explist? "]"
+    list = "[" Explist? "]" | "range(" intlit ("," intlit ("," intlit)?)? ")"
 
     boollit = "tru" | "fal"
     intlit = digit+
@@ -100,6 +100,6 @@ Bool {
 
 
 
-    // still need: lists, pattern matching, class instantiation, for loop for ranges, type expressions and types
+    // still need: pattern matching, class instantiation, for loop for ranges, type expressions and types
 
 }
