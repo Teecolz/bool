@@ -95,7 +95,7 @@ fun x (param):
 
 // classes(extensible)
 
-class Person
+class Person:
     _nameFirst
     _nameLast
     _age
@@ -104,7 +104,7 @@ class Person
     maker (_nameFirst _nameLast _age): --sets parameters to field values
         ret
 
-class PoliceMan isA Person
+class PoliceMan isA Person:
     _nameFirst
     _nameLast
     _age

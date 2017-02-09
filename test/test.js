@@ -110,8 +110,17 @@ describe('Objects', () => {
   });
 
   describe('{ \n indent a: \n indent b \n dedent dedent }', () => {
-    it('should succeed on normal object', () => {
+    it('should succeed on object literal', () => {
       let match = gram.match('{ \n indent a: \n indent b \n dedent dedent }');
+      assert.ok(match.succeeded());
+    });
+  });
+});
+
+describe('Classes', () => {
+  describe('class Person: \n indent _field \n maker(_field): \n indent ret "Hello, World" \n dedent \n dedent', () => {
+    it('should succeed on class dec with one field', () => {
+      let match = gram.match('class Person: \n indent _field \n maker(_field): \n indent ret "Hello World" \n dedent \n dedent');
       assert.ok(match.succeeded());
     });
   });

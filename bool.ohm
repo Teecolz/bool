@@ -6,8 +6,13 @@ Bool {
     ClassDecl
         = "class" id ("isA" id)? ":" newline
             indent
-                ("_" id )*
-                (FunDecl newline)+
+                ("_" id newline)*
+                (MethodDecl newline)+
+            dedent
+    MethodDecl
+        = id params ":" newline
+            indent
+                Block
             dedent
     ObjDecl
         = id ":=" newline
@@ -111,12 +116,12 @@ Bool {
              | "indent" | "dedent"
 
     // placeholder until we fully define characters
-    char = alnum
+    char = alnum | space
     comment =  "#" (~"#" ~"\n" any)* "\n"                              --sl
             |  "##" (~"#" any)* "##"                                   --ml
     indent = "indent" // placeholder
     dedent = "dedent" // placeholder
-    id = ~reserved alnum+
+    id = ~reserved "_"? alnum+
     space := " " | "\t" | comment
     newline = "\n" | "\r" | "\u2028" | "\u2029"
 }
