@@ -5,21 +5,21 @@ Bool {
 
     ClassDecl
         = "class" id ("isA" id)? ":\n"
-            INDENT
+            indent
                 ("_" id )*
                 (FunDecl "\n")+
-            DEDENT
+            dedent
     ObjDecl
         = id ":=\n"
-          INDENT
+          indent
               (id ":\n" Exp)*
-          DEDENT
+          dedent
 
     FunDecl
         = "fun" id params ":\n"
-          INDENT
+          indent
               Block
-          DEDENT
+          dedent
 
     VarDecl
         = id "=" Exp
@@ -35,16 +35,16 @@ Bool {
 
     Conditional
         = "if" Exp ":\n"
-          INDENT
+          indent
               Block
-          DEDENT
-          ("elif" Exp ":\n" INDENT Block DEDENT)*
-          ("el" Exp ":\n" INDENT Block DEDENT)?
+          dedent
+          ("elif" Exp ":\n" indent Block dedent)*
+          ("el" Exp ":\n" indent Block dedent)?
 
     Loop
-        = "fer" id "in" (id | List | range) ":\n" INDENT Block DEDENT    --forIn
-        | "while" Exp ":\n" INDENT Block DEDENT         --while
-        | "do:\n" INDENT Block DEDENT "\nuntil:\n" INDENT Exp DEDENT--doUntil
+        = "fer" id "in" (id | List | range) ":\n" indent Block dedent    --forIn
+        | "while" Exp ":\n" indent Block dedent         --while
+        | "do:\n" indent Block dedent "\nuntil:\n" indent Exp dedent--doUntil
 
     Exp
         = Exp1 ("or" Exp1)*
@@ -68,8 +68,8 @@ Bool {
         | boollit
         | Number
         | stringlit
-        | funlit
-        | objlit
+        | Funlit
+        | Objlit
         | funcall
         | classinst
         | "(" Exp ")" --parens
@@ -93,17 +93,17 @@ Bool {
     stringlit = "\"" char* "\"" | "\'" char* "\'"
     classinst = "new" funcall
 
-    objlit =
+    Objlit =
             "{\n"
-             INDENT
+             indent
                 (id ":\n" Exp)*
-             DEDENT
+             dedent
              "}"
 
-    funlit = params ":\n"
-             INDENT
+    Funlit = params ":\n"
+             indent
                 Block
-             DEDENT
+             dedent
 
     reserved = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"
              | "while" | "until" | "class" | "isA" | "in" | "new" | "#"
@@ -113,6 +113,7 @@ Bool {
 
     space      +=  comment
     comment     =  "#" (~"\n" any)* "\n"
-
+    indent = "indent" // placeholder
+    dedent = "dedent" // placeholder
     id = alnum
 }
