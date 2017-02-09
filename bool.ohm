@@ -42,7 +42,7 @@ Bool {
           ("el" Exp ":\n" INDENT Block DEDENT)?
 
     Loop
-        = "fer" id "in" list ":\n" INDENT Block DEDENT    --forIn
+        = "fer" id "in" (id | List | range) ":\n" INDENT Block DEDENT    --forIn
         | "while" Exp ":\n" INDENT Block DEDENT         --while
         | "do:\n" INDENT Block DEDENT "\nuntil:\n" INDENT Exp DEDENT--doUntil
 
@@ -59,11 +59,20 @@ Bool {
     Exp5
         = Exp6 (expop Exp6)? --expExp
     Exp6
-        = prefix? Exp7 --prefixOp
+        = prefixop? Exp7 --prefixOp
     Exp7
-        = Exp8 ("." Exp8 | "[" Exp3 "]")?
+        = Exp8 ("[" Exp3 "]")? --listAccess
+        | Exp8 ("." Exp8)? --access
     Exp8
-        = id | boollit | Number | "(" Exp ")" | stringlit | funlit | objlit | funcall | classinst
+        = id
+        | boollit
+        | Number
+        | stringlit
+        | funlit
+        | objlit
+        | funcall
+        | classinst
+        | "(" Exp ")" --parens
 
 
     Number = intlit | floatlit
@@ -75,7 +84,8 @@ Bool {
     relop = ">" | "<" | ">=" | "<=" | "!=" | "=="
 
     Explist = Exp ("," Exp)*
-    list = "[" Explist? "]" | "range(" intlit ("," intlit("," "-"? intlit)?)? ")"
+    List = "[" Explist? "]"
+    range = "range(" intlit ("," intlit("," "-"? intlit)?)? ")"
 
     boollit = "tru" | "fal"
     intlit = digit+
@@ -104,5 +114,5 @@ Bool {
     space      +=  comment
     comment     =  "#" (~"\n" any)* "\n"
 
-    // still need: pattern matching, type expressions and types
+    id = alnum
 }
