@@ -51,7 +51,7 @@ a != b
 ````
 fun foo (bar):                                 var foo = function(bar) {
   int:result = 0                                   var result;
-  for i in bar:                                    for (var i = 0; i < bar; i += 1) {
+  for i in bar i += 1:                                    for (var i = 0; i < bar; i += 1) {
     if i < 5:                                        if (i < 5) {
       string:result = foobar                                 result = "foobar";
     elif i > 7:                                      } else if (i > 7) {
@@ -60,6 +60,11 @@ fun foo (bar):                                 var foo = function(bar) {
                                                    }
                                                    return result;
                                                };
+````
+````
+while a < 99:                                    while (a < 99) {
+  a += 5                                           a += 5
+                                                 }
 ````
 #### Comments
 ````
