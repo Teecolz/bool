@@ -92,5 +92,8 @@ Bool {
     // placeholder until we fully define characters
     char = alnum
 
-    // still need: lists, pattern matching, comments, reserved words, class instantiation, for loop for ranges, type expressions and types
+    space      +=  comment
+    comment     =  "//" (~"\n" any)* "\n"
+
+    // still need: lists, pattern matching, class instantiation, for loop for ranges, type expressions and types
 }
