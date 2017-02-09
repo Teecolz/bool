@@ -26,4 +26,11 @@ describe('Arithmetic', function() {
       assert.ok(match.succeeded());
     });
   });
+  describe('x > y', function() {
+    it('should be equivilent to result', function() {
+      let x = 4;
+      let y = 4 % 2;
+      assert.ok('x > y');
+    });
+  });
 });
