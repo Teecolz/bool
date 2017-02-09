@@ -39,37 +39,47 @@ describe('Arithmetic', () => {
   });
 });
 
-describe('Functions', function() {
-    describe('fun a(): \n indent \n dedent', function() {
-        it('should succeed on empty block', function() {
+describe("Arrays", () => {
+  describe('[1, 2, 3]', () => {
+    it('should be equivilent to array', () => {
+      let x = [1, 2, 3];
+      let y = [1, 2, 3];
+      assert.deepEqual(x, y);
+    });
+  });
+});
+
+describe('Functions', () => {
+    describe('fun a(): \n indent \n dedent', () => {
+        it('should succeed on empty block', () => {
             let match = gram.match('fun a(): \n indent dedent');
             assert.ok(match.succeeded());
         });
     });
 
-    describe('fun a(): \n indent ret 3 + 2 dedent', function() {
-        it('should succeed on normal block', function() {
+    describe('fun a(): \n indent ret 3 + 2 dedent', () => {
+        it('should succeed on normal block', () => {
             let match = gram.match('fun a(): \n indent ret 3 + 2 \n dedent');
             assert.ok(match.succeeded());
         });
     });
 
-    describe('fun a(x y): \n indent ret 3 + x dedent', function() {
-        it('should succeed on parameters', function() {
+    describe('fun a(x y): \n indent ret 3 + x dedent', () => {
+        it('should succeed on parameters', () => {
             let match = gram.match('fun a(x y): \n indent ret 3 + x \n dedent');
             assert.ok(match.succeeded());
         });
     });
 
-    describe('(x y): \n indent ret 3 + x - y dedent', function() {
-        it('should succeed on function literal', function() {
+    describe('(x y): \n indent ret 3 + x - y dedent', () => {
+        it('should succeed on function literal', () => {
             let match = gram.match('(x y): \n indent ret 3 + x \n dedent');
             assert.ok(match.succeeded());
         });
     });
 
-    describe('(x y): \n indent z = y \n ret 3 + x - y \n dedent', function() {
-        it('should succeed on function literal (multiple expressions)', function() {
+    describe('(x y): \n indent z = y \n ret 3 + x - y \n dedent', () => {
+        it('should succeed on function literal (multiple expressions)', () => {
             let match = gram.match('(x y): \n indent z = y \n ret 3 + x \n dedent');
             assert.ok(match.succeeded());
         });
