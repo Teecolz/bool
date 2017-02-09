@@ -16,14 +16,14 @@ Bool is an object-oriented, dynamically-typed, and strongly-typed programming la
 ## Code Examples: Bool (Left) vs. Javascript (Right)
 #### Variable Declarations
 ````
-// Variable Declarations
+# Variable Declarations
 
 foo = 101                                       var foo = 101;
 string:bar = 101                                var bar = "101";
 ````
-#### Arithmetic & Boolean Expressions
+#### Arithmetic Expressions
 ````
-// Arithmetic
+# Arithmetic
 a + b
 a - b
 a * b
@@ -31,12 +31,14 @@ a / b
 a % b  --modulo
 a ** b --exponentiation
 a // b --root
-
-// Booleans
+````
+#### Booleans and Boolean Expressions
+````
+# Booleans
 tru
 fal
 
-// Boolean Expressions
+# Boolean Expressions
 !a
 a > b
 a < b
@@ -58,6 +60,10 @@ fun foo (bar):                                 var foo = function(bar) {
                                                    }
                                                    return result;
                                                };
+````
+#### Comments
+````
+# This is a comment in Bool                       // This is a comment in Javascript
 ````
 ## Example Programs
 
