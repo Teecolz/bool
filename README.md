@@ -13,7 +13,8 @@ Bool is an object-oriented, dynamically-typed, and strongly-typed programming la
 - First-class functions
 - Higher-order functions
 
-## Code Examples: Bool (Left) vs. Javascript (Right) 
+## Code Examples: Bool (Left) vs. Javascript (Right)
+#### Variable Declarations
 ````
 // Variable Declarations
 
