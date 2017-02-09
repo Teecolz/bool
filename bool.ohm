@@ -1,0 +1,99 @@
+Bool {
+    Program = Stmt+
+
+    Stmt = ClassDecl | FunDecl | ObjDecl | VarDecl | Conditional | Loop | Exp
+
+    ClassDecl
+        = "class" id ("isA" id)? ":\n"
+            INDENT
+                ("_" id )*
+                (FunDecl "\n")+
+            DEDENT
+    ObjDecl
+        = id ":=\n"
+          INDENT
+              (id ":\n" Exp)*
+          DEDENT
+
+    FunDecl
+        = "fun" id params ":\n"
+          INDENT
+              Block
+          DEDENT
+
+    VarDecl
+        = id "=" Exp
+
+    FunCall
+        = id params
+
+    Block
+        = Stmt*
+
+    params
+        = "(" (id (" " id)*)? ")"
+
+    Conditional
+        = "if" Exp ":\n"
+          INDENT
+              Block
+          DEDENT
+          ("elif" Exp ":\n" INDENT Block DEDENT)*
+          ("el" Exp ":\n" INDENT Block DEDENT)?
+
+    Loop
+        = "for" id "in" id ":\n" INDENT Block DEDENT --forIn
+        | "while" Exp ":\n" INDENT Block DEDENT--while
+        | "do:\n" INDENT Block DEDENT "\nuntil:\n" INDENT Exp DEDENT--doUntil
+
+    Exp
+        = Exp1 ("or" Exp1)*
+    Exp1
+        = Exp2 ("and" Exp2)*
+    Exp2
+        = Exp3 (relop Exp3)*
+    Exp3
+        = Exp4 (addop Exp4)* --binExp
+    Exp4
+        = Exp5 (mulop Exp5)* --binExp
+    Exp5
+        = Exp6 (expop Exp6)? --expExp
+    Exp6
+        = prefix? Exp7 --prefixOp
+    Exp7
+        = Exp8 ("." Exp8 | "[" Exp3 "]")?
+    Exp8
+        = id | boollit | Number | "(" Exp ")" | stringlit | funlit | objlit | funcall
+
+    Number = intlit | floatlit
+
+    addop = "+" | "-"
+    mulop = "*" | "/" | "%"
+    prefixop = "!" | "-"
+    expop = "**" | "//"
+    relop = ">" | "<" | ">=" | "<=" | "!=" | "=="
+
+    boollit = "tru" | "fal"
+    intlit = digit+
+    floatlit = digit+ "." (digit+)? | (digit+)? "." digit+
+    stringlit = "\"" char* "\"" | "\'" char* "\'"
+    objlit = "{\n"
+             INDENT
+                (id ":\n" Exp)*
+             DEDENT
+             "}"
+    funlit = params ":\n"
+             INDENT
+                Block
+             DEDENT
+
+    reserved = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do" | "while" | "until" | "class" | "isA" | "in"
+
+    // placeholder until we fully define characters
+    char = alnum
+
+    space      +=  comment
+    comment     =  "//" (~"\n" any)* "\n"
+
+    // still need: lists, pattern matching, class instantiation, for loop for ranges, type expressions and types
+}
