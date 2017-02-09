@@ -47,6 +47,13 @@ describe("Arrays", () => {
       assert.deepEqual(x, y);
     });
   });
+  describe('[4, 5, 6]', () => {
+    it('should be equivilent to array', () => {
+      let x = [4, 5, 6];
+      let y = x;
+      assert.deepEqual(x, y);
+    });
+  });
 });
 
 describe('Functions', () => {
