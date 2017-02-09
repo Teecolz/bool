@@ -40,12 +40,12 @@ a != b
 #### Loops & Conditional Statements
 ````
 fun foo (bar):                                 var foo = function(bar) {
-  result = 0                                       var result = 0;
+  int:result = 0                                   var result;
   for i in bar:                                    for (var i = 0; i < bar; i += 1) {
     if i < 5:                                        if (i < 5) {
-      result = "foobar"                                 result = "foobar";
+      string:result = foobar                                 result = "foobar";
     elif i > 7:                                      } else if (i > 7) {
-      result = "barfoo"                                 result = "barfoo";
+      string:result = barfoo                                 result = "barfoo";
   ret result                                         }
                                                    }
                                                    return result;
