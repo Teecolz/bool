@@ -1,8 +1,9 @@
 ![Bool Logo](images/bool-logo.jpg)
+### Features
 ### Code Examples
 ````
 // Bool
-fun foo(bar):
+fun foo (bar):
   result = 0
   for i in bar:
     if i < 5:
@@ -10,8 +11,7 @@ fun foo(bar):
     elif i > 7:
       result = "barfoo"
   ret result
-````
-````
+
 // Javascript
 function foo(bar) {
   var result = 0;
