@@ -113,7 +113,7 @@ Bool {
     // placeholder until we fully define characters
     char = alnum
     comment =  "#" (~"#" ~"\n" any)* "\n"                              --sl
-            |  "##" (~"#" any)* "##"                                   --ml
+            |  "#" (~"#" any)* "#"                                     --ml
     indent = "indent" // placeholder
     dedent = "dedent" // placeholder
     id = ~reserved alnum+
