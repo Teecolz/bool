@@ -1,22 +1,22 @@
 Bool {
     Program = Stmt+
 
-    Stmt = ClassDecl | FunDecl | ObjDecl | VarDecl | Conditional | Loop | Exp
+    Stmt = ClassDecl | FunDecl | ObjDecl | VarDecl | Conditional | Loop | Exp | Return
 
     ClassDecl
-        = "class" id ("isA" id)? ":\n"
+        = "class" id ("isA" id)? ":" newline
             indent
                 ("_" id )*
                 (FunDecl "\n")+
             dedent
     ObjDecl
-        = id ":=\n"
+        = id ":=" newline
           indent
               (id ":\n" Exp)*
           dedent
 
     FunDecl
-        = "fun" id params ":\n"
+        = "fun" id params ":" newline
           indent
               Block
           dedent
@@ -24,17 +24,18 @@ Bool {
     VarDecl
         = id "=" Exp
 
+    Return = "ret" Exp
     funcall
         = id params
 
     Block
-        = Stmt*
+        = (Stmt newline)*
 
     params
         = "(" (id (" " id)*)? ")"
 
     Conditional
-        = "if" Exp ":\n"
+        = "if" Exp ":" newline
           indent
               Block
           dedent
@@ -42,9 +43,9 @@ Bool {
           ("el" Exp ":\n" indent Block dedent)?
 
     Loop
-        = "fer" id "in" (id | List | range) ":\n" indent Block dedent    --forIn
-        | "while" Exp ":\n" indent Block dedent         --while
-        | "do:\n" indent Block dedent "\nuntil:\n" indent Exp dedent--doUntil
+        = "fer" id "in" (id | List | range) ":" newline indent Block dedent    --forIn
+        | "while" Exp ":" newline indent Block dedent         --while
+        | "do:" newline indent Block dedent newline "until:" newline indent Exp dedent--doUntil
 
     Exp
         = Exp1 ("or" Exp1)*
@@ -94,26 +95,27 @@ Bool {
     classinst = "new" funcall
 
     Objlit =
-            "{\n"
+            "{" newline
              indent
-                (id ":\n" Exp)*
+                (id ":" Exp newline)*
              dedent
              "}"
 
-    Funlit = params ":\n"
+    Funlit = params ":" newline
              indent
                 Block
              dedent
 
     reserved = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"
-             | "while" | "until" | "class" | "isA" | "in" | "new" | "#"
+             | "while" | "until" | "class" | "isA" | "in" | "new" | "#" | "ret"
+             | "indent" | "dedent"
 
     // placeholder until we fully define characters
     char = alnum
-
-    space      +=  comment
-    comment     =  "#" (~"\n" any)* "\n"
+    comment =  "#" (~"\n" any)* "\n"
     indent = "indent" // placeholder
     dedent = "dedent" // placeholder
-    id = alnum
+    id = ~reserved alnum+
+    space := " " | "\t" | comment
+    newline = "\n" | "\r" | "\u2028" | "\u2029"
 }
