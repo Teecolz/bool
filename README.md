@@ -16,7 +16,7 @@ string:bar = 101                                var bar = "101";
 ````
 #### Arithmetic & Boolean Expressions
 ````
-// arithmetic
+// Arithmetic
 a + b
 a - b
 a * b
@@ -25,11 +25,11 @@ a % b  --modulo
 a ** b --exponentiation
 a // b --root
 
-// booleans
+// Booleans
 tru
 fal
 
-// boolean expressions
+// Boolean Expressions
 !a
 a > b
 a < b
@@ -52,6 +52,8 @@ fun foo (bar):                                 var foo = function(bar) {
                                                    return result;
                                                };
 ````
+## Example Programs
+
 #### GCD Function Example
 ````
 fun gcd (a b):                                  var gcd = function(a, b) {
