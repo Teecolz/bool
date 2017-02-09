@@ -24,7 +24,7 @@ Bool {
     VarDecl
         = id "=" Exp
 
-    FunCall
+    funcall
         = id params
 
     Block
@@ -42,8 +42,8 @@ Bool {
           ("el" Exp ":\n" INDENT Block DEDENT)?
 
     Loop
-        = "fer" id "in" (list | id) ":\n" INDENT Block DEDENT --forIn
-        | "while" Exp ":\n" INDENT Block DEDENT--while
+        = "for" id "in" id ":\n" INDENT Block DEDENT    --forIn
+        | "while" Exp ":\n" INDENT Block DEDENT         --while
         | "do:\n" INDENT Block DEDENT "\nuntil:\n" INDENT Exp DEDENT--doUntil
 
     Exp
@@ -63,7 +63,8 @@ Bool {
     Exp7
         = Exp8 ("." Exp8 | "[" Exp3 "]")?
     Exp8
-        = id | boollit | Number | "(" Exp ")" | stringlit | funlit | objlit | funcall
+        = id | boollit | Number | "(" Exp ")" | stringlit | funlit | objlit | funcall | classinst
+
 
     Number = intlit | floatlit
 
@@ -74,32 +75,34 @@ Bool {
     relop = ">" | "<" | ">=" | "<=" | "!=" | "=="
 
     Explist = Exp ("," Exp)*
-    list = "[" Explist? "]" | "range(" intlit ("," intlit ("," intlit)?)? ")"
+    list = "[" Explist? "]"
 
     boollit = "tru" | "fal"
     intlit = digit+
     floatlit = digit+ "." (digit+)? | (digit+)? "." digit+
     stringlit = "\"" char* "\"" | "\'" char* "\'"
-    objlit = "{\n"
+    classinst = "new" funcall
+
+    objlit =
+            "{\n"
              INDENT
                 (id ":\n" Exp)*
              DEDENT
              "}"
+
     funlit = params ":\n"
              INDENT
                 Block
              DEDENT
 
-    reserved = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do" | "while" | "until" | "class" | "isA" | "in"
+    reserved = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"
+             | "while" | "until" | "class" | "isA" | "in" | "new" | "#"
 
     // placeholder until we fully define characters
     char = alnum
 
     space      +=  comment
-    comment     =  "//" (~"\n" any)* "\n"
+    comment     =  "#" (~"\n" any)* "\n"
 
-
-
-    // still need: pattern matching, class instantiation, for loop for ranges, type expressions and types
-
+    // still need: pattern matching, type expressions and types
 }
