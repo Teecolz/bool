@@ -43,7 +43,7 @@ Bool {
           ("el" Exp newline indent Block dedent)?
 
     Loop
-        = "fer" id "in" (id | List | range) ":" newline indent Block dedent    --forIn
+        = "for" id "in" (id | List | range) ":" newline indent Block dedent    --forIn
         | "while" Exp ":" newline indent Block dedent         --while
         | "do:" newline indent Block dedent newline "until:" newline indent Exp dedent--doUntil
 
@@ -112,7 +112,8 @@ Bool {
 
     // placeholder until we fully define characters
     char = alnum
-    comment =  "#" (~"\n" any)* "\n"
+    comment =  "#" (~"#" ~"\n" any)* "\n"                              --sl
+            |  "##" (~"#" any)* "##"                                   --ml
     indent = "indent" // placeholder
     dedent = "dedent" // placeholder
     id = ~reserved alnum+
