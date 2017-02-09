@@ -7,12 +7,12 @@ Bool {
         = "class" id ("isA" id)? ":" newline
             indent
                 ("_" id )*
-                (FunDecl "\n")+
+                (FunDecl newline)+
             dedent
     ObjDecl
         = id ":=" newline
           indent
-              (id ":\n" Exp)*
+              (id ":" newline indent Exp newline dedent)*
           dedent
 
     FunDecl
@@ -39,8 +39,8 @@ Bool {
           indent
               Block
           dedent
-          ("elif" Exp ":\n" indent Block dedent)*
-          ("el" Exp ":\n" indent Block dedent)?
+          ("elif" Exp newline indent Block dedent)*
+          ("el" Exp newline indent Block dedent)?
 
     Loop
         = "fer" id "in" (id | List | range) ":" newline indent Block dedent    --forIn
@@ -97,7 +97,7 @@ Bool {
     Objlit =
             "{" newline
              indent
-                (id ":" Exp newline)*
+                (id ":" newline indent Exp newline dedent)*
              dedent
              "}"
 

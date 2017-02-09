@@ -5,6 +5,7 @@ const assert = require('assert');
 const bool = fs.readFileSync('bool.ohm');
 const gram = ohm.grammar(bool);
 
+
 describe('Arithmetic', () => {
   describe('3 + 2', () => {
     it('should be equivilent to result', () => {
@@ -91,4 +92,27 @@ describe('Functions', () => {
             assert.ok(match.succeeded());
         });
     });
+});
+
+describe('Objects', () => {
+  describe('x := \n indent dedent', () => {
+    it('should succeed on empty object', () => {
+      let match = gram.match('x := \n indent dedent');
+      assert.ok(match.succeeded());
+    });
+  });
+
+  describe('x := \n indent a: \n indent b \n dedent dedent', () => {
+    it('should succeed on normal object', () => {
+      let match = gram.match('x := \n indent a: \n indent b \n dedent dedent');
+      assert.ok(match.succeeded());
+    });
+  });
+
+  describe('{ \n indent a: \n indent b \n dedent dedent }', () => {
+    it('should succeed on normal object', () => {
+      let match = gram.match('{ \n indent a: \n indent b \n dedent dedent }');
+      assert.ok(match.succeeded());
+    });
+  });
 });

@@ -7,6 +7,7 @@ a % b
 a ** b --exponentiation
 a // b --bth root of a
 
+
 // booleans
 tru
 fal
@@ -111,5 +112,9 @@ class PoliceMan isA Person
     maker (_nameFirst _nameLast _age):
         _occupation = "twelvy"
         ret
+
+// class instantiation
+
+p = new Person ()
 
 // still need lists, comments, class instantiation
