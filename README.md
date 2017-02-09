@@ -6,13 +6,14 @@
 - b
 - c
 
-### Code Examples
+## Code Examples
 ````
 // Variable Declarations
 
 foo = 101                                       var foo = 101;
 string:bar = 101                                var bar = "101";
 ````
+#### Arithmetic & Boolean Expressions
 ````
 // arithmetic
 a + b
@@ -23,11 +24,11 @@ a % b  --modulo
 a ** b --exponentiation
 a // b --root
 
-// **bool**eans
+// booleans
 tru
 fal
 
-// **bool**ean expressions
+// boolean expressions
 !a
 a > b
 a < b
@@ -36,6 +37,7 @@ a <= b
 a == b
 a != b
 ````
+#### Loops & Conditional Statements
 ````
 fun foo (bar):                                 var foo = function(bar) {
   result = 0                                     var result = 0;
@@ -49,6 +51,7 @@ fun foo (bar):                                 var foo = function(bar) {
                                                  return result;
                                                };
 ````
+#### GCD Function Example
 ````
 fun gcd (a b):                                  var gcd = function(a, b) {
     if !b:                                          if (!b) {
