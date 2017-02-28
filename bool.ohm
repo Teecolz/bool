@@ -44,6 +44,7 @@ Bool {
     params
         = "(" (id (" " id)*)? ")"
 
+    /*
     Conditional
         = "if" Exp ":" newline
           indent
@@ -51,6 +52,12 @@ Bool {
           dedent
           ("elif" Exp newline indent Block dedent)*
           ("el" Exp newline indent Block dedent)?
+    */
+    Conditional
+      = "if" Exp ":" Suite ("elif" Exp ":" Suite)* ("el" ":" Suite)?
+
+    Suite
+      = newline indent Statement+ dedent
 
     Loop
         = "for" id "in" (id | Listlit | range) ":" newline indent Block dedent    --forIn
