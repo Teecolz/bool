@@ -80,6 +80,7 @@ Bool {
         | Objlit
         | funcall
         | classinst
+        | Listlit
         | "(" Exp ")" --parens
 
     number = intlit | floatlit
@@ -91,7 +92,7 @@ Bool {
     relop = ">" | "<" | ">=" | "<=" | "!=" | "=="
 
     Explist = Exp ("," Exp)*
-    List = "[" Explist? "]"
+    Listlit = "[" Explist? "]"
     range = "range(" intlit ("," intlit("," "-"? intlit)?)? ")"
 
     boollit = "tru" | "fal"
