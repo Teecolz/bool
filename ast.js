@@ -1,7 +1,7 @@
 /* eslint-env node */
 /* eslint spaced-comment: "off" */
 
-const ohm = require('ohm.js');
+const ohm = require('ohm-js');
 const fs = require('fs');
 
 /**********************
