@@ -1,14 +1,18 @@
 Bool {
-    Program = Stmt+
+    Program = Block
 
     Stmt = ClassDecl | FunDecl | ObjDecl | VarDecl | Conditional | Loop | Exp | Return
 
     ClassDecl
         = "class" id ("isA" id)? ":" newline
             indent
-                ("_" id newline)*
+                (fieldDecl newline)*
                 (MethodDecl newline)+
             dedent
+
+    fieldDecl
+      = "_" id
+
     MethodDecl
         = id params ":" newline
             indent
