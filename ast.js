@@ -1,28 +1,16 @@
+/* eslint-env node */
+/* eslint spaced-comment: "off" */
+
 const ohm = require('ohm.js');
 const fs = require('fs');
+
+/**********************
+* High-Level Classes
+**********************/
 
 class Program {
   constructor(block) {
     this.body = block;
-  }
-}
-
-class Expression {}
-
-class BinaryExpression extends Expression {
-  constructor(left, op, right) {
-    super();
-    this.left = left;
-    this.op = op;
-    this.right = right;
-  }
-}
-
-class UnaryExpression extends Expression {
-  constructor(op, operand) {
-    super();
-    this.op = op;
-    this.operand = operand;
   }
 }
 
@@ -31,6 +19,10 @@ class Block {
     this.body = statements;
   }
 }
+
+/********************
+* Statement Classes
+*********************/
 
 class Statement {}
 
@@ -60,3 +52,54 @@ class ObjDecl extends Statement {
     this.properties = properties;
   }
 }
+
+// TODO: conditional
+// TODO: vardecl
+// TODO: loop
+
+/**********************
+* Expression Classes
+**********************/
+
+class Expression {}
+
+class VariableExpression extends Expression {
+  constructor(name) {
+    super();
+    this.name = name;
+  }
+}
+
+class BinaryExpression extends Expression {
+  constructor(left, op, right) {
+    super();
+    this.left = left;
+    this.op = op;
+    this.right = right;
+  }
+}
+
+class UnaryExpression extends Expression {
+  constructor(op, operand) {
+    super();
+    this.op = op;
+    this.operand = operand;
+  }
+}
+
+class LiteralExpression extends Expression {
+  constructor(val) {
+    super();
+    this.val = val;
+  }
+}
+
+class BooleanLiteral extends LiteralExpression {}
+
+class StringLiteral extends LiteralExpression {}
+
+class NumericLiteral extends LiteralExpression {}
+
+class ListLiteral extends LiteralExpression {}
+
+class ObjectLiteral extends LiteralExpression {}
