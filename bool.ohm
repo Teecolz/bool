@@ -30,7 +30,8 @@ Bool {
         = id "=" Exp
 
     Return = "ret" Exp
-    funcall
+
+    Funcall
         = id params
 
     Block
@@ -50,14 +51,15 @@ Bool {
     Loop
         = "for" id "in" (id | List | range) ":" newline indent Block dedent    --forIn
         | "while" Exp ":" newline indent Block dedent         --while
-        | "do:" newline indent Block dedent newline "until:" newline indent Exp dedent--doUntil
+        | "do" ":" newline indent Block dedent newline "until:" newline indent Exp dedent--doUntil
 
     Exp
         = Exp1 ("or" Exp1)*
     Exp1
         = Exp2 ("and" Exp2)*
     Exp2
-        = Exp3 (relop Exp3)*
+        = Exp3 relop Exp3
+        | Exp3
     Exp3
         = Exp4 (addop Exp4)* --binExp
     Exp4
@@ -80,8 +82,7 @@ Bool {
         | classinst
         | "(" Exp ")" --parens
 
-
-    Number = intlit | floatlit
+    number = intlit | floatlit
 
     addop = "+" | "-"
     mulop = "*" | "/" | "%"
@@ -111,17 +112,29 @@ Bool {
                 Block
              dedent
 
-    reserved = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"
-             | "while" | "until" | "class" | "isA" | "in" | "new" | "#" | "ret"
-             | "indent" | "dedent"
+    reserved
+         = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"
+         | "while" | "until" | "class" | "isA" | "in" | "new" | "#" | "ret"
+         | "indent" | "dedent"
 
-    // placeholder until we fully define characters
-    char = alnum | space
+    char
+         = alnum | punctuation | escape | stringSpace
+
+    stringSpace
+         = " " | "\\t" | "\\n"
+
+    punctuation
+         = "." | "," | "/" | "<" | ">" | "?" | ":" | ";" | "{" | "}" | "["
+         | "]" | "|" | "+" | "=" | "-" | "_" | "(" | ")" | "!" | "@" | "#"
+         | "$" | "%" | "^" | "&" | "*"
+
+    escape = "\\" // still need to fully define these
+
     comment =  "#" (~"#" ~"\n" any)* "\n"                              --sl
             |  "##" (~"#" any)* "##"                                   --ml
     indent = "indent" // placeholder
     dedent = "dedent" // placeholder
-    id = ~reserved "_"? alnum+
+    id = ~("_"? reserved) "_"? alnum+
     space := " " | "\t" | comment
     newline = "\n" | "\r" | "\u2028" | "\u2029"
 }
