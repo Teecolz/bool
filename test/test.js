@@ -4,10 +4,11 @@ const fs = require('fs');
 const ohm = require('ohm-js');
 const assert = require('assert');
 const parse = require('../parser.js');
+
 const bool = fs.readFileSync('bool.ohm');
 const gram = ohm.grammar(bool);
 
-let parseTest = (arg, expected) => {
+const parseTest = (arg, expected) => {
   const ast = parse(arg).toString();
   assert.deepEqual(ast, expected);
 };
@@ -142,6 +143,7 @@ describe('Parser Tests', () => {
       { arg: 'tru\n', expected: '(Program (Block tru))' },
       { arg: 'fal\n', expected: '(Program (Block fal))' },
       { arg: '[]\n', expected: '(Program (Block []))' },
+      { arg: '[1.2] \n', expected: '(Program (Block [1.2]))' },
       { arg: '[a] \n', expected: '(Program (Block [a]))' },
       { arg: '[a, b] \n', expected: '(Program (Block [a, b]))' },
       { arg: '[ a, b ] \n', expected: '(Program (Block [a, b]))' },
@@ -149,17 +151,19 @@ describe('Parser Tests', () => {
       { arg: '[1, 2]\n', expected: '(Program (Block [1, 2]))' },
       { arg: '[ 1, 2 ]\n', expected: '(Program (Block [1, 2]))' },
       { arg: '{}\n', expected: '(Program (Block (Objlit {})))' },
-      { arg: '{ a : 1 }\n', expected: '(Program (Block (Objlit{PropDecl(a : 1)})))' },
+      { arg: '{ a : 1 }\n', expected: '(Program (Block (Objlit {(PropDecl a : 1)})))' },
+      { arg: '{ a : b }\n', expected: '(Program (Block (Objlit {(PropDecl a : b)})))' },
       { arg: '{\n indent a: b\n dedent}\n', expected: '(Program (Block (Objlit {(PropDecl a : b)})))' },
       { arg: '{\n indent a: b\n c: d\n dedent}\n', expected: '(Program (Block (Objlit {(PropDecl a : b), (PropDecl c : d)})))' },
-      { arg: '():\n indent ret "Hello, world"\n dedent\n', expected: '(Program (Block (Funlit (params ) : (Suite (Return "Hello, world")))))' },
+      { arg: '():\n indent ret "Hello, world" \n dedent \n', expected: '(Program (Block (Funlit (params ) : (Suite (Return "Hello, world")))))' },
       { arg: '(a):\n indent ret a + 2\n dedent\n', expected: '(Program (Block (a):\n indent ret a + 2\n dedent))' },
       { arg: '(a b):\n indent b = a + b\n ret b\n dedent\n', expected: '(Program (Block (a b):\n indent b = a + b\n ret b\n dedent))' },
     ];
 
     tests.forEach((test) => {
-      it(`correctly parses ${test.arg}`, () => {
-        parseTest(test.arg, test.expected);
+      it(`correctly parses ${test.arg.trim()}`, () => {
+        const ast = parse(test.arg).toString();
+        assert.deepEqual(ast, test.expected);
       });
     });
   });
