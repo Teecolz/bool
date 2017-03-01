@@ -36,6 +36,7 @@ const FunctionLiteral = require('./entities/functionliteral.js');
 const IdLiteral = require('./entities/idliteral.js');
 const ExpList = require('./entities/explist.js');
 const Parameters = require('./entities/params.js');
+const PropertyDeclaration = require('./entities/propertydeclaration.js');
 
 const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
 
@@ -58,6 +59,7 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   methodparams: (_, id1, sp, ids, close) => new Parameters([id1.ast()].concat(ids.ast())),
   ObjDecl: (id, _, nl, ind, props, nl2, ded) =>
     new ObjectDeclaration(id.sourceString, props.ast()),
+  PropertyDecl: (id, _, e) => new PropertyDeclaration(id.sourceString, e.ast()),
   FunDecl: (f, id, params, _, s) =>
     new FunctionDeclaration(id.sourceString, params.ast(), s.ast()),
   Conditional: (i, c, elifs, cases, el, col, b) =>
@@ -72,7 +74,7 @@ const semantics = grammar.createSemantics().addOperation('ast', {
     new FloatLiteral(`${iPart.sourceString} . ${fracPart.sourceString}`),
   Listlit: (_, el, end) => new ListLiteral(el.ast()),
   Objlit_singleprop: (_, prop, close) => new ObjectLiteral(prop.ast()),
-  Objlit_multiprop: (_, nl, ind, props, ded, close) =>
+  Objlit_multiprop: (_, nl, ind, props, nl2, ded, close) =>
     new ObjectLiteral(props.ast()),
   Funlit: (params, _, s) => new FunctionLiteral(params.ast(), s.ast()),
   Range: (_, r, close) => new RangeLiteral(r.sourceString),
