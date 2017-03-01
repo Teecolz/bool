@@ -1,23 +1,31 @@
 Bool {
     Program = Block
 
-    Stmt = ClassDecl | FunDecl | ObjDecl | VarDecl | Conditional | Loop | Exp | Return
+    Stmt =
+      ClassDecl     -- classdecl
+      | FunDecl     -- fundecl
+      | ObjDecl     -- objdecl
+      | VarDecl     -- vardecl
+      | Conditional -- conditional
+      | Loop        -- loop
+      | Exp         -- exp
+      | Return      -- ret
 
     ClassDecl
-        = "class" id ("isA" id)? ":" newline
-            indent
-                (fieldDecl newline)*
-                (MethodDecl newline)+
-            dedent
+        = "class" id ("isA" id)? ":" ClassSuite
 
-    fieldDecl
+    ClassSuite
+        = newline indent ClassBody dedent
+
+    ClassBody
+        = (fieldDecl newline)* (MethodDecl newline)+
+
+    fielddecl
       = "_" id
 
     MethodDecl
-        = id params ":" newline
-            indent
-                Block
-            dedent
+        = id params ":" Suite
+
     ObjDecl
         = id ":=" newline
           indent
@@ -25,10 +33,7 @@ Bool {
           dedent
 
     FunDecl
-        = "fun" id params ":" newline
-          indent
-              Block
-          dedent
+        = "fun" id params ":" Suite
 
     VarDecl
         = id "=" Exp
