@@ -59,7 +59,10 @@ Bool {
           ("el" Exp newline indent Block dedent)?
     */
     Conditional
-      = "if" Exp ":" Suite ("elif" Exp ":" Suite)* ("el" ":" Suite)?
+      = (("if" Case) ("elif" Case)*) (("el" ":") Suite)?
+
+    Case
+      = Exp ":" Suite
 
     Suite
       = newline indent Statement+ dedent
@@ -90,7 +93,7 @@ Bool {
     Exp8
         = id
         | boollit
-        | number
+        | numlit
         | stringlit
         | Funlit
         | Objlit
@@ -99,7 +102,7 @@ Bool {
         | Listlit
         | "(" Exp ")" --parens
 
-    number = intlit | floatlit
+    numlit = intlit | floatlit
 
     addop = "+" | "-"
     mulop = "*" | "/" | "%"
