@@ -67,19 +67,19 @@ const semantics = grammar.createSemantics().addOperation('ast', {
     return new FieldDeclaration(id.sourceString);
   },
   MethodDecl(id, params, col, s) {
-    new MethodDeclaration(id.sourceString, params.ast(), s.ast());
+    return new MethodDeclaration(id.sourceString, params.ast(), s.ast());
   },
   methodparams(open, id1, sp, ids, close) {
     return new Parameters([id1.ast()].concat(ids.ast()));
   },
   ObjDecl(id, col, nl, ind, props, nl2, ded) {
-    new ObjectDeclaration(id.sourceString, props.ast());
+    return new ObjectDeclaration(id.sourceString, props.ast());
   },
   PropertyDecl(id, col, e) {
     return new PropertyDeclaration(id.sourceString, e.ast());
   },
   FunDecl(f, id, params, col, s) {
-    new FunctionDeclaration(id.sourceString, params.ast(), s.ast());
+    return new FunctionDeclaration(id.sourceString, params.ast(), s.ast());
   },
   Conditional(i, c, elifs, cases, el, col, b) {
     return new ConditionalStatement([c.ast()].concat(cases.ast()), b.ast());
@@ -89,7 +89,7 @@ const semantics = grammar.createSemantics().addOperation('ast', {
     return new ExpList([e1.ast()].concat(el.ast()));
   },
   stringlit(_, s, end) {
-    return new StringLiteral(s.sourceString);
+    return new StringLiteral(this.sourceString);
   },
   Listlit(st, exps, end) {
     return new ListLiteral(exps.ast());
