@@ -103,12 +103,20 @@ class ElIfStatement extends Statement {
     this.condition = expression;
     this.body = block;
   }
+
+  toString() {
+    return `(ElIf ${this.condition} ${this.body})`;
+  }
 }
 
 class ElStatement extends Statement {
   constructor(block) {
     super();
     this.body = block;
+  }
+
+  toString() {
+    return `(Else ${this.body})`
   }
 }
 
@@ -119,6 +127,10 @@ class ForStatement extends Statement {
     this.list = list;
     this.block = block;
   }
+
+  toString() {
+    return `(for ${this.iterator} ${this.list} ${this.block})`;
+  }
 }
 
 class WhileStatement extends Statement {
@@ -126,6 +138,10 @@ class WhileStatement extends Statement {
     super();
     this.condition = condition;
     this.body = block;
+  }
+
+  toString() {
+    return `(while ${this.condition} ${this.body})`;
   }
 }
 
@@ -136,35 +152,38 @@ class WhileStatement extends Statement {
 * Expression Classes
 **********************/
 
-class Expression {}
 
-class VariableExpression extends Expression {
-  constructor(name) {
-    super();
-    this.name = name;
+class VariableExpression {
+  constructor(id) {
+    this.id = id;
   }
 }
 
-class BinaryExpression extends Expression {
+class BinaryExpression {
   constructor(left, op, right) {
-    super();
     this.left = left;
     this.op = op;
     this.right = right;
   }
-}
 
-class UnaryExpression extends Expression {
-  constructor(op, operand) {
-    super();
-    this.op = op;
-    this.operand = operand;
+  toString() {
+    return `(BinExp ${this.left} ${this.op} ${this.right})`;
   }
 }
 
-class FunCall extends Expression {
+class UnaryExpression {
+  constructor(op, operand) {
+    this.op = op;
+    this.operand = operand;
+  }
+
+  toString() {
+    return `(UnExp ${this.op} ${this.operand})`;
+  }
+}
+
+class FunCall {
   constructor(id, params) {
-    super();
     this.id = id;
     this.params = params;
   }
@@ -174,9 +193,8 @@ class FunCall extends Expression {
   }
 }
 
-class LiteralExpression extends Expression {
+class LiteralExpression {
   constructor(val) {
-    super();
     this.val = val;
   }
 }
