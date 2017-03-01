@@ -4,8 +4,8 @@ Bool {
     Block
         = (Stmt newline)*
 
-    Stmt =
-      ClassDecl
+    Stmt
+      = ClassDecl
       | FunDecl
       | ObjDecl
       | VarDecl     -- vardecl
@@ -101,37 +101,31 @@ Bool {
       | Exp7
     // may need to make this lexical
     Exp7
-      = Exp8 "[" Exp8 "]"   --listAccess
+      = Exp8 "." Exp8       --access
+      | Exp8 "[" Exp8 "]"   --listAccess
       | Exp8
     Exp8
-      = Literal
-      | id
-      | fielddecl
-      | Funcall
-      | ClassInst
-      | Exp8 "." Exp8 --access
-      | "(" Exp ")"   --parens
-
-    Literal
-      = boollit
-      | intlit
+      =
+      | boollit
       | floatlit
-      | stringlit
+      | intlit
+      | Funcall
+      | VarExp
       | Funlit
+      | "(" Exp ")"   --parens
+      | stringlit
       | Objlit
       | Listlit
-
-    numlit = intlit | floatlit
-
+      | fielddecl
+      | ClassInst
+    VarExp = id
     addop = "+" | "-"
     mulop = "*" | "/" | "%"
     prefixop = "!" | "-"
     expop = "**" | "//"
     relop = ">" | "<" | ">=" | "<=" | "!=" | "=="
 
-    Explist = Exp ("," Explist)?
-//      = Exp ("," Exp)+ --multiEl
-//      | Exp --singleton
+    Explist = Exp8 ("," Exp8)*
 
     Listlit = "[" Explist? "]"
     // will need to work on range ast
@@ -159,7 +153,7 @@ Bool {
          = alnum | punctuation | escape | stringSpace
 
     stringSpace
-         = " " | "\\t" | "\\n"
+         = " " | "\t" | "\n"
 
     punctuation
          = "." | "," | "/" | "<" | ">" | "?" | ":" | ";" | "{" | "}" | "["
