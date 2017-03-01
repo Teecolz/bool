@@ -1,12 +1,15 @@
 Bool {
     Program = Block
 
+    Block
+        = (Stmt newline)*
+
     Stmt =
-      ClassDecl     -- classdecl
-      | FunDecl     -- fundecl
-      | ObjDecl     -- objdecl
+      ClassDecl
+      | FunDecl
+      | ObjDecl
       | VarDecl     -- vardecl
-      | Conditional -- conditional
+      | Conditional
       | Loop        -- loop
       | Exp         -- exp
       | Return      -- ret
@@ -18,14 +21,16 @@ Bool {
         = newline indent ClassBody dedent
 
     ClassBody
-        = (fieldDecl newline)* (MethodDecl newline)+
+        = (fielddecl newline)* (MethodDecl)+
 
     fielddecl
       = "_" id
 
     MethodDecl
-        = id params ":" Suite
-
+        = id methodparams ":" Suite
+    methodparams
+        = "(" ((id | fielddecl) (" " (id | fielddecl))*)? ")"
+    // need to make this work where second newline not necessary before closing dedent
     ObjDecl
         = id ":=" newline indent PropertyDecl* dedent
 
@@ -43,9 +48,6 @@ Bool {
 
     Funcall
         = id params
-
-    Block
-        = (Stmt newline)*
 
     params
         = "(" (id (" " id)*)? ")"
@@ -77,33 +79,41 @@ Bool {
         | "do" ":" Suite "until:" SimpleSuite                 --doUntil
 
     Exp
-      = Exp1 ("or" Exp1)*
+      = Exp1 "or" Exp1      --binexp
+      | Exp1
     Exp1
-      = Exp2 ("and" Exp2)*
+      = Exp2 "and" Exp2     --binexp
+      | Exp2
     Exp2
-      = Exp3 relop Exp3      --binexp
+      = Exp3 relop Exp3     --binexp
       | Exp3
     Exp3
-      = Exp4 (addop Exp4)*   --binexp
+      = Exp4 addop Exp4     --binexp
+      | Exp4
     Exp4
-      = Exp5 (mulop Exp5)*   --binexp
+      = Exp5 mulop Exp5     --binexp
+      | Exp5
     Exp5
-      = Exp6 (expop Exp6)?   --expExp
+      = Exp6 expop Exp6     --expExp
+      | Exp6
     Exp6
-      = prefixop? Exp7       --prefixOp
-    exp7
+      = prefixop Exp7       --prefixOp
+      | Exp7
+    // may need to make this lexical
+    Exp7
       = Exp8 "[" Exp8 "]"    --listAccess
       | Exp8 "." Exp8        --access
       | Exp8
     Exp8
       = id
+      | fielddecl
       | boollit
       | numlit
       | stringlit
       | Funlit
       | Objlit
       | Funcall
-      | Classinst
+      | ClassInst
       | Listlit
       | "(" Exp ")" --parens
 
@@ -125,7 +135,7 @@ Bool {
     intlit = digit+
     floatlit = digit+ "." (digit+)? | (digit+)? "." digit+
     stringlit = "\"" char* "\"" | "\'" char* "\'"
-    Classinst = "new" Funcall
+    ClassInst = "new" Funcall
 
     Objlit = "{" newline indent PropertyDecl* dedent "}"
 
@@ -153,7 +163,7 @@ Bool {
             |  "##" (~"#" any)* "##"                                   --ml
     indent = "indent" // placeholder
     dedent = "dedent" // placeholder
-    id = ~("_"? reserved) "_"? alnum+
+    id = ~("_"? reserved) alnum+
     space := " " | "\t" | comment
     newline = "\n" | "\r" | "\u2028" | "\u2029"
 }
