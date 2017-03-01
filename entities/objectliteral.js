@@ -1,5 +1,3 @@
-const LiteralExpression = require('./literalexpression.js');
-
 class ObjectLiteral {
   constructor(props) {
     this.props = props;
