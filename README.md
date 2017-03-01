@@ -73,7 +73,17 @@ Placeholder                                     var doubleEvens = function(array
 ````
 #### Higher Order Functions
 ````
-Placeholder
+Placeholder                                     foods [
+                                                  {name: 'apple', kind: 'fruit'},
+                                                  {name: 'carrot', kind: 'vegetable'},
+                                                  {name: 'banana', kind: 'fruit'},
+                                                  {name: 'broccoli', kind: 'vegetable'},
+                                                  {name: 'strawberry', kind: 'fruit'},  
+                                                ]
+
+                                                var fruits = foods.filter(function(foods) {
+                                                    return food.kind === 'fruit';    
+                                                });
 
 ````
 #### Classes
