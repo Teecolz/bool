@@ -49,14 +49,13 @@ a != b
 #### Loops & Conditional Statements
 ````
 fun foo (bar):                                 var foo = function(bar) {
-  int:result = 0                                   var result;
-  for i in bar i += 1:                                    for (var i = 0; i < bar; i += 1) {
-    if i < 5:                                        if (i < 5) {
-      string:result = foobar                                 result = "foobar";
-    elif i > 7:                                      } else if (i > 7) {
-      string:result = barfoo                                 result = "barfoo";
-  ret result                                         }
-                                                   }
+  int:result = 0                               var result;
+  for i in bar i += 1:                         for (var i = 0; i < bar; i += 1) {
+    if i < 5:                                      if (i < 5) {
+      string:result = foobar                           result = "foobar";
+    elif i > 7:                                    } else if (i > 7) {
+      string:result = barfoo                           result = "barfoo";
+  ret result                                       }
                                                    return result;
                                                };
 ````
@@ -85,14 +84,14 @@ fun gcd (a b):                                  var gcd = function(a, b) {
 ````
 #### Fibonacci Function Example
 ````
-fun fibonacci (x):                           var fibonacci = function(x) {
-    a = 0                                        var a = 0, b = 1, c;
-    b = 1                                        if (x < 3) return 1;
-    c                                            while (--x > 0) {
-    if (x < 3):                                    c = a + b, a = b, b = c;
-       ret 1                                     }
-    do (x += 1):                                 return c;
-       c = a + b                             };
+fun fibonacci (x):                              var fibonacci = function(x) {
+    a = 0                                           var a = 0, b = 1, c;
+    b = 1                                           if (x < 3) return 1;
+    c                                               while (--x > 0) {
+    if (x < 3):                                        c = a + b, a = b, b = c;
+       ret 1                                        }
+    do (x += 1):                                    return c;
+       c = a + b                                };
        a = b
        b = c
     until x > 0
