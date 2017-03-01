@@ -27,10 +27,11 @@ Bool {
         = id params ":" Suite
 
     ObjDecl
-        = id ":=" newline
-          indent
-              (id ":" newline indent Exp newline dedent)*
-          dedent
+        = id ":=" newline indent PropertyDecl* dedent
+
+    // may need to expand this
+    PropertyDecl
+      = id ":" Exp newline
 
     FunDecl
         = "fun" id params ":" Suite
@@ -59,18 +60,21 @@ Bool {
           ("el" Exp newline indent Block dedent)?
     */
     Conditional
-      = (("if" Case) ("elif" Case)*) (("el" ":") Suite)?
+      = "if" Case ("elif" Case)* ("el" ":" Suite)?
 
     Case
       = Exp ":" Suite
 
     Suite
-      = newline indent Statement+ dedent
+      = newline indent (Stmt newline)+ dedent
+
+    SimpleSuite
+      = newline indent Exp newline dedent
 
     Loop
-        = "for" id "in" (id | Listlit | Range) ":" newline indent Block dedent    --forIn
-        | "while" Exp ":" newline indent Block dedent         --while
-        | "do" ":" newline indent Block dedent newline "until:" newline indent Exp dedent--doUntil
+        = "for" id "in" (id | Listlit | Range) ":" Suite      --forIn
+        | "while" Exp ":" Suite                               --while
+        | "do" ":" Suite "until:" SimpleSuite                 --doUntil
 
     Exp
       = Exp1 ("or" Exp1)*
@@ -88,7 +92,7 @@ Bool {
     Exp6
       = prefixop? Exp7       --prefixOp
     exp7
-      = Exp8 ListAccessor    --listAccess
+      = Exp8 "[" Exp8 "]"    --listAccess
       | Exp8 "." Exp8        --access
       | Exp8
     Exp8
@@ -103,9 +107,6 @@ Bool {
       | Listlit
       | "(" Exp ")" --parens
 
-    ListAccessor
-      = "[" Exp8 "]"
-
     numlit = intlit | floatlit
 
     addop = "+" | "-"
@@ -116,6 +117,8 @@ Bool {
 
     Explist = Exp ("," Exp)*
     Listlit = "[" Explist? "]"
+
+    // will need to work on range ast
     Range = "range(" RangeExp ")"
     RangeExp = intlit ("," intlit("," "-"? intlit)?)?
     boollit = "tru" | "fal"
@@ -124,17 +127,9 @@ Bool {
     stringlit = "\"" char* "\"" | "\'" char* "\'"
     Classinst = "new" Funcall
 
-    Objlit =
-            "{" newline
-             indent
-                (id ":" newline indent Exp newline dedent)*
-             dedent
-             "}"
+    Objlit = "{" newline indent PropertyDecl* dedent "}"
 
-    Funlit = params ":" newline
-             indent
-                Block
-             dedent
+    Funlit = params ":" Suite
 
     reserved
          = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"
