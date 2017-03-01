@@ -1,6 +1,6 @@
 ![Bool Logo](images/bool.png)
 ## Introduction
-Bool is an object-oriented, dynamically-typed, and strongly-typed programming language that draws influence from the languages of Python and OCaml. Bool comes with a pluther of benefits including the ability to be compiled to Javascript, the absence of curly braces and semi-colons, intuitive and simple readability, and so much more. Programmers everywhere are boolin' with Bool, so give it a shot, we guarantee you won't regret it. 
+Bool is an object-oriented, dynamically-typed, and strongly-typed programming language influenced by the languages of Python and OCaml. Bool comes with a plethora of benefits including the ability to be compiled to Javascript, the absence of curly braces and semi-colons, intuitive and simple readability, and so much more. Programmers everywhere are boolin' with Bool, so give it a shot, we guarantee you won't regret it.
 
 ## Features
 - Compilation to Javascript
@@ -17,7 +17,6 @@ Bool is an object-oriented, dynamically-typed, and strongly-typed programming la
 #### Variable Declarations
 ````
 # Variable Declarations
-
 foo = 101                                       var foo = 101;
 string:bar = 101                                var bar = "101";
 ````
