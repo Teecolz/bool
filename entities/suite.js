@@ -4,7 +4,7 @@ class Suite {
   }
 
   toString() {
-    return `(Suite ${this.body})`;
+    return `(Suite ${this.body.join(', ').replace(/, $/, '')})`;
   }
 }
 
