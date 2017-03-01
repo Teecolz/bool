@@ -37,38 +37,39 @@ const IdLiteral = require('./entities/idliteral.js');
 const ExpList = require('./entities/explist.js');
 const Parameters = require('./entities/params.js');
 
-const exports = module.exports || {};
 const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
 
-/* eslint no-unused-vars: "off" */
+/* eslint no-unused-vars: 1 */
 const semantics = grammar.createSemantics().addOperation('ast', {
   Program: b => new Program(b.ast()),
   Block: (s, _) => new Block(s.ast()),
-  Suite: (_, indent, s, ded) => new Suite(s.ast()),
+  Suite: (_, indent, s, nl, ded) => new Suite(s.ast()),
   params: (_, id1, sp, ids, close) => new Parameters([id1.ast()].concat(ids.ast())),
-  Stmt_classdecl: (cl, id, isa, superId, col, cs) =>
+  ClassDecl: (cl, id, isa, superId, col, cs) =>
     new ClassDeclaration(
       id.sourceString,
       superId.sourceString,
       cs.ast()),
   ClassSuite: (_, ind, cb, ded) => new ClassSuite(cb.ast()),
-  ClassBody: (fields, nl, methods, _) => new ClassBody(fields.ast(), methods.ast()),
+  ClassBody: (fields, nl, methods) => new ClassBody(fields.ast(), methods.ast()),
   fielddecl: (_, id) => new FieldDeclaration(id.sourceString),
   MethodDecl: (id, params, _, s) =>
     new MethodDeclaration(id.sourceString, params.ast(), s.ast()),
+  methodparams: (_, id1, sp, ids, close) => new Parameters([id1.ast()].concat(ids.ast())),
   ObjDecl: (id, _, nl, ind, props, ded) =>
     new ObjectDeclaration(id.sourceString, props.ast()),
-  Stmt_fundecl: (f, id, params, _, s) =>
+  FunDecl: (f, id, params, _, s) =>
     new FunctionDeclaration(id.sourceString, params.ast(), s.ast()),
-  Stmt_conditional: (i, c, elifs, cases, el, col, b) =>
+  Conditional: (i, c, elifs, cases, el, col, b) =>
     new ConditionalStatement([c.ast()].concat(cases.ast()), b.ast()),
   Case: (e, _, s) => new Case(e.ast(), s.ast()),
   Explist: (e1, _, rest) => new ExpList([e1.ast()].concat(rest.ast())),
-  stringlit: s => new StringLiteral(s.sourceString),
+  stringlit: (_, s, close) => new StringLiteral(s.sourceString),
   boollit: b => new BooleanLiteral(b.sourceString),
   id: i => new IdLiteral(i.sourceString),
   intlit: i => new IntegerLiteral(i.sourceString),
-  floatlit: f => new FloatLiteral(f.sourceString),
+  floatlit: (iPart, _, fracPart) =>
+    new FloatLiteral(`${iPart.sourceString} . ${fracPart.sourceString}`),
   Listlit: (_, el, end) => new ListLiteral(el.ast()),
   Objlit: (_, nl, ind, props, ded, close) =>
     new ObjectLiteral(props.ast()),
@@ -76,22 +77,25 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   Range: (_, r, close) => new RangeLiteral(r.sourceString),
   ClassInst: (_, fc) => new ClassInstantiation(fc.ast()),
   Funcall: (id, params) => new FunctionCall(id.sourceString, params.ast()),
-  Exp: (e1, _, e2) => new BinaryExpression(e1.ast(), 'or', e2.ast()),
-  Exp1: (e1, _, e2) => new BinaryExpression(e1.ast(), 'and', e2.ast()),
+  Exp_binexp: (e1, _, e2) => new BinaryExpression(e1.ast(), 'or', e2.ast()),
+  Exp1_binexp: (e1, _, e2) => new BinaryExpression(e1.ast(), 'and', e2.ast()),
   Exp2_binexp: (e1, op, e2) => new BinaryExpression(e1.ast(), op.sourceString, e2.ast()),
   Exp3_binexp: (e1, op, e2) => new BinaryExpression(e1.ast(), op.sourceString, e2.ast()),
   Exp4_binexp: (e1, op, e2) => new BinaryExpression(e1.ast(), op.sourceString, e2.ast()),
-  exp7_listAccess: (e1, _, e2, close) => new BinaryExpression(e1.ast(), '[]', e2.ast()),
-  exp7_access: (e1, _, e2) => new BinaryExpression(e1.ast(), '.', e2.ast()),
+  Exp5_expExp: (e1, op, e2) => new BinaryExpression(e1.ast(), op, e2.ast()),
+  Exp6_prefixOp: (op, exp) => new UnaryExpression(exp.ast(), op),
+  Exp7_listAccess: (e1, _, e2, close) => new BinaryExpression(e1.ast(), '[]', e2.ast()),
+  Exp7_access: (e1, _, e2) => new BinaryExpression(e1.ast(), '.', e2.ast()),
   Loop_forIn: (_, id, n, l, colon, s) => new ForStatement(id.sourceString, l.ast(), s.ast()),
   Loop_while: (_, exp, colon, s) => new WhileStatement(exp.ast(), s.ast()),
+  Return: (_, exp) => new ReturnStatement(exp),
 });
 
-exports.parse = (text) => {
+module.exports = (text) => {
   const match = grammar.match(text);
   if (match.succeeded()) {
-    semantics(match).ast();
-  } else {
-    error(match.message);
+    return semantics(match).ast();
   }
+  error(match.message);
+  return undefined;
 };
