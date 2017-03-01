@@ -104,19 +104,22 @@ Bool {
       = Exp8 "[" Exp8 "]"   --listAccess
       | Exp8
     Exp8
-      = id
+      = Literal
+      | id
       | fielddecl
-      | boollit
+      | Funcall
+      | ClassInst
+      | Exp8 "." Exp8 --access
+      | "(" Exp ")"   --parens
+
+    Literal
+      = boollit
       | intlit
       | floatlit
       | stringlit
       | Funlit
       | Objlit
-      | Funcall
-      | ClassInst
       | Listlit
-      | Exp8 "." Exp8 --access
-      | "(" Exp ")"   --parens
 
     numlit = intlit | floatlit
 
@@ -126,16 +129,16 @@ Bool {
     expop = "**" | "//"
     relop = ">" | "<" | ">=" | "<=" | "!=" | "=="
 
-    Explist
-      = Exp ("," Exp)+ --multiEl
-      | Exp --singleton
+    Explist = Exp ("," Explist)?
+//      = Exp ("," Exp)+ --multiEl
+//      | Exp --singleton
 
     Listlit = "[" Explist? "]"
     // will need to work on range ast
     Range = "range(" RangeExp ")"
     RangeExp = intlit ("," intlit("," "-"? intlit)?)?
     boollit = "tru" | "fal"
-    intlit = ~(digit+ ".") digit+
+    intlit = ~(digit* ".") digit+
     floatlit = digit+ "." (digit+)? | (digit+)? "." digit+
     stringlit = "\"" char* "\"" | "\'" char* "\'"
     ClassInst = "new" Funcall
@@ -150,7 +153,7 @@ Bool {
     reserved
          = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"
          | "while" | "until" | "class" | "isa" | "in" | "new" | "#" | "ret"
-         | "indent" | "dedent"
+         | "indent" | "dedent" | "[" | "]"
 
     char
          = alnum | punctuation | escape | stringSpace

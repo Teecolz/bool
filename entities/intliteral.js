@@ -3,7 +3,7 @@ class IntegerLiteral {
     this.val = val;
   }
   toString() {
-    return this.val.toString();
+    return this.val;
   }
 }
 

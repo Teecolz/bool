@@ -65,24 +65,19 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   Conditional: (i, c, elifs, cases, el, col, b) =>
     new ConditionalStatement([c.ast()].concat(cases.ast()), b.ast()),
   Case: (e, col, s) => new Case(e.ast(), s.ast()),
+  /*
   Explist_singleton: (e) => {
     return new ExpList(e.ast());
   },
   Explist_multiEl: (e1, com, rest) => {
     return new ExpList([e1.ast()].concat(rest.ast()));
   },
+  */
+  Explist: (e1, _, el) => {
+    return new ExpList([e1.ast()].concat(el.ast()));
+  },
   stringlit: (a, s, b) => {
     return new StringLiteral(s.sourceString);
-  },
-  boollit: b => new BooleanLiteral(b.sourceString),
-  id: (i) => {
-    return new IdLiteral(i.sourceString);
-  },
-  intlit: (i) => {
-    return new IntegerLiteral(i.sourceString);
-  },
-  floatlit: (iPart, dec, fracPart) => {
-    return new FloatLiteral(`${iPart.sourceString}.${fracPart.sourceString}`);
   },
   Listlit: (st, exps, end) => {
     return new ListLiteral(exps.ast());
@@ -101,15 +96,25 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   Exp4_binexp: (e1, op, e2) => new BinaryExpression(e1.ast(), op.sourceString, e2.ast()),
   Exp5_expExp: (e1, op, e2) => new BinaryExpression(e1.ast(), op.sourceString, e2.ast()),
   Exp6_prefixOp: (op, exp) => new UnaryExpression(exp.ast(), op.sourceString),
-  Exp7_listAccess: (e1, _, e2, close) => {
-    return new BinaryExpression(e1.ast(), '[]', e2.ast());
-  },
+  //Exp7_listAccess: (e1, _, e2, close) => {
+  //  return new BinaryExpression(e1.ast(), '[]', e2.ast());
+  //},
   Exp8_access: (e1, _, e2) => {
     return new BinaryExpression(e1.ast(), '.', e2.ast());
   },
   Loop_forIn: (_, id, n, l, colon, s) => new ForStatement(id.sourceString, l.ast(), s.ast()),
   Loop_while: (_, exp, colon, s) => new WhileStatement(exp.ast(), s.ast()),
   Return: (_, exp) => new ReturnStatement(exp.ast()),
+  boollit: b => new BooleanLiteral(b.sourceString),
+  id: (i) => {
+    return new IdLiteral(i.sourceString);
+  },
+  intlit: (i) => {
+    return new IntegerLiteral(i.sourceString);
+  },
+  floatlit: (iPart, dec, fracPart) => {
+    return new FloatLiteral(`${iPart.sourceString}.${fracPart.sourceString}`);
+  },
 });
 
 module.exports = (text) => {

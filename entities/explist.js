@@ -4,7 +4,7 @@ class ExpList {
   }
 
   toString() {
-    return `(ExpList ${this.exps})`;
+    return `${this.exps.join(', ')}`;
   }
 }
 

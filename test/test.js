@@ -131,12 +131,6 @@ describe('Grammar tests (all have trailing newline)', () => {
   });
 });
 
-describe('ListLit Test', () => {
-  it('should fucking work', () => {
-    parseTest('[1]\n', '(Program [(Explist 1)])');
-  });
-});
-
 describe('Parser Tests', () => {
   describe('Legal Literal Tests', () => {
     const tests = [
@@ -148,9 +142,12 @@ describe('Parser Tests', () => {
       { arg: 'tru\n', expected: '(Program (Block tru))' },
       { arg: 'fal\n', expected: '(Program (Block fal))' },
       { arg: '[]\n', expected: '(Program (Block []))' },
-      { arg: '[ 1 ]\n', expected: '(Program (Block [1]))' },
+      { arg: '[a] \n', expected: '(Program (Block [a]))' },
+      { arg: '[a, b] \n', expected: '(Program (Block [a, b]))' },
+      { arg: '[ a, b ] \n', expected: '(Program (Block [a, b]))' },
+      { arg: '[ a, [a] ] \n', expected: '(Program (Block [a, [a]]))' },
       { arg: '[1, 2]\n', expected: '(Program (Block [1, 2]))' },
-      { arg: '[ 1, 2 ]\n', expected: '(Program (Block [ 1, 2 ]))' },
+      { arg: '[ 1, 2 ]\n', expected: '(Program (Block [1, 2]))' },
       { arg: '{}\n', expected: '(Program (Block (Objlit {})))' },
       { arg: '{ a : 1 }\n', expected: '(Program (Block (Objlit{PropDecl(a : 1)})))' },
       { arg: '{\n indent a: b\n dedent}\n', expected: '(Program (Block (Objlit {(PropDecl a : b)})))' },
