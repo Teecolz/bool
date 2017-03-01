@@ -4,12 +4,12 @@ Bool is an object-oriented, dynamically-typed, and strongly-typed programming la
 
 ## Features
 - Compilation to Javascript
-- Use of colons instead of curly braces
+- Use of indentations instead of curly braces
 - No semi-colons
 - Optional type specification
 - Pattern matching
 - String interpolation
-- List comprehension
+- List comprehensions
 - First-class functions
 - Higher-order functions
 
