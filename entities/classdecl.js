@@ -1,5 +1,5 @@
 class ClassDeclaration {
-  constructor(id, isa, fields, methods) {
+  constructor(id, isa, _, fields, methods) {
     this.id = id;
     this.isa = isa;
     this.fields = fields;
