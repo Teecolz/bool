@@ -156,12 +156,12 @@ describe('Parser Tests', () => {
       { arg: '{\n indent a: b\n dedent}\n', expected: '(Program (Block (Objlit {(PropDecl a : b)})))' },
       { arg: '{\n indent a: b\n c: d\n dedent}\n', expected: '(Program (Block (Objlit {(PropDecl a : b), (PropDecl c : d)})))' },
       { arg: '():\n indent ret "Hello, world" \n dedent \n', expected: '(Program (Block (Funlit (params ) : (Suite (Return "Hello, world")))))' },
-      { arg: '(a):\n indent ret a + 2\n dedent\n', expected: '(Program (Block (a):\n indent ret a + 2\n dedent))' },
+      { arg: '(a):\n indent ret a + 2\n dedent\n', expected: '(Program (Block (Funlit (params a) : (Suite (Return (BinExp a + 2))))))' },
       { arg: '(a b):\n indent b = a + b\n ret b\n dedent\n', expected: '(Program (Block (a b):\n indent b = a + b\n ret b\n dedent))' },
     ];
 
     tests.forEach((test) => {
-      it(`correctly parses ${test.arg.trim()}`, () => {
+      it(`correctly parses \n ${test.arg.trim()}`, () => {
         const ast = parse(test.arg).toString();
         assert.deepEqual(ast, test.expected);
       });
