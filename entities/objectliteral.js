@@ -1,8 +1,12 @@
 const LiteralExpression = require('./literalexpression.js');
 
-class ObjectLiteral extends LiteralExpression {
+class ObjectLiteral {
+  constructor(props) {
+    this.props = props;
+  }
+
   toString() {
-    super.toString('ObjLiteral');
+    return `(Objlit {${this.props.join(', ')}})`;
   }
 }
 

@@ -69,7 +69,7 @@ Bool {
 
     Suite
       = newline indent (Stmt newline)+ dedent
-      
+
     SimpleSuite
       = newline indent Exp newline dedent
 
@@ -101,21 +101,22 @@ Bool {
       | Exp7
     // may need to make this lexical
     Exp7
-      = Exp8 "[" Exp8 "]"    --listAccess
-      | Exp8 "." Exp8        --access
+      = Exp8 "[" Exp8 "]"   --listAccess
       | Exp8
     Exp8
       = id
       | fielddecl
       | boollit
-      | numlit
+      | intlit
+      | floatlit
       | stringlit
       | Funlit
       | Objlit
       | Funcall
       | ClassInst
       | Listlit
-      | "(" Exp ")" --parens
+      | Exp8 "." Exp8 --access
+      | "(" Exp ")"   --parens
 
     numlit = intlit | floatlit
 
@@ -125,14 +126,16 @@ Bool {
     expop = "**" | "//"
     relop = ">" | "<" | ">=" | "<=" | "!=" | "=="
 
-    Explist = Exp ("," Exp)*
-    Listlit = "[" Explist? "]"
+    Explist
+      = Exp ("," Exp)+ --multiEl
+      | Exp --singleton
 
+    Listlit = "[" Explist? "]"
     // will need to work on range ast
     Range = "range(" RangeExp ")"
     RangeExp = intlit ("," intlit("," "-"? intlit)?)?
     boollit = "tru" | "fal"
-    intlit = digit+
+    intlit = ~(digit+ ".") digit+
     floatlit = digit+ "." (digit+)? | (digit+)? "." digit+
     stringlit = "\"" char* "\"" | "\'" char* "\'"
     ClassInst = "new" Funcall
@@ -166,7 +169,10 @@ Bool {
             |  "##" (~"#" any)* "##"                                   --ml
     indent = "indent" // placeholder
     dedent = "dedent" // placeholder
-    id = ~("_"? reserved) alnum+
-    space := " " | "\t" | comment
+    id = ~("_"? reserved) idName
+    idName = idStart (idChar)*
+    idStart = letter | "$"
+    idChar = alnum | "-" | "_"
     newline = "\n" | "\r" | "\u2028" | "\u2029"
+    space := " " | "\t" | comment
 }

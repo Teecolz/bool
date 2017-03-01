@@ -131,9 +131,15 @@ describe('Grammar tests (all have trailing newline)', () => {
   });
 });
 
+describe('ListLit Test', () => {
+  it('should fucking work', () => {
+    parseTest('[1]\n', '(Program [(Explist 1)])');
+  });
+});
+
 describe('Parser Tests', () => {
   describe('Legal Literal Tests', () => {
-    let tests = [
+    const tests = [
       { arg: '1234\n', expected: '(Program (Block 1234))' },
       { arg: '1234.\n', expected: '(Program (Block 1234.))' },
       { arg: '1234.1\n', expected: '(Program (Block 1234.1))' },
@@ -142,20 +148,20 @@ describe('Parser Tests', () => {
       { arg: 'tru\n', expected: '(Program (Block tru))' },
       { arg: 'fal\n', expected: '(Program (Block fal))' },
       { arg: '[]\n', expected: '(Program (Block []))' },
-      { arg: '[1]\n', expected: '(Program (Block [1]))' },
+      { arg: '[ 1 ]\n', expected: '(Program (Block [1]))' },
       { arg: '[1, 2]\n', expected: '(Program (Block [1, 2]))' },
       { arg: '[ 1, 2 ]\n', expected: '(Program (Block [ 1, 2 ]))' },
-      { arg: '{}\n', expected: '(Program (Block {}))' },
-      { arg: '{ a : 1 }\n', expected: '(Program (Block { a : 1}))' },
-      { arg: '{\n indent a: b dedent}\n', expected: '(Program (Block {\n indent a: b dedent}))' },
-      { arg: '{\n indent a: b \n c: d \n dedent}\n', expected: '(Program (Block {\n indent a: b \n c: d \n dedent}))' },
-      { arg: '():\n indent ret "Hello, world"\n dedent\n', expected: '(Program (Block ():\n indent ret "Hello, world"\n dedent))' },
+      { arg: '{}\n', expected: '(Program (Block (Objlit {})))' },
+      { arg: '{ a : 1 }\n', expected: '(Program (Block (Objlit{PropDecl(a : 1)})))' },
+      { arg: '{\n indent a: b\n dedent}\n', expected: '(Program (Block (Objlit {(PropDecl a : b)})))' },
+      { arg: '{\n indent a: b\n c: d\n dedent}\n', expected: '(Program (Block (Objlit {(PropDecl a : b), (PropDecl c : d)})))' },
+      { arg: '():\n indent ret "Hello, world"\n dedent\n', expected: '(Program (Block (Funlit (params ) : (Suite (Return "Hello, world")))))' },
       { arg: '(a):\n indent ret a + 2\n dedent\n', expected: '(Program (Block (a):\n indent ret a + 2\n dedent))' },
-      { arg: '(a, b):\n b = a + b\n ret b\n dedent\n', expected: '(Program (Block (a, b):\n b = a + b\n ret b\n dedent))' },
+      { arg: '(a b):\n indent b = a + b\n ret b\n dedent\n', expected: '(Program (Block (a b):\n indent b = a + b\n ret b\n dedent))' },
     ];
 
     tests.forEach((test) => {
-      it(`correctly parses ${test.arg.trim()}`, () => {
+      it(`correctly parses ${test.arg}`, () => {
         parseTest(test.arg, test.expected);
       });
     });

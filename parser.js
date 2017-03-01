@@ -43,36 +43,50 @@ const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
 /* eslint no-unused-vars: 1 */
 const semantics = grammar.createSemantics().addOperation('ast', {
   Program: b => new Program(b.ast()),
-  Block: (s, _) => new Block(s.ast()),
-  Suite: (_, indent, s, nl, ded) => new Suite(s.ast()),
-  params: (_, id1, sp, ids, close) => new Parameters([id1.ast()].concat(ids.ast())),
+  Block: (s, nl) => new Block(s.ast()),
+  Suite: (nl1, indent, s, nl2, ded) => new Suite(s.ast()),
+  params: (open, id1, sp, ids, close) => new Parameters([id1.ast()].concat(ids.ast())),
   ClassDecl: (cl, id, isa, superId, col, cs) =>
     new ClassDeclaration(
       id.sourceString,
       superId.sourceString,
       cs.ast()),
-  ClassSuite: (_, ind, cb, ded) => new ClassSuite(cb.ast()),
+  ClassSuite: (nl, ind, cb, ded) => new ClassSuite(cb.ast()),
   ClassBody: (fields, nl, methods) => new ClassBody(fields.ast(), methods.ast()),
-  fielddecl: (_, id) => new FieldDeclaration(id.sourceString),
-  MethodDecl: (id, params, _, s) =>
+  fielddecl: (open, id) => new FieldDeclaration(id.sourceString),
+  MethodDecl: (id, params, col, s) =>
     new MethodDeclaration(id.sourceString, params.ast(), s.ast()),
-  methodparams: (_, id1, sp, ids, close) => new Parameters([id1.ast()].concat(ids.ast())),
-  ObjDecl: (id, _, nl, ind, props, nl2, ded) =>
+  methodparams: (open, id1, sp, ids, close) => new Parameters([id1.ast()].concat(ids.ast())),
+  ObjDecl: (id, col, nl, ind, props, nl2, ded) =>
     new ObjectDeclaration(id.sourceString, props.ast()),
-  PropertyDecl: (id, _, e) => new PropertyDeclaration(id.sourceString, e.ast()),
-  FunDecl: (f, id, params, _, s) =>
+  PropertyDecl: (id, col, e) => new PropertyDeclaration(id.sourceString, e.ast()),
+  FunDecl: (f, id, params, col, s) =>
     new FunctionDeclaration(id.sourceString, params.ast(), s.ast()),
   Conditional: (i, c, elifs, cases, el, col, b) =>
     new ConditionalStatement([c.ast()].concat(cases.ast()), b.ast()),
-  Case: (e, _, s) => new Case(e.ast(), s.ast()),
-  Explist: (e1, _, rest) => new ExpList([e1.ast()].concat(rest.ast())),
-  stringlit: (_, s, close) => new StringLiteral(s.sourceString),
+  Case: (e, col, s) => new Case(e.ast(), s.ast()),
+  Explist_singleton: (e) => {
+    return new ExpList(e.ast());
+  },
+  Explist_multiEl: (e1, com, rest) => {
+    return new ExpList([e1.ast()].concat(rest.ast()));
+  },
+  stringlit: (a, s, b) => {
+    return new StringLiteral(s.sourceString);
+  },
   boollit: b => new BooleanLiteral(b.sourceString),
-  id: i => new IdLiteral(i.sourceString),
-  intlit: i => new IntegerLiteral(i.sourceString),
-  floatlit: (iPart, _, fracPart) =>
-    new FloatLiteral(`${iPart.sourceString} . ${fracPart.sourceString}`),
-  Listlit: (_, el, end) => new ListLiteral(el.ast()),
+  id: (i) => {
+    return new IdLiteral(i.sourceString);
+  },
+  intlit: (i) => {
+    return new IntegerLiteral(i.sourceString);
+  },
+  floatlit: (iPart, dec, fracPart) => {
+    return new FloatLiteral(`${iPart.sourceString}.${fracPart.sourceString}`);
+  },
+  Listlit: (st, exps, end) => {
+    return new ListLiteral(exps.ast());
+  },
   Objlit_singleprop: (_, prop, close) => new ObjectLiteral(prop.ast()),
   Objlit_multiprop: (_, nl, ind, props, nl2, ded, close) =>
     new ObjectLiteral(props.ast()),
@@ -85,13 +99,17 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   Exp2_binexp: (e1, op, e2) => new BinaryExpression(e1.ast(), op.sourceString, e2.ast()),
   Exp3_binexp: (e1, op, e2) => new BinaryExpression(e1.ast(), op.sourceString, e2.ast()),
   Exp4_binexp: (e1, op, e2) => new BinaryExpression(e1.ast(), op.sourceString, e2.ast()),
-  Exp5_expExp: (e1, op, e2) => new BinaryExpression(e1.ast(), op, e2.ast()),
-  Exp6_prefixOp: (op, exp) => new UnaryExpression(exp.ast(), op),
-  Exp7_listAccess: (e1, _, e2, close) => new BinaryExpression(e1.ast(), '[]', e2.ast()),
-  Exp7_access: (e1, _, e2) => new BinaryExpression(e1.ast(), '.', e2.ast()),
+  Exp5_expExp: (e1, op, e2) => new BinaryExpression(e1.ast(), op.sourceString, e2.ast()),
+  Exp6_prefixOp: (op, exp) => new UnaryExpression(exp.ast(), op.sourceString),
+  Exp7_listAccess: (e1, _, e2, close) => {
+    return new BinaryExpression(e1.ast(), '[]', e2.ast());
+  },
+  Exp8_access: (e1, _, e2) => {
+    return new BinaryExpression(e1.ast(), '.', e2.ast());
+  },
   Loop_forIn: (_, id, n, l, colon, s) => new ForStatement(id.sourceString, l.ast(), s.ast()),
   Loop_while: (_, exp, colon, s) => new WhileStatement(exp.ast(), s.ast()),
-  Return: (_, exp) => new ReturnStatement(exp),
+  Return: (_, exp) => new ReturnStatement(exp.ast()),
 });
 
 module.exports = (text) => {

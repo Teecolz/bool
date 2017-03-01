@@ -1,8 +1,9 @@
-const LiteralExpression = require('./literalexpression.js');
-
-class IntegerLiteral extends LiteralExpression {
+class IntegerLiteral {
+  constructor(val) {
+    this.val = val;
+  }
   toString() {
-    return `${this.val}`;
+    return this.val.toString();
   }
 }
 

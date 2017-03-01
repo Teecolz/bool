@@ -1,6 +1,9 @@
 const LiteralExpression = require('./literalexpression.js');
 
-class StringLiteral extends LiteralExpression {
+class StringLiteral {
+  constructor(val) {
+    this.val = val;
+  }
   toString() {
     return `"${this.val}"`;
   }

@@ -3,7 +3,7 @@ class ListLiteral {
     this.elements = elements;
   }
   toString() {
-    return `(List ${this.elements})`;
+    return `[${this.elements}]`;
   }
 }
 

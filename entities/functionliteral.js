@@ -5,7 +5,7 @@ class FunctionLiteral {
   }
 
   toString() {
-    return `${this.params} : ${this.body}`;
+    return `(FunLit ${this.params} : ${this.body})`;
   }
 }
 
