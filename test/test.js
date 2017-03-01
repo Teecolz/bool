@@ -135,36 +135,103 @@ describe('Grammar tests (all have trailing newline)', () => {
 describe('Parser Tests', () => {
   describe('Legal Literal Tests', () => {
     const tests = [
-      { arg: '1234\n', expected: '(Program (Block 1234))' },
-      { arg: '1234.\n', expected: '(Program (Block 1234.))' },
-      { arg: '1234.1\n', expected: '(Program (Block 1234.1))' },
-      { arg: '.1\n', expected: '(Program (Block .1))' },
-      { arg: '"hello 1"\n', expected: '(Program (Block "hello 1"))' },
-      { arg: 'tru\n', expected: '(Program (Block tru))' },
-      { arg: 'fal\n', expected: '(Program (Block fal))' },
-      { arg: '[]\n', expected: '(Program (Block []))' },
-      { arg: '[1.2] \n', expected: '(Program (Block [1.2]))' },
-      { arg: '[a] \n', expected: '(Program (Block [a]))' },
-      { arg: '[a, b] \n', expected: '(Program (Block [a, b]))' },
-      { arg: '[ a, b ] \n', expected: '(Program (Block [a, b]))' },
-      { arg: '[ a, [a] ] \n', expected: '(Program (Block [a, [a]]))' },
-      { arg: '[1, 2]\n', expected: '(Program (Block [1, 2]))' },
-      { arg: '[ 1, 2 ]\n', expected: '(Program (Block [1, 2]))' },
-      { arg: '{}\n', expected: '(Program (Block (Objlit {})))' },
-      { arg: '{ a : 1 }\n', expected: '(Program (Block (Objlit {(PropDecl a : 1)})))' },
-      { arg: '{ a : b }\n', expected: '(Program (Block (Objlit {(PropDecl a : b)})))' },
-      { arg: '{\n indent a: b\n dedent}\n', expected: '(Program (Block (Objlit {(PropDecl a : b)})))' },
-      { arg: '{\n indent a: b\n c: d\n dedent}\n', expected: '(Program (Block (Objlit {(PropDecl a : b), (PropDecl c : d)})))' },
-      { arg: '():\n indent ret "Hello, world" \n dedent \n', expected: '(Program (Block (Funlit (params ) : (Suite (Return "Hello, world")))))' },
-      { arg: '(a):\n indent ret a + 2\n dedent\n', expected: '(Program (Block (Funlit (params a) : (Suite (Return (BinExp a + 2))))))' },
-      { arg: '(a b):\n indent b = a + b\n ret b\n dedent\n',
-        expected: '(Program (Block (Funlit (params a, b) : (Suite (VarDecl b = (BinExp a + b)), (Return b)))))' },
+      {
+        arg: '1234\n',
+        expected: '(Program (Block 1234))',
+      },
+      {
+        arg: '1234.\n',
+        expected: '(Program (Block 1234.))',
+      },
+      {
+        arg: '1234.1\n',
+        expected: '(Program (Block 1234.1))',
+      },
+      {
+        arg: '.1\n',
+        expected: '(Program (Block .1))',
+      },
+      {
+        arg: '"hello 1"\n',
+        expected: '(Program (Block "hello 1"))',
+      },
+      {
+        arg: 'tru\n',
+        expected: '(Program (Block tru))',
+      },
+      {
+        arg: 'fal\n',
+        expected: '(Program (Block fal))',
+      },
+      {
+        arg: '[]\n',
+        expected: '(Program (Block []))',
+      },
+      {
+        arg: '[1.2] \n',
+        expected: '(Program (Block [1.2]))',
+      },
+      {
+        arg: '[a] \n',
+        expected: '(Program (Block [a]))',
+      },
+      {
+        arg: '[a, b] \n',
+        expected: '(Program (Block [a, b]))',
+      },
+      {
+        arg: '[ a, b ] \n',
+        expected: '(Program (Block [a, b]))',
+      },
+      {
+        arg: '[ a, [a] ] \n',
+        expected: '(Program (Block [a, [a]]))',
+      },
+      {
+        arg: '[1, 2]\n',
+        expected: '(Program (Block [1, 2]))',
+      },
+      {
+        arg: '[ 1, 2 ]\n',
+        expected: '(Program (Block [1, 2]))',
+      },
+      {
+        arg: '{}\n',
+        expected: '(Program (Block (Objlit {})))',
+      },
+      {
+        arg: '{ a : 1 }\n',
+        expected: '(Program (Block (Objlit {(PropDecl a : 1)})))',
+      },
+      {
+        arg: '{ a : b }\n',
+        expected: '(Program (Block (Objlit {(PropDecl a : b)})))',
+      },
+      {
+        arg: '{\n indent a: b\n dedent}\n',
+        expected: '(Program (Block (Objlit {(PropDecl a : b)})))',
+      },
+      {
+        arg: '{\n indent a: b\n c: d\n dedent}\n',
+        expected: '(Program (Block (Objlit {(PropDecl a : b), (PropDecl c : d)})))',
+      },
+      {
+        arg: '():\n indent ret "Hello, world" \n dedent \n',
+        expected: '(Program (Block (Funlit (params ) : (Suite (Return "Hello, world")))))',
+      },
+      {
+        arg: '(a):\n indent ret a + 2\n dedent\n',
+        expected: '(Program (Block (Funlit (params a) : (Suite (Return (BinExp a + 2))))))',
+      },
+      {
+        arg: '(a b):\n indent b = a + b\n ret b\n dedent\n',
+        expected: '(Program (Block (Funlit (params a, b) : (Suite (VarDecl b = (BinExp a + b)), (Return b)))))',
+      },
     ];
 
     tests.forEach((test) => {
       it(`correctly parses \n ${test.arg.trim()}`, () => {
-        const ast = parse(test.arg).toString();
-        assert.deepEqual(ast, test.expected);
+        parseTest(test.arg, test.expected);
       });
     });
   });
