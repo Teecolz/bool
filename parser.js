@@ -30,44 +30,61 @@ const RangeExpression = require('./entities/rangeexpression.js');
 const RangeLiteral = require('./entities/rangeliteral.js');
 const FunctionCall = require('./entities/funcall.js');
 const ClassInstantiation = require('./entities/classinstantiation.js');
+const ClassSuite = require('./entities/classsuite.js');
+const ClassBody = require('./entities/classbody.js');
+const FunctionLiteral = require('./entities/functionliteral.js');
+const IdLiteral = require('./entities/idliteral.js');
+const ExpList = require('./entities/explist.js');
+const Parameters = require('./entities/params.js');
 
 const exports = module.exports || {};
 const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
 
+/* eslint no-unused-vars: "off" */
 const semantics = grammar.createSemantics().addOperation('ast', {
   Program: b => new Program(b.ast()),
-  Block: s => new Block(s.ast()),
-  Suite: s => new Suite(s.ast()),
-  Stmt_classdecl: (id, isa, _, fields, methods) =>
+  Block: (s, _) => new Block(s.ast()),
+  Suite: (_, indent, s, ded) => new Suite(s.ast()),
+  params: (_, id1, sp, ids, close) => new Parameters([id1.ast()].concat(ids.ast())),
+  Stmt_classdecl: (cl, id, isa, superId, col, cs) =>
     new ClassDeclaration(
       id.sourceString,
-      isa.sourceString,
-      fields.ast(),
-      methods.ast()),
+      superId.sourceString,
+      cs.ast()),
+  ClassSuite: (_, ind, cb, ded) => new ClassSuite(cb.ast()),
+  ClassBody: (fields, nl, methods, _) => new ClassBody(fields.ast(), methods.ast()),
   fielddecl: (_, id) => new FieldDeclaration(id.sourceString),
-  MethodDecl: (id, params, _, b) =>
-    new MethodDeclaration(id.sourceString, params.sourceString, b.ast()),
-  Stmt_fundecl: (id, params, _, b) =>
-    new FunctionDeclaration(id.sourceString, params.sourceString, b.ast()),
-  Stmt_conditional: (cases, b) =>
-    new ConditionalStatement(cases.ast(), b.ast()),
-  Case: (exp, b) => new Case(exp.ast(), b.ast()),
+  MethodDecl: (id, params, _, s) =>
+    new MethodDeclaration(id.sourceString, params.ast(), s.ast()),
+  ObjDecl: (id, _, nl, ind, props, ded) =>
+    new ObjectDeclaration(id.sourceString, props.ast()),
+  Stmt_fundecl: (f, id, params, _, s) =>
+    new FunctionDeclaration(id.sourceString, params.ast(), s.ast()),
+  Stmt_conditional: (i, c, elifs, cases, el, col, b) =>
+    new ConditionalStatement([c.ast()].concat(cases.ast()), b.ast()),
+  Case: (e, _, s) => new Case(e.ast(), s.ast()),
+  Explist: (e1, _, rest) => new ExpList([e1.ast()].concat(rest.ast())),
   stringlit: s => new StringLiteral(s.sourceString),
   boollit: b => new BooleanLiteral(b.sourceString),
+  id: i => new IdLiteral(i.sourceString),
   intlit: i => new IntegerLiteral(i.sourceString),
   floatlit: f => new FloatLiteral(f.sourceString),
-  Listlit: el => new ListLiteral(el.ast()),
-  Range: (_, r) => new RangeLiteral(r.sourceString),
-  ClassInst: (_, f) => new ClassInstantiation(f.ast()),
-  Funcall: (id, params) => new FunctionCall(id.sourceString, params.sourceString),
+  Listlit: (_, el, end) => new ListLiteral(el.ast()),
+  Objlit: (_, nl, ind, props, ded, close) =>
+    new ObjectLiteral(props.ast()),
+  Funlit: (params, _, s) => new FunctionLiteral(params.ast(), s.ast()),
+  Range: (_, r, close) => new RangeLiteral(r.sourceString),
+  ClassInst: (_, fc) => new ClassInstantiation(fc.ast()),
+  Funcall: (id, params) => new FunctionCall(id.sourceString, params.ast()),
   Exp: (e1, _, e2) => new BinaryExpression(e1.ast(), 'or', e2.ast()),
   Exp1: (e1, _, e2) => new BinaryExpression(e1.ast(), 'and', e2.ast()),
   Exp2_binexp: (e1, op, e2) => new BinaryExpression(e1.ast(), op.sourceString, e2.ast()),
   Exp3_binexp: (e1, op, e2) => new BinaryExpression(e1.ast(), op.sourceString, e2.ast()),
   Exp4_binexp: (e1, op, e2) => new BinaryExpression(e1.ast(), op.sourceString, e2.ast()),
-  exp7_listAccess: (e1, e2) => new BinaryExpression(e1.ast(), '[]', e2.ast()),
+  exp7_listAccess: (e1, _, e2, close) => new BinaryExpression(e1.ast(), '[]', e2.ast()),
   exp7_access: (e1, _, e2) => new BinaryExpression(e1.ast(), '.', e2.ast()),
-  ListAccessor: (_, e) => e.ast(),
+  Loop_forIn: (_, id, n, l, colon, s) => new ForStatement(id.sourceString, l.ast(), s.ast()),
+  Loop_while: (_, exp, colon, s) => new WhileStatement(exp.ast(), s.ast()),
 });
 
 exports.parse = (text) => {
