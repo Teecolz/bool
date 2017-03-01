@@ -88,8 +88,12 @@ Placeholder                                     foods [
 ````
 #### Classes
 ````
-Placeholder
-
+Placeholder                                     class Point {
+                                                  constructor(x, y) {
+                                                    this.x = x;
+                                                    this.y = y;
+                                                  }
+                                                }
 ````
 #### Comments
 ````
