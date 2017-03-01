@@ -7,6 +7,11 @@ const parse = require('../parser.js');
 const bool = fs.readFileSync('bool.ohm');
 const gram = ohm.grammar(bool);
 
+let parseTest = (arg, expected) => {
+  const ast = parse(arg).toString();
+  assert.deepEqual(ast, expected);
+};
+
 describe('Grammar tests (all have trailing newline)', () => {
   describe('Arithmetic', () => {
     describe('3 + 2', () => {
@@ -127,8 +132,32 @@ describe('Grammar tests (all have trailing newline)', () => {
 });
 
 describe('Parser Tests', () => {
-  describe('Literal Tests', () => {
-    const prog = parse('1234 \n');
-    console.log(prog);
+  describe('Legal Literal Tests', () => {
+    let tests = [
+      { arg: '1234\n', expected: '(Program (Block 1234))' },
+      { arg: '1234.\n', expected: '(Program (Block 1234.))' },
+      { arg: '1234.1\n', expected: '(Program (Block 1234.1))' },
+      { arg: '.1\n', expected: '(Program (Block .1))' },
+      { arg: '"hello 1"\n', expected: '(Program (Block "hello 1"))' },
+      { arg: 'tru\n', expected: '(Program (Block tru))' },
+      { arg: 'fal\n', expected: '(Program (Block fal))' },
+      { arg: '[]\n', expected: '(Program (Block []))' },
+      { arg: '[1]\n', expected: '(Program (Block [1]))' },
+      { arg: '[1, 2]\n', expected: '(Program (Block [1, 2]))' },
+      { arg: '[ 1, 2 ]\n', expected: '(Program (Block [ 1, 2 ]))' },
+      { arg: '{}\n', expected: '(Program (Block {}))' },
+      { arg: '{ a : 1 }\n', expected: '(Program (Block { a : 1}))' },
+      { arg: '{\n indent a: b dedent}\n', expected: '(Program (Block {\n indent a: b dedent}))' },
+      { arg: '{\n indent a: b \n c: d \n dedent}\n', expected: '(Program (Block {\n indent a: b \n c: d \n dedent}))' },
+      { arg: '():\n indent ret "Hello, world"\n dedent\n', expected: '(Program (Block ():\n indent ret "Hello, world"\n dedent))' },
+      { arg: '(a):\n indent ret a + 2\n dedent\n', expected: '(Program (Block (a):\n indent ret a + 2\n dedent))' },
+      { arg: '(a, b):\n b = a + b\n ret b\n dedent\n', expected: '(Program (Block (a, b):\n b = a + b\n ret b\n dedent))' },
+    ];
+
+    tests.forEach((test) => {
+      it(`correctly parses ${test.arg.trim()}`, () => {
+        parseTest(test.arg, test.expected);
+      });
+    });
   });
 });
