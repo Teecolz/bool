@@ -12,7 +12,7 @@ Bool {
       | Return      -- ret
 
     ClassDecl
-        = "class" id ("isA" id)? ":" ClassSuite
+        = "class" id ("isa" id)? ":" ClassSuite
 
     ClassSuite
         = newline indent ClassBody dedent
@@ -133,7 +133,7 @@ Bool {
 
     reserved
          = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"
-         | "while" | "until" | "class" | "isA" | "in" | "new" | "#" | "ret"
+         | "while" | "until" | "class" | "isa" | "in" | "new" | "#" | "ret"
          | "indent" | "dedent"
 
     char
