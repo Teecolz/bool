@@ -48,21 +48,38 @@ a != b
 ````
 #### Loops & Conditional Statements
 ````
-fun foo (bar):                                 var foo = function(bar) {
-  int:result = 0                               var result;
-  for i in bar i += 1:                         for (var i = 0; i < bar; i += 1) {
-    if i < 5:                                      if (i < 5) {
-      string:result = foobar                           result = "foobar";
-    elif i > 7:                                    } else if (i > 7) {
-      string:result = barfoo                           result = "barfoo";
-  ret result                                       }
-                                                   return result;
-                                               };
+fun foo (bar):                                  var foo = function(bar) {
+  int:result = 0                                var result;
+  for i in bar i += 1:                          for (var i = 0; i < bar; i += 1) {
+    if i < 5:                                       if (i < 5) {
+      string:result = foobar                            result = "foobar";
+    elif i > 7:                                     } else if (i > 7) {
+      string:result = barfoo                            result = "barfoo";
+  ret result                                        }
+                                                    return result;
+                                                };
 ````
 ````
-while a < 99:                                    while (a < 99) {
-  a += 5                                           a += 5
-                                                 }
+while a < 99:                                   while (a < 99) {
+  a += 5                                            a += 5;
+                                                }
+````
+#### Array Comprehension
+````
+Placeholder                                     var doubleEvens = function(array) {
+                                                  return [for (i of array) if (i % 2 === 0) i * 2];
+                                                }
+
+````
+#### Higher Order Functions
+````
+Placeholder
+
+````
+#### Classes
+````
+Placeholder
+
 ````
 #### Comments
 ````
