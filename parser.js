@@ -56,7 +56,7 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   MethodDecl: (id, params, _, s) =>
     new MethodDeclaration(id.sourceString, params.ast(), s.ast()),
   methodparams: (_, id1, sp, ids, close) => new Parameters([id1.ast()].concat(ids.ast())),
-  ObjDecl: (id, _, nl, ind, props, ded) =>
+  ObjDecl: (id, _, nl, ind, props, nl2, ded) =>
     new ObjectDeclaration(id.sourceString, props.ast()),
   FunDecl: (f, id, params, _, s) =>
     new FunctionDeclaration(id.sourceString, params.ast(), s.ast()),
@@ -71,7 +71,8 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   floatlit: (iPart, _, fracPart) =>
     new FloatLiteral(`${iPart.sourceString} . ${fracPart.sourceString}`),
   Listlit: (_, el, end) => new ListLiteral(el.ast()),
-  Objlit: (_, nl, ind, props, ded, close) =>
+  Objlit_singleprop: (_, prop, close) => new ObjectLiteral(prop.ast()),
+  Objlit_multiprop: (_, nl, ind, props, ded, close) =>
     new ObjectLiteral(props.ast()),
   Funlit: (params, _, s) => new FunctionLiteral(params.ast(), s.ast()),
   Range: (_, r, close) => new RangeLiteral(r.sourceString),

@@ -32,11 +32,11 @@ Bool {
         = "(" ((id | fielddecl) (" " (id | fielddecl))*)? ")"
     // need to make this work where second newline not necessary before closing dedent
     ObjDecl
-        = id ":=" newline indent PropertyDecl* dedent
+        = id ":=" newline indent (PropertyDecl newline)* dedent
 
     // may need to expand this
     PropertyDecl
-      = id ":" Exp newline
+      = id ":" Exp
 
     FunDecl
         = "fun" id params ":" Suite
@@ -137,8 +137,11 @@ Bool {
     stringlit = "\"" char* "\"" | "\'" char* "\'"
     ClassInst = "new" Funcall
 
-    Objlit = "{" newline indent PropertyDecl* dedent "}"
+    Objlit
+      = "{" PropertyDecl? "}" --singleprop
+      | "{" newline indent (PropertyDecl newline)* dedent "}" --multiprop
 
+    // should also allow for one line statement here
     Funlit = params ":" Suite
 
     reserved
