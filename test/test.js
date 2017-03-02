@@ -1,5 +1,10 @@
 /* eslint-env node, mocha */
 
+/*
+ * TODO: ClassDecls, FunDecls, ObjDecls, Loops, Arithmetic,
+ * Object Access, Comments, ClassInst, FunCalls
+*/
+
 const fs = require('fs');
 const ohm = require('ohm-js');
 const assert = require('assert');
@@ -341,5 +346,9 @@ describe('Parser Tests', () => {
         parseTest(test.arg, `(Program (Block (Conditional ${test.expected})))`);
       });
     });
+  });
+
+  describe('Comments', () => {
+    // blah
   });
 });
