@@ -1,7 +1,7 @@
 /* eslint-env node, mocha */
 
 /*
- * TODO: ClassDecls, FunDecls, ObjDecls, Loops,
+ * TODO: ClassDecls, ObjDecls,
  * Object Access, ClassInst, FunCalls
 */
 
@@ -423,6 +423,30 @@ describe('Parser Tests', () => {
       {
         arg: 'for x in [1,2,3]:\n indent ret tru\n dedent\n',
         expected: '(Program (Block (for x [1, 2, 3] (Suite (Return tru)))))',
+      },
+    ];
+
+    tests.forEach((test) => {
+      it(`correctly parses \n ${test.arg.trim()}`, () => {
+        parseTest(test.arg, test.expected);
+      });
+    });
+  });
+
+  describe('Function Declaration Tests', () => {
+    tests = [
+      {
+        arg: 'fun foo(x y z):\n indent ret tru\n dedent\n',
+        expected: '(Program (Block (Function foo (params x, y,z) (Suite (Return tru)))))',
+      },
+      {
+        arg: 'fun bar(x y z a b c):\n indent ret x + y > z ** b\n dedent\n',
+        expected: '(Program (Block (Function bar (params x, y,z,a,b,c) ' +
+             '(Suite (Return (BinExp (BinExp x + y) > (BinExp z ** b)))))))',
+      },
+      {
+        arg: 'fun blah(x):\n indent ret x + 1\n dedent\n',
+        expected: '(Program (Block (Function blah (params x) (Suite (Return (BinExp x + 1))))))',
       },
     ];
 
