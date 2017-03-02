@@ -46,13 +46,15 @@ const Parameters = require('./entities/params.js');
 const PropertyDeclaration = require('./entities/propertydeclaration.js');
 const VariableDeclaration = require('./entities/variabledeclaration.js');
 const Parens = require('./entities/parens.js');
+const Comment = require('./entities/comment.js');
 
 const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
 
 /* eslint no-unused-vars: 1 */
 const semantics = grammar.createSemantics().addOperation('ast', {
   Program(b) { return new Program(b.ast()); },
-  Block(s, _) { return new Block(s.ast()); },
+  Block(s) { return new Block(s.ast()); },
+  FullStmt(s, _) { return s.ast(); },
   Suite(nl, indent, s, nl2, _) {
     return new Suite(s.ast());
   },
@@ -159,6 +161,8 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   id(i) { return new IdLiteral(i.sourceString); },
   intlit(i) { return new IntegerLiteral(this.sourceString); },
   floatlit(iPart, dec, fracPart) { return new FloatLiteral(this.sourceString); },
+  singlecomment(_, str, end) { return ''; },
+  multicomment(_, str, end) { return ''; },
 });
 
 module.exports = (text) => {

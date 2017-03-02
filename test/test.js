@@ -349,6 +349,29 @@ describe('Parser Tests', () => {
   });
 
   describe('Comments', () => {
-    // blah
+    tests = [
+      {
+        arg: '# This is a comment\n',
+        expected: '',
+      },
+      {
+        arg: '1 + 2 ## This comment follows an expression ##\n',
+        expected: '(BinExp 1 + 2)',
+      },
+      {
+        arg: '## This \n comment \n has multiple \n lines ##',
+        expected: '',
+      },
+      {
+        arg: '## This \n comment \n has multiple \n lines ## [1, 2, 3]\n',
+        expected: '[1, 2, 3]',
+      },
+    ];
+
+    tests.forEach((test) => {
+      it(`correctly parses \n ${test.arg.trim()}`, () => {
+        parseTest(test.arg, `(Program (Block ${test.expected}))`);
+      });
+    });
   });
 });
