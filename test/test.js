@@ -1,7 +1,7 @@
 /* eslint-env node, mocha */
 
 /*
- * TODO: ClassDecls, FunDecls, ObjDecls, Loops, Arithmetic,
+ * TODO: ClassDecls, ObjDecls,
  * Object Access, ClassInst, FunCalls
 */
 
@@ -232,7 +232,7 @@ describe('Parser Tests', () => {
       },
       {
         arg: '(a b):\n indent b = a + b\n ret b\n dedent\n',
-        expected: '(Program (Block (Funlit (Params a, b) : (Suite (VarDecl b = (BinExp a + b)), (Return b)))))',
+        expected: '(Program (Block (Funlit (Params a,b) : (Suite (VarDecl b = (BinExp a + b)), (Return b)))))',
       },
     ];
 
@@ -270,80 +270,80 @@ describe('Parser Tests', () => {
         });
       });
     });
-  });
 
-  describe('If-Elif Statements', () => {
-    tests = [
-      {
-        arg:
-          'if tru:\n indent ret 1\n dedent' +
-          'elif a + b :\n indent [1, 2, 3]\n dedent\n',
-        expected:
-          '(Case tru, (Suite (Return 1))), ' +
-          '(Case (BinExp a + b), (Suite [1, 2, 3]))',
-      },
-      {
-        arg:
-          'if tru:\n indent ret 1\n dedent' +
-          'elif a + b :\n indent x = [1, 2, 3]\n ret x\n dedent\n',
-        expected:
-          '(Case tru, (Suite (Return 1))), ' +
-          '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x)))',
-      },
-      {
-        arg:
-          'if tru:\n indent ret 1\n dedent' +
-          'elif a + b :\n indent x = [1, 2, 3]\n ret x\n dedent' +
-          'elif a and b :\n indent x = (2 ** 3)\n ret x\n dedent\n',
-        expected:
-          '(Case tru, (Suite (Return 1))), ' +
-          '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x))), ' +
-          '(Case (BinExp a and b), (Suite (VarDecl x = (Parens (BinExp 2 ** 3))), (Return x)))',
-      },
-    ];
+    describe('If-Elif Statements', () => {
+      tests = [
+        {
+          arg:
+            'if tru:\n indent ret 1\n dedent' +
+            'elif a + b :\n indent [1, 2, 3]\n dedent\n',
+          expected:
+            '(Case tru, (Suite (Return 1))), ' +
+            '(Case (BinExp a + b), (Suite [1, 2, 3]))',
+        },
+        {
+          arg:
+            'if tru:\n indent ret 1\n dedent' +
+            'elif a + b :\n indent x = [1, 2, 3]\n ret x\n dedent\n',
+          expected:
+            '(Case tru, (Suite (Return 1))), ' +
+            '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x)))',
+        },
+        {
+          arg:
+            'if tru:\n indent ret 1\n dedent' +
+            'elif a + b :\n indent x = [1, 2, 3]\n ret x\n dedent' +
+            'elif a and b :\n indent x = (2 ** 3)\n ret x\n dedent\n',
+          expected:
+            '(Case tru, (Suite (Return 1))), ' +
+            '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x))), ' +
+            '(Case (BinExp a and b), (Suite (VarDecl x = (Parens (BinExp 2 ** 3))), (Return x)))',
+        },
+      ];
 
-    tests.forEach((test) => {
-      it(`correctly parses \n ${test.arg.trim()}`, () => {
-        parseTest(test.arg, `(Program (Block (Conditional ${test.expected})))`);
+      tests.forEach((test) => {
+        it(`correctly parses \n ${test.arg.trim()}`, () => {
+          parseTest(test.arg, `(Program (Block (Conditional ${test.expected})))`);
+        });
       });
     });
-  });
 
-  describe('El Statements', () => {
-    tests = [
-      {
-        arg:
-          'if tru:\n indent ret 1\n dedent' +
-          'el:\n indent [1, 2, 3]\n dedent\n',
-        expected:
-          '(Case tru, (Suite (Return 1))), ' +
-          '(Suite [1, 2, 3])',
-      },
-      {
-        arg:
-          'if tru:\n indent ret 1\n dedent' +
-          'elif a + b :\n indent x = [1, 2, 3]\n ret x\n dedent' +
-          'el:\n indent ret fal\n dedent\n',
-        expected:
-          '(Case tru, (Suite (Return 1))), ' +
-          '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x))), ' +
-          '(Suite (Return fal))',
-      },
-      {
-        arg:
-          'if tru:\n indent ret 1\n dedent' +
-          'elif a + b :\n indent x = [1, 2, 3]\n ret x\n dedent' +
-          'el:\n indent x = (2 ** 3)\n ret x\n dedent\n',
-        expected:
-          '(Case tru, (Suite (Return 1))), ' +
-          '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x))), ' +
-          '(Suite (VarDecl x = (Parens (BinExp 2 ** 3))), (Return x))',
-      },
-    ];
+    describe('El Statements', () => {
+      tests = [
+        {
+          arg:
+            'if tru:\n indent ret 1\n dedent' +
+            'el:\n indent [1, 2, 3]\n dedent\n',
+          expected:
+            '(Case tru, (Suite (Return 1))), ' +
+            '(Suite [1, 2, 3])',
+        },
+        {
+          arg:
+            'if tru:\n indent ret 1\n dedent' +
+            'elif a + b :\n indent x = [1, 2, 3]\n ret x\n dedent' +
+            'el:\n indent ret fal\n dedent\n',
+          expected:
+            '(Case tru, (Suite (Return 1))), ' +
+            '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x))), ' +
+            '(Suite (Return fal))',
+        },
+        {
+          arg:
+            'if tru:\n indent ret 1\n dedent' +
+            'elif a + b :\n indent x = [1, 2, 3]\n ret x\n dedent' +
+            'el:\n indent x = (2 ** 3)\n ret x\n dedent\n',
+          expected:
+            '(Case tru, (Suite (Return 1))), ' +
+            '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x))), ' +
+            '(Suite (VarDecl x = (Parens (BinExp 2 ** 3))), (Return x))',
+        },
+      ];
 
-    tests.forEach((test) => {
-      it(`correctly parses \n ${test.arg.trim()}`, () => {
-        parseTest(test.arg, `(Program (Block (Conditional ${test.expected})))`);
+      tests.forEach((test) => {
+        it(`correctly parses \n ${test.arg.trim()}`, () => {
+          parseTest(test.arg, `(Program (Block (Conditional ${test.expected})))`);
+        });
       });
     });
   });
@@ -392,7 +392,20 @@ describe('Parser Tests', () => {
         },
         {
           arg: 'fun x (a b):\n indent ret x + (a + b)\n dedent\n',
-          expected: '(Function x (Params a, b) : (Suite (Return (BinExp x + (Parens (BinExp a + b))))))',
+          expected: '(Function x (Params a,b) : (Suite (Return (BinExp x + (Parens (BinExp a + b))))))',
+        },
+        {
+          arg: 'fun foo(x y z):\n indent ret tru\n dedent\n',
+          expected: '(Function foo (Params x,y,z) : (Suite (Return tru)))',
+        },
+        {
+          arg: 'fun bar(x y z a b c):\n indent ret x + y > z ** b\n dedent\n',
+          expected: '(Function bar (Params x,y,z,a,b,c) : ' +
+               '(Suite (Return (BinExp (BinExp x + y) > (BinExp z ** b)))))',
+        },
+        {
+          arg: 'fun blah(x):\n indent ret x + 1\n dedent\n',
+          expected: '(Function blah (Params x) : (Suite (Return (BinExp x + 1))))',
         },
       ];
 
@@ -431,6 +444,64 @@ describe('Parser Tests', () => {
         it(`correctly parses \n ${test.arg.trim()}`, () => {
           parseTest(test.arg, `(Program (Block ${test.expected}))`);
         });
+      });
+    });
+  });
+
+  describe('Arithmetic Tests', () => {
+    tests = [
+      {
+        arg: '1 + 2\n',
+        expected: '(Program (Block (BinExp 1 + 2)))',
+      },
+      {
+        arg: '90 % 9\n',
+        expected: '(Program (Block (BinExp 90 % 9)))',
+      },
+      {
+        arg: '9 ** 9\n',
+        expected: '(Program (Block (BinExp 9 ** 9)))',
+      },
+      {
+        arg: '3 ** 2 + 7\n',
+        expected: '(Program (Block (BinExp (BinExp 3 ** 2) + 7)))',
+      },
+      {
+        arg: '6 / 2\n',
+        expected: '(Program (Block (BinExp 6 / 2)))',
+      },
+      {
+        arg: '2 + 5\n - 2 + 42\n',
+        expected: '(Program (Block (BinExp 2 + 5), (BinExp (UnExp - 2) + 42)))',
+      },
+    ];
+
+    tests.forEach((test) => {
+      it(`correctly parses \n ${test.arg.trim()}`, () => {
+        parseTest(test.arg, test.expected);
+      });
+    });
+  });
+
+  describe('Loop Tests', () => {
+    tests = [
+      {
+        arg: 'while x == 1:\n indent ret 1\n dedent\n',
+        expected: '(Program (Block (while (BinExp x == 1) (Suite (Return 1)))))',
+      },
+      {
+        arg: 'for x in y:\n indent ret 1\n dedent\n',
+        expected: '(Program (Block (for x y (Suite (Return 1)))))',
+      },
+      {
+        arg: 'for x in [1,2,3]:\n indent ret tru\n dedent\n',
+        expected: '(Program (Block (for x [1, 2, 3] (Suite (Return tru)))))',
+      },
+    ];
+
+    tests.forEach((test) => {
+      it(`correctly parses \n ${test.arg.trim()}`, () => {
+        parseTest(test.arg, test.expected);
       });
     });
   });

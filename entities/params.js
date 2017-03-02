@@ -4,7 +4,7 @@ class Parameters {
   }
 
   toString() {
-    return `(Params ${this.params.join(', ').replace(/, $/, '')})`;
+    return `(Params ${this.params.join(',').replace(/,$/, '')})`;
   }
 }
 
