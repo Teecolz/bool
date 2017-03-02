@@ -13,6 +13,8 @@ const parseTest = (arg, expected) => {
   assert.deepEqual(ast, expected);
 };
 
+let tests;
+
 describe('Grammar tests (all have trailing newline)', () => {
   describe('Arithmetic', () => {
     describe('3 + 2', () => {
@@ -134,7 +136,7 @@ describe('Grammar tests (all have trailing newline)', () => {
 
 describe('Parser Tests', () => {
   describe('Legal Literal Tests', () => {
-    const tests = [
+    tests = [
       {
         arg: '1234\n',
         expected: '(Program (Block 1234))',
@@ -232,6 +234,111 @@ describe('Parser Tests', () => {
     tests.forEach((test) => {
       it(`correctly parses \n ${test.arg.trim()}`, () => {
         parseTest(test.arg, test.expected);
+      });
+    });
+  });
+
+  describe('Conditional Tests', () => {
+    describe('Simple Ifs', () => {
+      tests = [
+        {
+          arg: 'if tru:\n indent ret 1\n dedent\n',
+          expected: '(Case tru, (Suite (Return 1)))',
+        },
+        {
+          arg: 'if tru :\n indent ret 1\n dedent\n',
+          expected: '(Case tru, (Suite (Return 1)))',
+        },
+        {
+          arg: 'if a + b :\n indent [1, 2, 3]\n dedent\n',
+          expected: '(Case (BinExp a + b), (Suite [1, 2, 3]))',
+        },
+        {
+          arg: 'if a + b :\n indent x = [1, 2, 3]\n ret x\n dedent\n',
+          expected: '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x)))',
+        },
+      ];
+
+      tests.forEach((test) => {
+        it(`correctly parses \n ${test.arg.trim()}`, () => {
+          parseTest(test.arg, `(Program (Block (Conditional ${test.expected})))`);
+        });
+      });
+    });
+  });
+
+  describe('If-Elif Statements', () => {
+    tests = [
+      {
+        arg:
+          'if tru:\n indent ret 1\n dedent' +
+          'elif a + b :\n indent [1, 2, 3]\n dedent\n',
+        expected:
+          '(Case tru, (Suite (Return 1))), ' +
+          '(Case (BinExp a + b), (Suite [1, 2, 3]))',
+      },
+      {
+        arg:
+          'if tru:\n indent ret 1\n dedent' +
+          'elif a + b :\n indent x = [1, 2, 3]\n ret x\n dedent\n',
+        expected:
+          '(Case tru, (Suite (Return 1))), ' +
+          '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x)))',
+      },
+      {
+        arg:
+          'if tru:\n indent ret 1\n dedent' +
+          'elif a + b :\n indent x = [1, 2, 3]\n ret x\n dedent' +
+          'elif a and b :\n indent x = (2 ** 3)\n ret x\n dedent\n',
+        expected:
+          '(Case tru, (Suite (Return 1))), ' +
+          '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x))), ' +
+          '(Case (BinExp a and b), (Suite (VarDecl x = (Parens (BinExp 2 ** 3))), (Return x)))',
+      },
+    ];
+
+    tests.forEach((test) => {
+      it(`correctly parses \n ${test.arg.trim()}`, () => {
+        parseTest(test.arg, `(Program (Block (Conditional ${test.expected})))`);
+      });
+    });
+  });
+
+  describe('El Statements', () => {
+    tests = [
+      {
+        arg:
+          'if tru:\n indent ret 1\n dedent' +
+          'el:\n indent [1, 2, 3]\n dedent\n',
+        expected:
+          '(Case tru, (Suite (Return 1))), ' +
+          '(Suite [1, 2, 3])',
+      },
+      {
+        arg:
+          'if tru:\n indent ret 1\n dedent' +
+          'elif a + b :\n indent x = [1, 2, 3]\n ret x\n dedent' +
+          'el:\n indent ret fal\n dedent\n',
+        expected:
+          '(Case tru, (Suite (Return 1))), ' +
+          '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x))), ' +
+          '(Suite (Return fal))',
+      },
+      {
+        arg:
+          'if tru:\n indent ret 1\n dedent' +
+          'elif a + b :\n indent x = [1, 2, 3]\n ret x\n dedent' +
+          'el:\n indent x = (2 ** 3)\n ret x\n dedent\n',
+        expected:
+          '(Case tru, (Suite (Return 1))), ' +
+          '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x))), ' +
+          '(Suite (VarDecl x = (Parens (BinExp 2 ** 3))), (Return x))',
+      },
+    ];
+
+    tests.forEach((test) => {
+      it(`correctly parses \n ${test.arg.trim()}`, () => {
+        parseTest(test.arg, `(Program (Block (Conditional ${test.expected})))`);
       });
     });
   });
