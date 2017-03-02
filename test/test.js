@@ -224,15 +224,15 @@ describe('Parser Tests', () => {
       },
       {
         arg: '():\n indent ret "Hello, world" \n dedent \n',
-        expected: '(Program (Block (Funlit (params ) : (Suite (Return "Hello, world")))))',
+        expected: '(Program (Block (Funlit (Params ) : (Suite (Return "Hello, world")))))',
       },
       {
         arg: '(a):\n indent ret a + 2\n dedent\n',
-        expected: '(Program (Block (Funlit (params a) : (Suite (Return (BinExp a + 2))))))',
+        expected: '(Program (Block (Funlit (Params a) : (Suite (Return (BinExp a + 2))))))',
       },
       {
         arg: '(a b):\n indent b = a + b\n ret b\n dedent\n',
-        expected: '(Program (Block (Funlit (params a, b) : (Suite (VarDecl b = (BinExp a + b)), (Return b)))))',
+        expected: '(Program (Block (Funlit (Params a, b) : (Suite (VarDecl b = (BinExp a + b)), (Return b)))))',
       },
     ];
 
@@ -371,6 +371,66 @@ describe('Parser Tests', () => {
     tests.forEach((test) => {
       it(`correctly parses \n ${test.arg.trim()}`, () => {
         parseTest(test.arg, `(Program (Block ${test.expected}))`);
+      });
+    });
+  });
+
+  describe('Function Tests', () => {
+    describe('Declarations', () => {
+      tests = [
+        {
+          arg: 'fun x():\n indent ret x\n dedent\n',
+          expected: '(Function x (Params ) : (Suite (Return x)))',
+        },
+        {
+          arg: 'fun x ():\n indent ret x\n dedent\n',
+          expected: '(Function x (Params ) : (Suite (Return x)))',
+        },
+        {
+          arg: 'fun x () :\n indent ret x\n dedent\n',
+          expected: '(Function x (Params ) : (Suite (Return x)))',
+        },
+        {
+          arg: 'fun x (a b):\n indent ret x + (a + b)\n dedent\n',
+          expected: '(Function x (Params a, b) : (Suite (Return (BinExp x + (Parens (BinExp a + b))))))',
+        },
+      ];
+
+      tests.forEach((test) => {
+        it(`correctly parses \n ${test.arg.trim()}`, () => {
+          parseTest(test.arg, `(Program (Block ${test.expected}))`);
+        });
+      });
+    });
+
+    describe('Call tests', () => {
+      tests = [
+        {
+          arg: 'x()\n',
+          expected: '(FunCall x (Params ))',
+        },
+        {
+          arg: 'x ()\n',
+          expected: '(FunCall x (Params ))',
+        },
+        {
+          arg: 'x ()()\n',
+          expected: '(FunCall x (Params ), (Params ))',
+        },
+        {
+          arg: 'x (a)(b)\n',
+          expected: '(FunCall x (Params a), (Params b))',
+        },
+        {
+          arg: 'x (a)("b")\n',
+          expected: '(FunCall x (Params a), (Params "b"))',
+        },
+      ];
+
+      tests.forEach((test) => {
+        it(`correctly parses \n ${test.arg.trim()}`, () => {
+          parseTest(test.arg, `(Program (Block ${test.expected}))`);
+        });
       });
     });
   });

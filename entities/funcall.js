@@ -5,7 +5,7 @@ class FunctionCall {
   }
 
   toString() {
-    return `(FunCall ${this.id} (${this.params}))`;
+    return `(FunCall ${this.id} ${this.params.join(', ').replace(/, $/, '')})`;
   }
 }
 

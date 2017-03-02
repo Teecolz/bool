@@ -6,7 +6,7 @@ class FunctionDeclaration {
   }
 
   toString() {
-    return `(Function ${this.id} ${this.params} ${this.body})`;
+    return `(Function ${this.id} ${this.params} : ${this.body})`;
   }
 }
 

@@ -46,7 +46,6 @@ const Parameters = require('./entities/params.js');
 const PropertyDeclaration = require('./entities/propertydeclaration.js');
 const VariableDeclaration = require('./entities/variabledeclaration.js');
 const Parens = require('./entities/parens.js');
-const Comment = require('./entities/comment.js');
 
 const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
 
@@ -60,6 +59,9 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   },
   params(p0, id1, p1, ids, _) {
     return new Parameters([id1.ast()].concat(ids.ast()));
+  },
+  Funparams(_, p1, rest, close) {
+    return new Parameters([p1.ast()].concat(rest.ast()));
   },
   ClassDecl(cl, id, isa, superId, col, cs) {
     return new ClassDeclaration(id.sourceString, superId.sourceString, cs.ast());
@@ -116,8 +118,8 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   Range(_, r, close) {
     return new RangeLiteral(r.sourceString);
   },
-  ClassInst(_, fc) {
-    return new ClassInstantiation(fc.ast());
+  ClassInst(_, id, params) {
+    return new ClassInstantiation(id.sourceString, params.ast());
   },
   Funcall(id, params) {
     return new FunctionCall(id.sourceString, params.ast());

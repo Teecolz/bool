@@ -42,18 +42,21 @@ Bool {
       = id ":" Exp
 
     FunDecl
-        = "fun" id params ":" Suite
+      = "fun" id params ":" Suite
 
     VarDecl
-        = id "=" Exp
+      = id "=" Exp
 
     Return = "ret" Exp
 
     Funcall
-        = id params
+      = id Funparams+
+
+    Funparams
+      = "(" (SimpleLit (SimpleLit)*)? ")"
 
     params
-        = "(" (id (" " id)*)? ")"
+      = "(" (id (" " id)*)? ")"
 
     /*
     Conditional
@@ -109,18 +112,23 @@ Bool {
       | Exp8
     Exp8
       =
-      | boollit
-      | floatlit
-      | intlit
-      | Funcall
-      | VarExp
+      | SimpleLit
       | Funlit
       | "(" Exp ")"   --parens
-      | stringlit
       | Objlit
       | Listlit
       | fielddecl
       | ClassInst
+
+    // need to add support for single line objects
+    SimpleLit
+      = boollit
+      | floatlit
+      | intlit
+      | Funcall
+      | VarExp
+      | stringlit
+
     VarExp = id
     addop = "+" | "-"
     mulop = "*" | "/" | "%"
@@ -138,7 +146,7 @@ Bool {
     intlit = ~(digit* ".") digit+
     floatlit = digit+ "." (digit+)? | (digit+)? "." digit+
     stringlit = "\"" char* "\"" | "\'" char* "\'"
-    ClassInst = "new" Funcall
+    ClassInst = "new" id params
 
     Objlit
       = "{" PropertyDecl? "}" --singleprop
@@ -150,7 +158,7 @@ Bool {
     reserved
          = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"
          | "while" | "until" | "class" | "isa" | "in" | "new" | "#" | "ret"
-         | "indent" | "dedent" | "[" | "]"
+         | "indent" | "dedent" | "[" | "]" | addop | mulop | expop | relop
 
     char
          = alnum | punctuation | escape | stringSpace

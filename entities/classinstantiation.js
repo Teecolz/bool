@@ -1,10 +1,11 @@
 class ClassInstantiation {
-  constructor(call) {
-    this.call = call;
+  constructor(id, params) {
+    this.id = id;
+    this.params = params;
   }
 
   toString() {
-    return `(ClassInst ${this.call})`;
+    return `(New ${this.id} ${this.params})`;
   }
 }
 
