@@ -409,4 +409,27 @@ describe('Parser Tests', () => {
       });
     });
   });
+
+  describe('Loop Tests', () => {
+    tests = [
+      {
+        arg: 'while x == 1:\n indent ret 1\n dedent\n',
+        expected: '(Program (Block (while (BinExp x == 1) (Suite (Return 1)))))',
+      },
+      {
+        arg: 'for x in y:\n indent ret 1\n dedent\n',
+        expected: '(Program (Block (for x y (Suite (Return 1)))))',
+      },
+      {
+        arg: 'for x in [1,2,3]:\n indent ret tru\n dedent\n',
+        expected: '(Program (Block (for x [1, 2, 3] (Suite (Return tru)))))',
+      },
+    ];
+
+    tests.forEach((test) => {
+      it(`correctly parses \n ${test.arg.trim()}`, () => {
+        parseTest(test.arg, test.expected);
+      });
+    });
+  });
 });
