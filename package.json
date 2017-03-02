@@ -5,7 +5,7 @@
   "main": "bool.js",
   "scripts": {
     "test": "mocha",
-    "lint": "eslint"
+    "lint": "./node_modules/.bin/eslint **.js; exit 0"
   },
   "repository": {
     "type": "git",
@@ -19,7 +19,7 @@
   "homepage": "https://github.com/Teecolz/bool#readme",
   "devDependencies": {
     "error": "^7.0.2",
-    "eslint": "^3.15.0",
+    "eslint": "^3.16.1",
     "eslint-config-airbnb-base": "^11.1.0",
     "eslint-plugin-import": "^2.2.0",
     "mocha": "^3.2.0",
