@@ -162,8 +162,8 @@ Bool {
 
     escape = "\\" // still need to fully define these
 
-    comment =  "#" (~"#" ~"\n" any)* "\n"                              --sl
-            |  "##" (~"#" any)* "##"                                   --ml
+    comment =  "#" ~"#" (~"\n" any)* "\n"                              --sl
+            |  "##" (~"##" any)* "##"                                  --ml
     indent = "indent" // placeholder
     dedent = "dedent" // placeholder
     id = ~("_"? reserved) idName
