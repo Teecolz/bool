@@ -5,7 +5,8 @@ class ConditionalStatement {
   }
 
   toString() {
-    return `(If ${this.cases} ${this.block})`;
+    const out = `(Conditional ${this.cases.join(', ').replace(/, $/, '')}, ${this.block})`;
+    return out.replace(/, \)$/, ')');
   }
 }
 

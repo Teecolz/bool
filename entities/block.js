@@ -7,7 +7,7 @@ class Block {
   }
 
   toString() {
-    return `(Block ${this.body.join(' ')})`;
+    return `(Block ${this.body.join(', ').replace(/, $/, '')})`;
   }
 }
 

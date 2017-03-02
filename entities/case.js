@@ -5,7 +5,7 @@ class Case {
   }
 
   toString() {
-    return `(Case ${this.condition} ${this.body})`;
+    return `(Case ${this.condition}, ${this.body})`;
   }
 }
 
