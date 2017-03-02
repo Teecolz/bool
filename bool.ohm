@@ -49,6 +49,7 @@ Bool {
 
     Return = "ret" Exp
 
+    //Funlit = params ":" Suite
     Funcall
       = id Funparams+
 

@@ -5,7 +5,7 @@
   "main": "bool.js",
   "scripts": {
     "test": "mocha",
-    "lint": "./node_modules/.bin/eslint **.js; exit 0"
+    "lint": "eslint ./"
   },
   "repository": {
     "type": "git",

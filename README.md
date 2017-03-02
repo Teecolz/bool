@@ -66,33 +66,33 @@ while a < 99:                                   while (a < 99) {
 ````
 #### Array Comprehension
 ````
-Placeholder                                     var doubleEvens = function(array) {
-                                                  return [for (i of array) if (i % 2 === 0) i * 2];
+fun doubleEvens (array):                        var doubleEvens = function(array) {
+  ret [for i in array if i % 2 === 0 i * 2]       return [for (i of array) if (i % 2 === 0) i * 2];
                                                 }
 
 ````
 #### Higher Order Functions
 ````
-Placeholder                                     foods [
-                                                  {name: 'apple', kind: 'fruit'},
-                                                  {name: 'carrot', kind: 'vegetable'},
-                                                  {name: 'banana', kind: 'fruit'},
-                                                  {name: 'broccoli', kind: 'vegetable'},
-                                                  {name: 'strawberry', kind: 'fruit'},  
-                                                ]
+foods [                                                   foods [
+  {name: string:'apple', kind: string:'fruit'}              {name: 'apple', kind: 'fruit'},
+  {name: string:'carrot', kind: string:'vegetable'}         {name: 'carrot', kind: 'vegetable'},
+  {name: string:'banana', kind: string:'fruit'}             {name: 'banana', kind: 'fruit'},
+  {name: string:'broccoli', kind: string:'vegetable'}       {name: 'broccoli', kind: 'vegetable'},
+  {name: string:'strawberry', kind: string:'fruit'}         {name: 'strawberry', kind: 'fruit'},  
+]                                                         ]
 
-                                                var fruits = foods.filter(function(foods) {
-                                                    return food.kind === 'fruit';    
-                                                });
+fun fruits = foods.filter((food):               var fruits = foods.filter(function(foods) {
+  ret food.kind === fruit                         return food.kind === 'fruit';    
+)                                               });                
 
 ````
 #### Classes
 ````
-Placeholder                                     class Point {
-                                                  constructor(x, y) {
-                                                    this.x = x;
-                                                    this.y = y;
-                                                  }
+class Point:                                     class Point {
+  constructor(x, y):                               constructor(x, y) {
+    x = x                                            this.x = x;
+    y = y                                            this.y = y;
+                                                   }
                                                 }
 ````
 #### Comments

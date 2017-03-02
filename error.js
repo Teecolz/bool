@@ -1,3 +1,5 @@
+/* eslint no-console: "off"*/
+
 const error = (message, location) => {
   let msg = message;
 
