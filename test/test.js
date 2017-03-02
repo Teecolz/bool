@@ -1,7 +1,7 @@
 /* eslint-env node, mocha */
 
 /*
- * TODO: ClassDecls, FunDecls, ObjDecls, Loops, Arithmetic,
+ * TODO: ClassDecls, FunDecls, ObjDecls, Loops,
  * Object Access, ClassInst, FunCalls
 */
 
@@ -371,6 +371,41 @@ describe('Parser Tests', () => {
     tests.forEach((test) => {
       it(`correctly parses \n ${test.arg.trim()}`, () => {
         parseTest(test.arg, `(Program (Block ${test.expected}))`);
+      });
+    });
+  });
+
+  describe('Arithmetic Tests', () => {
+    tests = [
+      {
+        arg: '1 + 2\n',
+        expected: '(Program (Block (BinExp 1 + 2)))',
+      },
+      {
+        arg: '90 % 9\n',
+        expected: '(Program (Block (BinExp 90 % 9)))',
+      },
+      {
+        arg: '9 ** 9\n',
+        expected: '(Program (Block (BinExp 9 ** 9)))',
+      },
+      {
+        arg: '3 ** 2 + 7\n',
+        expected: '(Program (Block (BinExp (BinExp 3 ** 2) + 7)))',
+      },
+      {
+        arg: '6 / 2\n',
+        expected: '(Program (Block (BinExp 6 / 2)))',
+      },
+      {
+        arg: '2 + 5\n - 2 + 42\n',
+        expected: '(Program (Block (BinExp 2 + 5), (BinExp (UnExp - 2) + 42)))',
+      },
+    ];
+
+    tests.forEach((test) => {
+      it(`correctly parses \n ${test.arg.trim()}`, () => {
+        parseTest(test.arg, test.expected);
       });
     });
   });
