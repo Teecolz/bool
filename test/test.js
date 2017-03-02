@@ -2,7 +2,7 @@
 
 /*
  * TODO: ClassDecls, FunDecls, ObjDecls, Loops, Arithmetic,
- * Object Access, Comments, ClassInst, FunCalls
+ * Object Access, ClassInst, FunCalls
 */
 
 const fs = require('fs');
