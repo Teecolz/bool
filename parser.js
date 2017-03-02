@@ -1,6 +1,10 @@
 /* eslint-env node */
 /* eslint spaced-comment: "off" */
 
+/************************
+* DO NOT USE FAT ARROWS *
+************************/
+
 const ohm = require('ohm-js');
 const fs = require('fs');
 const error = require('./error');
@@ -14,7 +18,6 @@ const ConditionalStatement = require('./entities/conditionalstatement.js');
 const ForStatement = require('./entities/forstatement.js');
 const FunctionDeclaration = require('./entities/fundecl.js');
 const ListLiteral = require('./entities/listliteral.js');
-// const NumericLiteral = require('./entities/numericliteral.js');
 const ObjectDeclaration = require('./entities/objdecl.js');
 const ObjectLiteral = require('./entities/objectliteral.js');
 const ReturnStatement = require('./entities/returnstatement.js');
@@ -38,6 +41,7 @@ const ExpList = require('./entities/explist.js');
 const Parameters = require('./entities/params.js');
 const PropertyDeclaration = require('./entities/propertydeclaration.js');
 const VariableDeclaration = require('./entities/variabledeclaration.js');
+const Parens = require('./entities/parens.js');
 
 const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
 
@@ -138,6 +142,9 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   },
   Exp7_access(e1, _, e2) {
     return new BinaryExpression(e1.ast(), '.', e2.ast());
+  },
+  Exp8_parens(_, e, close) {
+    return new Parens(e.ast());
   },
   Loop_forIn(_, id, n, l, colon, s) {
     return new ForStatement(id.sourceString, l.ast(), s.ast());
