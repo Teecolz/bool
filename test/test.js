@@ -2,7 +2,7 @@
 
 /*
  * TODO: ClassDecls, ObjDecls,
- * Object Access, ClassInst
+ * Object/List Access, ClassInst
 */
 
 const fs = require('fs');
@@ -514,6 +514,31 @@ describe('Parser Tests', () => {
     tests.forEach((test) => {
       it(`correctly parses \n ${test.arg.trim()}`, () => {
         parseTest(test.arg, test.expected);
+      });
+    });
+  });
+
+  describe('Class Tests', () => {
+    describe('Declarations', () => {
+      tests = [
+        {
+          arg: 'class hello:\n indent main():\n indent ret "Hello, world!"\n dedent dedent\n',
+          expected: 'hello  : (ClassSuite (ClassBody  (Method main (Params ) : (Suite (Return "Hello, world!")))))',
+        },
+        {
+          arg: 'class hello:\n indent _hi\n main():\n indent ret "Hello, world!"\n dedent dedent\n',
+          expected: 'hello  : (ClassSuite (ClassBody (Field _hi) (Method main (Params ) : (Suite (Return "Hello, world!")))))',
+        },
+        {
+          arg: 'class hello:\n indent _hi\n _hi2\n main():\n indent ret "Hello, world!"\n dedent dedent\n',
+          expected: 'hello  : (ClassSuite (ClassBody (Field _hi),(Field _hi2) (Method main (Params ) : (Suite (Return "Hello, world!")))))',
+        },
+      ];
+
+      tests.forEach((test) => {
+        it(`correctly parses \n ${test.arg.trim()}`, () => {
+          parseTest(test.arg, `(Program (Block (ClassDecl ${test.expected})))`);
+        });
       });
     });
   });

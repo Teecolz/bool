@@ -6,7 +6,7 @@ class MethodDeclaration {
   }
 
   toString() {
-    return `(Method ${this.id} ${this.params} ${this.block})`;
+    return `(Method ${this.id} ${this.params} : ${this.block})`;
   }
 }
 

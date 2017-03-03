@@ -6,7 +6,7 @@
 ************************/
 
 /*
- * TODO:Assignments maybe more?
+ * TODO: Assignments maybe more?
  */
 
 const ohm = require('ohm-js');
@@ -34,7 +34,6 @@ const Suite = require('./entities/suite.js');
 const IntegerLiteral = require('./entities/intliteral.js');
 const FloatLiteral = require('./entities/floatliteral.js');
 const RangeExpression = require('./entities/rangeexpression.js');
-// const RangeLiteral = require('./entities/rangeliteral.js');
 const FunctionCall = require('./entities/funcall.js');
 const ClassInstantiation = require('./entities/classinstantiation.js');
 const ClassSuite = require('./entities/classsuite.js');
