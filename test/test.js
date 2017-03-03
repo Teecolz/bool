@@ -1,7 +1,7 @@
 /* eslint-env node, mocha */
 
 /*
- * TODO: ObjDecls,Object/List Access
+ * TODO: Object/List Access
 */
 
 const fs = require('fs');
@@ -556,4 +556,28 @@ describe('Parser Tests', () => {
       });
     });
   });
+  describe('Object Declaration', () => {
+    tests = [
+      {
+        arg: 'foo :=\n indent bar:5\n dedent\n',
+        expected: '(Program (Block (ObjDecl foo (PropDecl bar : 5))))',
+      },
+      {
+        arg: 'foo :=\n indent bar:5\n a:1\n b:2\n c:3\n dedent\n',
+        expected: '(Program (Block (ObjDecl foo (PropDecl bar : 5),(PropDecl a : 1),(PropDecl b : 2),(PropDecl c : 3))))',
+      },
+      {
+        arg: 'foo :=\n indent bar:fal\n a:tru\n dedent\n',
+        expected: '(Program (Block (ObjDecl foo (PropDecl bar : fal),(PropDecl a : tru))))',
+      },
+    ];
+
+    tests.forEach((test) => {
+      it(`correctly parses \n ${test.arg.trim()}`, () => {
+        parseTest(test.arg, test.expected);
+      });
+    });
+  });
 });
+
+// id ":=" newline indent (PropertyDecl newline)* dedent
