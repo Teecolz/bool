@@ -1,13 +1,12 @@
 class ClassDeclaration {
-  constructor(id, isa, _, fields, methods) {
+  constructor(id, isa, body) {
     this.id = id;
     this.isa = isa;
-    this.fields = fields;
-    this.methods = methods;
+    this.body = body;
   }
 
   toString() {
-    return `(ClassDecl ${this.id} ${this.isa} ${this.fields} ${this.methods})`;
+    return `(ClassDecl ${this.id} ${this.isa} : ${this.body})`.replace(/, \)$/, '');
   }
 }
 

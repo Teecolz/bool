@@ -3,7 +3,7 @@ class FieldDeclaration {
     this.id = id;
   }
   toString() {
-    return `_${this.id}`;
+    return (this.id ? `(Field _${this.id})` : '(Field )');
   }
 }
 

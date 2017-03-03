@@ -81,7 +81,7 @@ Bool {
       = newline indent Exp newline dedent
 
     Loop
-        = "for" id "in" (id | Listlit | Range) ":" Suite      --forIn
+        = "for" id "in" (Range | id | Listlit ) ":" Suite      --forIn
         | "while" Exp ":" Suite                               --while
         | "do" ":" Suite "until:" SimpleSuite                 --doUntil
 

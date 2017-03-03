@@ -1,8 +1,7 @@
 /* eslint-env node, mocha */
 
 /*
- * TODO: ClassDecls, ObjDecls,
- * Object Access, ClassInst
+ * TODO: Object/List Access
 */
 
 const fs = require('fs');
@@ -491,11 +490,85 @@ describe('Parser Tests', () => {
       },
       {
         arg: 'for x in y:\n indent ret 1\n dedent\n',
-        expected: '(Program (Block (for x y (Suite (Return 1)))))',
+        expected: '(Program (Block (for x in y : (Suite (Return 1)))))',
       },
       {
         arg: 'for x in [1,2,3]:\n indent ret tru\n dedent\n',
-        expected: '(Program (Block (for x [1, 2, 3] (Suite (Return tru)))))',
+        expected: '(Program (Block (for x in [1, 2, 3] : (Suite (Return tru)))))',
+      },
+      {
+        arg: 'for x in range(1):\n indent ret tru\n dedent\n',
+        expected: '(Program (Block (for x in (Range 1) : (Suite (Return tru)))))',
+      },
+      {
+        arg: 'for x in range(1, 2):\n indent ret tru\n dedent\n',
+        expected: '(Program (Block (for x in (Range 1, 2) : (Suite (Return tru)))))',
+      },
+      {
+        arg: 'for x in range(1, 2, 3):\n indent ret tru\n dedent\n',
+        expected: '(Program (Block (for x in (Range 1, 2, 3) : (Suite (Return tru)))))',
+      },
+    ];
+
+    tests.forEach((test) => {
+      it(`correctly parses \n ${test.arg.trim()}`, () => {
+        parseTest(test.arg, test.expected);
+      });
+    });
+  });
+
+  describe('Class Tests', () => {
+    describe('Declarations', () => {
+      tests = [
+        {
+          arg: 'class hello:\n indent main():\n indent ret "Hello, world!"\n dedent dedent\n',
+          expected: 'hello  : (ClassSuite (ClassBody  (Method main (Params ) : (Suite (Return "Hello, world!")))))',
+        },
+        {
+          arg: 'class hello:\n indent _hi\n main():\n indent ret "Hello, world!"\n dedent dedent\n',
+          expected: 'hello  : (ClassSuite (ClassBody (Field _hi) (Method main (Params ) : (Suite (Return "Hello, world!")))))',
+        },
+        {
+          arg: 'class hello:\n indent _hi\n _hi2\n main():\n indent ret "Hello, world!"\n dedent dedent\n',
+          expected: 'hello  : (ClassSuite (ClassBody (Field _hi),(Field _hi2) (Method main (Params ) : (Suite (Return "Hello, world!")))))',
+        },
+      ];
+
+      tests.forEach((test) => {
+        it(`correctly parses \n ${test.arg.trim()}`, () => {
+          parseTest(test.arg, `(Program (Block (ClassDecl ${test.expected})))`);
+        });
+      });
+    });
+
+    describe('Instantiations', () => {
+      tests = [
+        {
+          arg: 'x = new hello()\n',
+          expected: '(VarDecl x = (New hello (Params )))',
+        },
+      ];
+
+      tests.forEach((test) => {
+        it(`correctly parses \n ${test.arg.trim()}`, () => {
+          parseTest(test.arg, `(Program (Block ${test.expected}))`);
+        });
+      });
+    });
+  });
+  describe('Object Declaration', () => {
+    tests = [
+      {
+        arg: 'foo :=\n indent bar:5\n dedent\n',
+        expected: '(Program (Block (ObjDecl foo (PropDecl bar : 5))))',
+      },
+      {
+        arg: 'foo :=\n indent bar:5\n a:1\n b:2\n c:3\n dedent\n',
+        expected: '(Program (Block (ObjDecl foo (PropDecl bar : 5),(PropDecl a : 1),(PropDecl b : 2),(PropDecl c : 3))))',
+      },
+      {
+        arg: 'foo :=\n indent bar:fal\n a:tru\n dedent\n',
+        expected: '(Program (Block (ObjDecl foo (PropDecl bar : fal),(PropDecl a : tru))))',
       },
     ];
 

@@ -6,7 +6,7 @@
 ************************/
 
 /*
- * TODO: Comments, Assignments, Range Expressions, maybe more?
+ * TODO: Assignments maybe more?
  */
 
 const ohm = require('ohm-js');
@@ -33,8 +33,7 @@ const MethodDeclaration = require('./entities/methoddecl.js');
 const Suite = require('./entities/suite.js');
 const IntegerLiteral = require('./entities/intliteral.js');
 const FloatLiteral = require('./entities/floatliteral.js');
-// const RangeExpression = require('./entities/rangeexpression.js');
-const RangeLiteral = require('./entities/rangeliteral.js');
+const RangeExpression = require('./entities/rangeexpression.js');
 const FunctionCall = require('./entities/funcall.js');
 const ClassInstantiation = require('./entities/classinstantiation.js');
 const ClassSuite = require('./entities/classsuite.js');
@@ -115,8 +114,11 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   Funlit(params, _, s) {
     return new FunctionLiteral(params.ast(), s.ast());
   },
-  Range(_, r, close) {
-    return new RangeLiteral(r.sourceString);
+  Range(_, exp, close) {
+    return exp.ast();
+  },
+  RangeExp(st, _, end, com, neg, step) {
+    return new RangeExpression(st.ast(), end.ast(), step.ast());
   },
   ClassInst(_, id, params) {
     return new ClassInstantiation(id.sourceString, params.ast());
