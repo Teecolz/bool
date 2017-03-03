@@ -579,5 +579,3 @@ describe('Parser Tests', () => {
     });
   });
 });
-
-// id ":=" newline indent (PropertyDecl newline)* dedent
