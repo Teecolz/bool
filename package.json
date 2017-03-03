@@ -5,7 +5,8 @@
   "main": "bool.js",
   "scripts": {
     "test": "mocha",
-    "lint": "eslint ./"
+    "lint": "eslint ./",
+    "start": "mocha test/test.js"
   },
   "repository": {
     "type": "git",
