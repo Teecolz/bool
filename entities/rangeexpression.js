@@ -5,7 +5,7 @@ class RangeExpression {
     this.step = step;
   }
   toString() {
-    return `Range ${this.start} ${this.end} ${this.step}`;
+    return `(Range ${this.start}, ${this.end}, ${this.step})`.replace(/(, )*\)$/, ')');
   }
 }
 

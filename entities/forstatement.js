@@ -6,7 +6,7 @@ class ForStatement {
   }
 
   toString() {
-    return `(for ${this.iterator} ${this.list} ${this.block})`;
+    return `(for ${this.iterator} in ${this.list} : ${this.block})`;
   }
 }
 

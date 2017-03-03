@@ -491,11 +491,23 @@ describe('Parser Tests', () => {
       },
       {
         arg: 'for x in y:\n indent ret 1\n dedent\n',
-        expected: '(Program (Block (for x y (Suite (Return 1)))))',
+        expected: '(Program (Block (for x in y : (Suite (Return 1)))))',
       },
       {
         arg: 'for x in [1,2,3]:\n indent ret tru\n dedent\n',
-        expected: '(Program (Block (for x [1, 2, 3] (Suite (Return tru)))))',
+        expected: '(Program (Block (for x in [1, 2, 3] : (Suite (Return tru)))))',
+      },
+      {
+        arg: 'for x in range(1):\n indent ret tru\n dedent\n',
+        expected: '(Program (Block (for x in (Range 1) : (Suite (Return tru)))))',
+      },
+      {
+        arg: 'for x in range(1, 2):\n indent ret tru\n dedent\n',
+        expected: '(Program (Block (for x in (Range 1, 2) : (Suite (Return tru)))))',
+      },
+      {
+        arg: 'for x in range(1, 2, 3):\n indent ret tru\n dedent\n',
+        expected: '(Program (Block (for x in (Range 1, 2, 3) : (Suite (Return tru)))))',
       },
     ];
 
