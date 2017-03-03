@@ -1,8 +1,7 @@
 /* eslint-env node, mocha */
 
 /*
- * TODO: ClassDecls, ObjDecls,
- * Object/List Access, ClassInst
+ * TODO: ObjDecls,Object/List Access
 */
 
 const fs = require('fs');
@@ -538,6 +537,21 @@ describe('Parser Tests', () => {
       tests.forEach((test) => {
         it(`correctly parses \n ${test.arg.trim()}`, () => {
           parseTest(test.arg, `(Program (Block (ClassDecl ${test.expected})))`);
+        });
+      });
+    });
+
+    describe('Instantiations', () => {
+      tests = [
+        {
+          arg: 'x = new hello()\n',
+          expected: '(VarDecl x = (New hello (Params )))',
+        },
+      ];
+
+      tests.forEach((test) => {
+        it(`correctly parses \n ${test.arg.trim()}`, () => {
+          parseTest(test.arg, `(Program (Block ${test.expected}))`);
         });
       });
     });
