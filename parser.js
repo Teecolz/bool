@@ -41,6 +41,7 @@ const ClassBody = require('./entities/classbody.js');
 const FunctionLiteral = require('./entities/functionliteral.js');
 const IdLiteral = require('./entities/idliteral.js');
 const ExpList = require('./entities/explist.js');
+const ListExpression = require('./entities/listexp.js');
 const Parameters = require('./entities/params.js');
 const PropertyDeclaration = require('./entities/propertydeclaration.js');
 const VariableDeclaration = require('./entities/variabledeclaration.js');
@@ -108,6 +109,9 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   Case(e, col, s) { return new Case(e.ast(), s.ast()); },
   Explist(e1, _, el) {
     return new ExpList([e1.ast()].concat(el.ast()));
+  },
+  ListExp(e, _, id, n, list) {
+    return new ListExpression(e.ast(), id.ast(), list.ast());
   },
   stringlit(_, s, end) {
     return new StringLiteral(this.sourceString);

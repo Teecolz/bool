@@ -34,6 +34,7 @@ Bool {
         = id methodparams ":" Suite
     methodparams
         = "(" ((id | fielddecl) (" " (id | fielddecl))*)? ")"
+
     // need to make this work where second newline not necessary before closing dedent
     ObjDecl
         = id ":=" newline indent (PropertyDecl newline)* dedent
@@ -63,15 +64,6 @@ Bool {
     params
       = "(" (id (" " id)*)? ")"
 
-    /*
-    Conditional
-        = "if" Exp ":" newline
-          indent
-              Block
-          dedent
-          ("elif" Exp newline indent Block dedent)*
-          ("el" Exp newline indent Block dedent)?
-    */
     Conditional
       = "if" Case ("elif" Case)* ("el" ":" Suite)?
 
@@ -142,8 +134,8 @@ Bool {
     relop = ">" | "<" | ">=" | "<=" | "!=" | "=="
 
     Explist = Exp8 ("," Exp8)*
-
-    Listlit = "[" Explist? "]"
+    ListExp = Exp "for" id "in" (id | Listlit)
+    Listlit = "[" (ListExp | Explist)? "]"
     // will need to work on range ast
     Range = "range(" RangeExp ")"
     RangeExp = intlit ("," intlit("," "-"? intlit)?)?
