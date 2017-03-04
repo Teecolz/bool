@@ -177,6 +177,7 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   floatlit(iPart, dec, fracPart) { return new FloatLiteral(this.sourceString); },
   singlecomment(_, str, end) { return ''; },
   multicomment(_, str, end) { return ''; },
+  // _terminal() {},
 });
 
 module.exports = (text) => {

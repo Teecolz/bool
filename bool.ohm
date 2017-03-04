@@ -6,7 +6,7 @@ Bool {
     // of a line
     Block
         = (FullStmt | singlecomment)*
-    FullStmt = Stmt newline
+    FullStmt = Stmt? newline
     Stmt
       = ClassDecl
       | FunDecl
@@ -174,8 +174,8 @@ Bool {
 
     escape = "\\" // still need to fully define these
     comment
-      = singlecomment
-      | multicomment
+      = multicomment
+      | singlecomment
     singlecomment =  "#" ~"#" (~"\n" any)* "\n"
     multicomment = "##" (~"##" any)* "##"
     indent = "indent" // placeholder

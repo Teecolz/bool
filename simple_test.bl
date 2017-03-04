@@ -1,0 +1,23 @@
+## Our final version will look like so:
+# fun test():
+#   log("This is a test bool file")
+#   if a > b:
+#     log("a > b")
+#   el:
+#     log("a <= b")
+#
+# test()
+# let x = 1
+#
+##
+
+fun test():
+indent log("This is a test bool file")
+if a > b:
+indent log("a > b")
+dedent el:
+indent log("a <= b")
+dedent
+dedent
+test()
+let x = 1

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha",
     "lint": "eslint ./",
-    "start": "mocha test/test.js"
+    "start": "./bool.js"
   },
   "repository": {
     "type": "git",
