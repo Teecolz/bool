@@ -17,8 +17,8 @@ Bool is an object-oriented, dynamically-typed, and strongly-typed programming la
 #### Variable Declarations
 ````
 # Variable Declarations
-int:foo = 101                                   var foo = 101;
-string:bar = 101                                var bar = "101";
+foo:int = 101                                   var foo = 101;
+bar:string = 101                                var bar = "101";
 ````
 #### Arithmetic Expressions
 ````
@@ -49,12 +49,12 @@ a != b
 #### Loops & Conditional Statements
 ````
 fun foo (bar):                                  var foo = function(bar) {
-  int:result = 0                                var result;
-  for i in bar i += 1:                          for (var i = 0; i < bar; i += 1) {
+  result:string                                 var result;
+  for i in range(bar):                          for (var i = 0; i < bar; i += 1) {
     if i < 5:                                       if (i < 5) {
-      string:result = foobar                            result = "foobar";
+      result = "foobar"                                 result = "foobar";
     elif i > 7:                                     } else if (i > 7) {
-      string:result = barfoo                            result = "barfoo";
+      result = "barfoo"                                 result = "barfoo";
   ret result                                        }
                                                     return result;
                                                 };
@@ -116,9 +116,9 @@ fun gcd (a b):                                  var gcd = function(a, b) {
 #### Fibonacci Function Example
 ````
 fun fibonacci (x):                              var fibonacci = function(x) {
-    int:a = 0                                       var a = 0, b = 1, c;
-    int:b = 1                                       if (x < 3) return 1;
-    int:c                                           while (--x > 0) {
+    a:int = 0                                       var a = 0, b = 1, c;
+    b:int = 1                                       if (x < 3) return 1;
+    c:int                                           while (--x > 0) {
     if (x < 3):                                        c = a + b, a = b, b = c;
        ret 1                                        }
     do (x += 1):                                    return c;
