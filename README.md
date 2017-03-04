@@ -17,7 +17,7 @@ Bool is an object-oriented, dynamically-typed, and strongly-typed programming la
 #### Variable Declarations
 ````
 # Variable Declarations
-foo = 101                                       var foo = 101;
+int:foo = 101                                   var foo = 101;
 string:bar = 101                                var bar = "101";
 ````
 #### Arithmetic Expressions
@@ -116,9 +116,9 @@ fun gcd (a b):                                  var gcd = function(a, b) {
 #### Fibonacci Function Example
 ````
 fun fibonacci (x):                              var fibonacci = function(x) {
-    a = 0                                           var a = 0, b = 1, c;
-    b = 1                                           if (x < 3) return 1;
-    c                                               while (--x > 0) {
+    int:a = 0                                       var a = 0, b = 1, c;
+    int:b = 1                                       if (x < 3) return 1;
+    int:c                                           while (--x > 0) {
     if (x < 3):                                        c = a + b, a = b, b = c;
        ret 1                                        }
     do (x += 1):                                    return c;
