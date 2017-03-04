@@ -73,13 +73,16 @@ fun doubleEvens (array):                        var doubleEvens = function(array
 ````
 #### Higher Order Functions
 ````
-foods [                                                   foods [
-  {name: string:'apple', kind: string:'fruit'}              {name: 'apple', kind: 'fruit'},
-  {name: string:'carrot', kind: string:'vegetable'}         {name: 'carrot', kind: 'vegetable'},
-  {name: string:'banana', kind: string:'fruit'}             {name: 'banana', kind: 'fruit'},
-  {name: string:'broccoli', kind: string:'vegetable'}       {name: 'broccoli', kind: 'vegetable'},
-  {name: string:'strawberry', kind: string:'fruit'}         {name: 'strawberry', kind: 'fruit'},  
-]                                                         ]
+foods [                                       foods [
+  {name: 'apple', kind: 'fruit'}                {name: 'apple', kind: 'fruit'},
+  {name: 'carrot', kind: 'veg'}                 {name: 'carrot', kind: 'veg'},
+  {name: 'banana', kind: 'fruit'}               {name: 'banana', kind: 'fruit'},
+  {name: 'broccoli', kind: 'veg'}               {name: 'broccoli', kind: 'veg'},
+  {name: 'strawberry', kind: 'fruit'}           {
+]                                                 name: 'strawberry',
+                                                  kind:'fruit'
+                                                },
+                                              ];                                         
 
 fun fruits = foods.filter((food):               var fruits = foods.filter(function(foods) {
   ret food.kind === fruit                         return food.kind === 'fruit';    
@@ -125,6 +128,6 @@ fun fibonacci (x):                              var fibonacci = function(x) {
        c = a + b                                };
        a = b
        b = c
-    until x > 0
+    until: x > 0
     ret c
 ````
