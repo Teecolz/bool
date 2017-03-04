@@ -10,8 +10,6 @@ const argv = require('yargs')
   .demand(1)
   .argv;
 
-console.log(argv);
-
 fs.readFile(argv._[0], 'utf-8', (err, text) => {
   const program = parse(text);
   if (error.count > 0) {
@@ -19,5 +17,6 @@ fs.readFile(argv._[0], 'utf-8', (err, text) => {
   }
   if (argv.a) {
     console.log(program.toString());
+    program.toString();
   }
 });

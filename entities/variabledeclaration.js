@@ -1,13 +1,13 @@
 class VariableDeclaration {
-  constructor(id, type, val) {
+  constructor(id, type, assign) {
     this.id = id;
     this.type = type;
-    this.val = val;
+    this.assign = assign;
   }
 
   toString() {
     const idType = [this.id, this.type];
-    return `(VarDecl ${idType.join(' ').trim(' ')} = ${this.val})`;
+    return `(VarDecl ${idType.join(':').replace(/:$/, '')}${this.assign})`;
   }
 }
 

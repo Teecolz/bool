@@ -43,6 +43,7 @@ const PropertyDeclaration = require('./entities/propertydeclaration.js');
 const VariableDeclaration = require('./entities/variabledeclaration.js');
 const VariableAssignment = require('./entities/varassignment.js');
 const Parens = require('./entities/parens.js');
+const DoUntilStatement = require('./entities/dountil.js');
 
 const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
 
@@ -69,8 +70,16 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   ClassBody(fields, nl, methods) {
     return new ClassBody(fields.ast(), methods.ast());
   },
-  VarDecl(l, id, type, eq, val) {
-    return new VariableDeclaration(id.ast(), type.ast(), val.ast());
+  VarDecl(l, id, type, a) {
+    return new VariableDeclaration(id.ast(), type.ast(), a.ast());
+  },
+  Assignment(_, e) {
+    const eAst = e.ast().toString();
+    if (eAst.length > 0) {
+      return ` = ${eAst}`;
+    }
+
+    return '';
   },
   Type_single(_, t) {
     return `(Type ${t.sourceString})`;
@@ -170,6 +179,9 @@ const semantics = grammar.createSemantics().addOperation('ast', {
     return new ForStatement(id.sourceString, l.ast(), s.ast());
   },
   Loop_while(_, exp, colon, s) { return new WhileStatement(exp.ast(), s.ast()); },
+  Loop_doUntil(_, col, s1, unt, col2, s2) {
+    return new DoUntilStatement(s1.ast(), s2.ast());
+  },
   Return(_, exp) { return new ReturnStatement(exp.ast()); },
   boollit(b) { return new BooleanLiteral(b.sourceString); },
   id(i) { return new IdLiteral(i.sourceString); },

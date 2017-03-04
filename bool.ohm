@@ -47,8 +47,11 @@ Bool {
       = "fun" id params ":" Suite
 
     VarDecl
-      = "let" id Type? "=" Exp
+      = "let" id Type? Assignment?
 
+    Assignment
+      = "=" Exp
+      
     VarAssignment
       = id "=" Exp
 
@@ -77,9 +80,9 @@ Bool {
       = newline indent Exp newline dedent
 
     Loop
-        = "for" id "in" (Range | id | Listlit ) ":" Suite      --forIn
+        = "for" id "in" (Range | id | Listlit ) ":" Suite     --forIn
         | "while" Exp ":" Suite                               --while
-        | "do" ":" Suite "until:" SimpleSuite                 --doUntil
+        | "do" ":" Suite "until" ":" SimpleSuite              --doUntil
 
     Exp
       = Exp1 "or" Exp1      --binexp
