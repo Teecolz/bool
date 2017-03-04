@@ -12,6 +12,7 @@ Bool {
       | FunDecl
       | ObjDecl
       | VarDecl     -- vardecl
+      | VarAssignment
       | Conditional
       | Loop        -- loop
       | Exp         -- exp
@@ -33,6 +34,7 @@ Bool {
         = id methodparams ":" Suite
     methodparams
         = "(" ((id | fielddecl) (" " (id | fielddecl))*)? ")"
+
     // need to make this work where second newline not necessary before closing dedent
     ObjDecl
         = id ":=" newline indent (PropertyDecl newline)* dedent
@@ -45,6 +47,9 @@ Bool {
       = "fun" id params ":" Suite
 
     VarDecl
+      = "let" id Type? "=" Exp
+
+    VarAssignment
       = id "=" Exp
 
     Return = "ret" Exp
@@ -59,15 +64,6 @@ Bool {
     params
       = "(" (id (" " id)*)? ")"
 
-    /*
-    Conditional
-        = "if" Exp ":" newline
-          indent
-              Block
-          dedent
-          ("elif" Exp newline indent Block dedent)*
-          ("el" Exp newline indent Block dedent)?
-    */
     Conditional
       = "if" Case ("elif" Case)* ("el" ":" Suite)?
 
@@ -138,8 +134,8 @@ Bool {
     relop = ">" | "<" | ">=" | "<=" | "!=" | "=="
 
     Explist = Exp8 ("," Exp8)*
-
-    Listlit = "[" Explist? "]"
+    ListExp = Exp "for" id "in" (id | Listlit)
+    Listlit = "[" (ListExp | Explist)? "]"
     // will need to work on range ast
     Range = "range(" RangeExp ")"
     RangeExp = intlit ("," intlit("," "-"? intlit)?)?
@@ -157,10 +153,14 @@ Bool {
     Funlit = params ":" Suite
 
     reserved
-         = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"
-         | "while" | "until" | "class" | "isa" | "in" | "new" | "#" | "ret"
-         | "indent" | "dedent" | "[" | "]" | addop | mulop | expop | relop
-
+      = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"
+      | "while" | "until" | "class" | "isa" | "in" | "new" | "#" | "ret"
+      | "indent" | "dedent" | "[" | "]" | "let" | "string" | "float" | "int"
+      | "bool" | "obj" | addop | mulop | expop
+      | relop
+    Type
+      = ":" ("string" | "float" | "int" | "bool" | "obj" | id) --single
+      | ":" "[" ("string" | "float" | "int" | "bool" | "obj" | id) "]" --list
     char
          = alnum | punctuation | escape | stringSpace
 

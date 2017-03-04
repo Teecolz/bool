@@ -5,10 +5,6 @@
 * DO NOT USE FAT ARROWS *
 ************************/
 
-/*
- * TODO: Assignments maybe more?
- */
-
 const ohm = require('ohm-js');
 const fs = require('fs');
 const error = require('./error');
@@ -41,9 +37,11 @@ const ClassBody = require('./entities/classbody.js');
 const FunctionLiteral = require('./entities/functionliteral.js');
 const IdLiteral = require('./entities/idliteral.js');
 const ExpList = require('./entities/explist.js');
+const ListExpression = require('./entities/listexp.js');
 const Parameters = require('./entities/params.js');
 const PropertyDeclaration = require('./entities/propertydeclaration.js');
 const VariableDeclaration = require('./entities/variabledeclaration.js');
+const VariableAssignment = require('./entities/varassignment.js');
 const Parens = require('./entities/parens.js');
 
 const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
@@ -71,8 +69,17 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   ClassBody(fields, nl, methods) {
     return new ClassBody(fields.ast(), methods.ast());
   },
-  VarDecl(id, _, val) {
-    return new VariableDeclaration(id.ast(), val.ast());
+  VarDecl(l, id, type, eq, val) {
+    return new VariableDeclaration(id.ast(), type.ast(), val.ast());
+  },
+  Type_single(_, t) {
+    return `(Type ${t.sourceString})`;
+  },
+  Type_list(_, open, type, close) {
+    return `(Type List(${type.sourceString}))`;
+  },
+  VarAssignment(id, _, val) {
+    return new VariableAssignment(id.ast(), val.ast());
   },
   fielddecl(open, id) {
     return new FieldDeclaration(id.sourceString);
@@ -98,6 +105,9 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   Case(e, col, s) { return new Case(e.ast(), s.ast()); },
   Explist(e1, _, el) {
     return new ExpList([e1.ast()].concat(el.ast()));
+  },
+  ListExp(e, _, id, n, list) {
+    return new ListExpression(e.ast(), id.ast(), list.ast());
   },
   stringlit(_, s, end) {
     return new StringLiteral(this.sourceString);
