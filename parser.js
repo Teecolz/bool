@@ -44,6 +44,7 @@ const VariableDeclaration = require('./entities/variabledeclaration.js');
 const VariableAssignment = require('./entities/varassignment.js');
 const Parens = require('./entities/parens.js');
 const DoUntilStatement = require('./entities/dountil.js');
+const SimpleIf = require('./entities/simpleif.js');
 
 const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
 
@@ -126,8 +127,11 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   Explist(e1, _, el) {
     return new ExpList([e1.ast()].concat(el.ast()));
   },
-  ListExp(e, _, id, n, list) {
-    return new ListExpression(e.ast(), id.ast(), list.ast());
+  ListExp(e, _, id, n, list, cond) {
+    return new ListExpression(e.ast(), id.ast(), list.ast(), cond.ast());
+  },
+  SimpleIf(_, e) {
+    return new SimpleIf(e.ast());
   },
   stringlit(_, s, end) {
     return new StringLiteral(this.sourceString);

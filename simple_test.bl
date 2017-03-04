@@ -22,4 +22,6 @@ dedent
 test()
 let x:int = 1
 x += 1
-let y:string
+# let y:[string]
+y = ["a", "b", "c", "d"]
+z = [el for el in y if letter !== "a"]

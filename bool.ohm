@@ -140,12 +140,11 @@ Bool {
     mulop = "*" | "/" | "%"
     prefixop = "!" | "-"
     expop = "**" | "//"
-    relop = ">" | "<" | ">=" | "<=" | "!=" | "=="
-
+    relop =  ">=" | "<=" | ">" | "<" | "!==" | "===" | "==" | "!="
     Explist = Exp8 ("," Exp8)*
-    ListExp = Exp "for" id "in" (id | Listlit)
+    ListExp = Exp "for" id "in" (id | Listlit) SimpleIf?
+    SimpleIf = "if" Exp
     Listlit = "[" (ListExp | Explist)? "]"
-    // will need to work on range ast
     Range = "range(" RangeExp ")"
     RangeExp = intlit ("," intlit("," "-"? intlit)?)?
     boollit = "tru" | "fal"

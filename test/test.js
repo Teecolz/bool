@@ -206,6 +206,10 @@ describe('Parser Tests', () => {
         expected: '(Program (Block [(BinExp x + 2) for x in [1, 2, 3]]))',
       },
       {
+        arg: '[ x + 2 for x in [1, 2, 3] if x !== 1]\n',
+        expected: '(Program (Block [(BinExp x + 2) for x in [1, 2, 3] (If (BinExp x !== 1))]))',
+      },
+      {
         arg: '{}\n',
         expected: '(Program (Block (Objlit {})))',
       },
