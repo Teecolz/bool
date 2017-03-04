@@ -5,10 +5,6 @@
 * DO NOT USE FAT ARROWS *
 ************************/
 
-/*
- * TODO: Assignments maybe more?
- */
-
 const ohm = require('ohm-js');
 const fs = require('fs');
 const error = require('./error');

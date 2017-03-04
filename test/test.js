@@ -1,9 +1,5 @@
 /* eslint-env node, mocha */
 
-/*
- * TODO: Object/List Access
-*/
-
 const fs = require('fs');
 const ohm = require('ohm-js');
 const assert = require('assert');
@@ -564,25 +560,54 @@ describe('Parser Tests', () => {
       });
     });
   });
-  describe('Object Declaration', () => {
-    tests = [
-      {
-        arg: 'foo :=\n indent bar:5\n dedent\n',
-        expected: '(Program (Block (ObjDecl foo (PropDecl bar : 5))))',
-      },
-      {
-        arg: 'foo :=\n indent bar:5\n a:1\n b:2\n c:3\n dedent\n',
-        expected: '(Program (Block (ObjDecl foo (PropDecl bar : 5),(PropDecl a : 1),(PropDecl b : 2),(PropDecl c : 3))))',
-      },
-      {
-        arg: 'foo :=\n indent bar:fal\n a:tru\n dedent\n',
-        expected: '(Program (Block (ObjDecl foo (PropDecl bar : fal),(PropDecl a : tru))))',
-      },
-    ];
+  describe('Object Tests', () => {
+    describe('Declaration', () => {
+      tests = [
+        {
+          arg: 'foo :=\n indent bar:5\n dedent\n',
+          expected: '(Program (Block (ObjDecl foo (PropDecl bar : 5))))',
+        },
+        {
+          arg: 'foo :=\n indent bar:5\n a:1\n b:2\n c:3\n dedent\n',
+          expected: '(Program (Block (ObjDecl foo (PropDecl bar : 5),(PropDecl a : 1),(PropDecl b : 2),(PropDecl c : 3))))',
+        },
+        {
+          arg: 'foo :=\n indent bar:fal\n a:tru\n dedent\n',
+          expected: '(Program (Block (ObjDecl foo (PropDecl bar : fal),(PropDecl a : tru))))',
+        },
+      ];
 
-    tests.forEach((test) => {
-      it(`correctly parses \n ${test.arg.trim()}`, () => {
-        parseTest(test.arg, test.expected);
+      tests.forEach((test) => {
+        it(`correctly parses \n ${test.arg.trim()}`, () => {
+          parseTest(test.arg, test.expected);
+        });
+      });
+    });
+
+    describe('Access', () => {
+      tests = [
+        {
+          arg: 'x.y\n',
+          expected: 'x . y',
+        },
+        {
+          arg: 'x[0]\n',
+          expected: 'x [] 0',
+        },
+        {
+          arg: '(x.y)[0]\n',
+          expected: '(Parens (BinExp x . y)) [] 0',
+        },
+        {
+          arg: '[1,2,3][1]\n',
+          expected: '[1, 2, 3] [] 1',
+        },
+      ];
+
+      tests.forEach((test) => {
+        it(`correctly parses \n ${test.arg.trim()}`, () => {
+          parseTest(test.arg, `(Program (Block (BinExp ${test.expected})))`);
+        });
       });
     });
   });
