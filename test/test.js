@@ -230,7 +230,7 @@ describe('Parser Tests', () => {
         expected: '(Program (Block (Funlit (Params a) : (Suite (Return (BinExp a + 2))))))',
       },
       {
-        arg: '(a b):\n indent b = a + b\n ret b\n dedent\n',
+        arg: '(a b):\n indent let b = a + b\n ret b\n dedent\n',
         expected: '(Program (Block (Funlit (Params a,b) : (Suite (VarDecl b = (BinExp a + b)), (Return b)))))',
       },
     ];
@@ -258,7 +258,7 @@ describe('Parser Tests', () => {
           expected: '(Case (BinExp a + b), (Suite [1, 2, 3]))',
         },
         {
-          arg: 'if a + b :\n indent x = [1, 2, 3]\n ret x\n dedent\n',
+          arg: 'if a + b :\n indent let x = [1, 2, 3]\n ret x\n dedent\n',
           expected: '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x)))',
         },
       ];
@@ -283,20 +283,20 @@ describe('Parser Tests', () => {
         {
           arg:
             'if tru:\n indent ret 1\n dedent' +
-            'elif a + b :\n indent x = [1, 2, 3]\n ret x\n dedent\n',
+            'elif a + b :\n indent let x:[int] = [1, 2, 3]\n ret x\n dedent\n',
           expected:
             '(Case tru, (Suite (Return 1))), ' +
-            '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x)))',
+            '(Case (BinExp a + b), (Suite (VarDecl x (Type List(int)) = [1, 2, 3]), (Return x)))',
         },
         {
           arg:
             'if tru:\n indent ret 1\n dedent' +
-            'elif a + b :\n indent x = [1, 2, 3]\n ret x\n dedent' +
-            'elif a and b :\n indent x = (2 ** 3)\n ret x\n dedent\n',
+            'elif a + b :\n indent let x = [1, 2, 3]\n ret x\n dedent' +
+            'elif a > b :\n indent a = (2 ** 3)\n ret a\n dedent\n',
           expected:
             '(Case tru, (Suite (Return 1))), ' +
             '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x))), ' +
-            '(Case (BinExp a and b), (Suite (VarDecl x = (Parens (BinExp 2 ** 3))), (Return x)))',
+            '(Case (BinExp a > b), (Suite (VarAssign a = (Parens (BinExp 2 ** 3))), (Return a)))',
         },
       ];
 
@@ -320,7 +320,7 @@ describe('Parser Tests', () => {
         {
           arg:
             'if tru:\n indent ret 1\n dedent' +
-            'elif a + b :\n indent x = [1, 2, 3]\n ret x\n dedent' +
+            'elif a + b :\n indent let x = [1, 2, 3]\n ret x\n dedent' +
             'el:\n indent ret fal\n dedent\n',
           expected:
             '(Case tru, (Suite (Return 1))), ' +
@@ -330,12 +330,12 @@ describe('Parser Tests', () => {
         {
           arg:
             'if tru:\n indent ret 1\n dedent' +
-            'elif a + b :\n indent x = [1, 2, 3]\n ret x\n dedent' +
-            'el:\n indent x = (2 ** 3)\n ret x\n dedent\n',
+            'elif a + b :\n indent let x = [1, 2, 3]\n ret x\n dedent' +
+            'el:\n indent let x:int = (2 ** 3)\n ret x\n dedent\n',
           expected:
             '(Case tru, (Suite (Return 1))), ' +
             '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x))), ' +
-            '(Suite (VarDecl x = (Parens (BinExp 2 ** 3))), (Return x))',
+            '(Suite (VarDecl x (Type int) = (Parens (BinExp 2 ** 3))), (Return x))',
         },
       ];
 
@@ -545,7 +545,7 @@ describe('Parser Tests', () => {
       tests = [
         {
           arg: 'x = new hello()\n',
-          expected: '(VarDecl x = (New hello (Params )))',
+          expected: '(VarAssign x = (New hello (Params )))',
         },
       ];
 

@@ -12,6 +12,7 @@ Bool {
       | FunDecl
       | ObjDecl
       | VarDecl     -- vardecl
+      | VarAssignment
       | Conditional
       | Loop        -- loop
       | Exp         -- exp
@@ -45,6 +46,9 @@ Bool {
       = "fun" id params ":" Suite
 
     VarDecl
+      = "let" id Type? "=" Exp
+
+    VarAssignment
       = id "=" Exp
 
     Return = "ret" Exp
@@ -157,10 +161,14 @@ Bool {
     Funlit = params ":" Suite
 
     reserved
-         = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"
-         | "while" | "until" | "class" | "isa" | "in" | "new" | "#" | "ret"
-         | "indent" | "dedent" | "[" | "]" | addop | mulop | expop | relop
-
+      = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"
+      | "while" | "until" | "class" | "isa" | "in" | "new" | "#" | "ret"
+      | "indent" | "dedent" | "[" | "]" | "let" | "string" | "float" | "int"
+      | "bool" | "obj" | addop | mulop | expop
+      | relop
+    Type
+      = ":" ("string" | "float" | "int" | "bool" | "obj" | id) --single
+      | ":" "[" ("string" | "float" | "int" | "bool" | "obj" | id) "]" --list
     char
          = alnum | punctuation | escape | stringSpace
 

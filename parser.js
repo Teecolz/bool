@@ -44,6 +44,7 @@ const ExpList = require('./entities/explist.js');
 const Parameters = require('./entities/params.js');
 const PropertyDeclaration = require('./entities/propertydeclaration.js');
 const VariableDeclaration = require('./entities/variabledeclaration.js');
+const VariableAssignment = require('./entities/varassignment.js');
 const Parens = require('./entities/parens.js');
 
 const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
@@ -71,8 +72,17 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   ClassBody(fields, nl, methods) {
     return new ClassBody(fields.ast(), methods.ast());
   },
-  VarDecl(id, _, val) {
-    return new VariableDeclaration(id.ast(), val.ast());
+  VarDecl(l, id, type, eq, val) {
+    return new VariableDeclaration(id.ast(), type.ast(), val.ast());
+  },
+  Type_single(_, t) {
+    return `(Type ${t.sourceString})`;
+  },
+  Type_list(_, open, type, close) {
+    return `(Type List(${type.sourceString}))`;
+  },
+  VarAssignment(id, _, val) {
+    return new VariableAssignment(id.ast(), val.ast());
   },
   fielddecl(open, id) {
     return new FieldDeclaration(id.sourceString);
