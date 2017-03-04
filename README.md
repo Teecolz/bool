@@ -17,8 +17,8 @@ Bool is an object-oriented, dynamically-typed, and strongly-typed programming la
 #### Variable Declarations
 ````
 # Variable Declarations
-int:foo = 101                                   var foo = 101;
-string:bar = 101                                var bar = "101";
+foo:int = 101                                   var foo = 101;
+bar:string = 101                                var bar = "101";
 ````
 #### Arithmetic Expressions
 ````
@@ -49,12 +49,12 @@ a != b
 #### Loops & Conditional Statements
 ````
 fun foo (bar):                                  var foo = function(bar) {
-  int:result = 0                                var result;
-  for i in bar i += 1:                          for (var i = 0; i < bar; i += 1) {
+  result:string                                 var result;
+  for i in range(bar):                          for (var i = 0; i < bar; i += 1) {
     if i < 5:                                       if (i < 5) {
-      string:result = foobar                            result = "foobar";
+      result = "foobar"                                 result = "foobar";
     elif i > 7:                                     } else if (i > 7) {
-      string:result = barfoo                            result = "barfoo";
+      result = "barfoo"                                 result = "barfoo";
   ret result                                        }
                                                     return result;
                                                 };
