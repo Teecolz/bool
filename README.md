@@ -116,9 +116,9 @@ fun gcd (a b):                                  var gcd = function(a, b) {
 #### Fibonacci Function Example
 ````
 fun fibonacci (x):                              var fibonacci = function(x) {
-    int:a = 0                                       var a = 0, b = 1, c;
-    int:b = 1                                       if (x < 3) return 1;
-    int:c                                           while (--x > 0) {
+    a:int = 0                                       var a = 0, b = 1, c;
+    b:int = 1                                       if (x < 3) return 1;
+    c:int                                           while (--x > 0) {
     if (x < 3):                                        c = a + b, a = b, b = c;
        ret 1                                        }
     do (x += 1):                                    return c;
