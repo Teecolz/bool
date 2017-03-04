@@ -55,6 +55,9 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   Suite(nl, indent, s, nl2, _) {
     return new Suite(s.ast());
   },
+  SimpleSuite(_, ind, exp, nl, ded) {
+    return exp.ast();
+  },
   params(p0, id1, p1, ids, _) {
     return new Parameters([id1.ast()].concat(ids.ast()));
   },
@@ -80,6 +83,14 @@ const semantics = grammar.createSemantics().addOperation('ast', {
     }
 
     return '';
+  },
+  OpAssign(id, op, e) {
+    return new VariableAssignment(
+      id.ast(),
+      new BinaryExpression(
+        id.ast(),
+        op.sourceString.charAt(0),
+        e.ast()));
   },
   Type_single(_, t) {
     return `(Type ${t.sourceString})`;

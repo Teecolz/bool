@@ -290,7 +290,7 @@ describe('Parser Tests', () => {
             'elif a + b :\n indent let x:[int] = [1, 2, 3]\n ret x\n dedent\n',
           expected:
             '(Case tru, (Suite (Return 1))), ' +
-            '(Case (BinExp a + b), (Suite (VarDecl x (Type List(int)) = [1, 2, 3]), (Return x)))',
+            '(Case (BinExp a + b), (Suite (VarDecl x:(Type List(int)) = [1, 2, 3]), (Return x)))',
         },
         {
           arg:
@@ -339,7 +339,7 @@ describe('Parser Tests', () => {
           expected:
             '(Case tru, (Suite (Return 1))), ' +
             '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x))), ' +
-            '(Suite (VarDecl x (Type int) = (Parens (BinExp 2 ** 3))), (Return x))',
+            '(Suite (VarDecl x:(Type int) = (Parens (BinExp 2 ** 3))), (Return x))',
         },
       ];
 

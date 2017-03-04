@@ -12,6 +12,7 @@ Bool {
       | FunDecl
       | ObjDecl
       | VarDecl     -- vardecl
+      | OpAssign
       | VarAssignment
       | Conditional
       | Loop        -- loop
@@ -51,13 +52,18 @@ Bool {
 
     Assignment
       = "=" Exp
-      
+
+    OpAssign
+      = id (assignop) Exp
+
+    assignop
+      = "+=" | "*=" | "/=" | "%="
+
     VarAssignment
       = id "=" Exp
 
     Return = "ret" Exp
 
-    //Funlit = params ":" Suite
     Funcall
       = id Funparams+
 
@@ -77,7 +83,7 @@ Bool {
       = newline indent (Stmt newline)+ dedent
 
     SimpleSuite
-      = newline indent Exp newline dedent
+      = (newline indent)? Exp newline dedent
 
     Loop
         = "for" id "in" (Range | id | Listlit ) ":" Suite     --forIn
