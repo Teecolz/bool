@@ -1,13 +1,11 @@
 class VariableDeclaration {
-  constructor(id, type, assign) {
-    this.id = id;
-    this.type = type;
-    this.assign = assign;
+  constructor(varexp, exp) {
+    this.left = varexp;
+    this.right = exp;
   }
 
   toString() {
-    const idType = [this.id, this.type];
-    return `(VarDecl ${idType.join(':').replace(/:$/, '')}${this.assign})`;
+    return `(VarDecl ${this.left} ${this.right})`;
   }
 }
 

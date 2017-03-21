@@ -1,11 +1,11 @@
 class VariableAssignment {
-  constructor(id, val) {
-    this.id = id;
-    this.val = val;
+  constructor(left, right) {
+    this.left = left;
+    this.right = right;
   }
 
   toString() {
-    return `(VarAssign ${this.id} = ${this.val})`;
+    return `(VarAssign ${this.left} ${this.right})`;
   }
 }
 
