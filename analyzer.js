@@ -10,6 +10,12 @@ class AnalysisContext {
     return new AnalysisContext(this);
   }
 
+  mustNotBeLocal(name) {
+    if (this.symTable[name]) {
+      error(`Cannot redeclare variable ${name} in this scope`, name);
+    }
+  }
+
   lookupVariable(name) {
     const variable = this.symTable[name];
     if (variable) {
@@ -17,7 +23,7 @@ class AnalysisContext {
     } else if (!this.parent) {
       error(`Variable ${name} not yet declared`, name);
     } else {
-      this.parent.lookupVariable(name);
+      return this.parent.lookupVariable(name);
     }
   }
 

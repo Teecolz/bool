@@ -1,11 +1,15 @@
 class VariableExpression {
-  constructor(id, type) {
+  constructor(id) {
     this.name = id;
-    this.type = type;
+  }
+
+  analyze(context) {
+    this.referent = context.lookupVariable(this.name);
+    this.type = this.referent.type;
   }
 
   toString() {
-    return `(VarExp ${this.name} ${this.type})`;
+    return `${this.name}`;
   }
 }
 

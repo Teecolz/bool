@@ -1,11 +1,17 @@
 class VariableAssignment {
-  constructor(left, right) {
-    this.left = left;
-    this.right = right;
+  constructor(id, exp) {
+    this.name = id;
+    this.val = exp;
+  }
+
+  analyze(context) {
+    this.name.analyze(context);
+    this.val.analyze(context);
+    this.type.mustBeCompatibleWith(this.val.type);
   }
 
   toString() {
-    return `(VarAssign ${this.left} ${this.right})`;
+    return `(= ${this.left} ${this.right})`;
   }
 }
 

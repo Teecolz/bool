@@ -48,10 +48,7 @@ Bool {
       = "fun" id params ":" Suite
 
     VarDecl
-      = "let" VarExp Assignment?
-
-    Assignment
-      = "=" Exp
+      = "let" VarExp (Type)? ("=" Exp)?
 
     OpAssign
       = id (assignop) Exp
@@ -135,7 +132,7 @@ Bool {
       | VarExp
       | stringlit
 
-    VarExp = id Type?
+    VarExp = id
     addop = "+" | "-"
     mulop = "*" | "/" | "%"
     prefixop = "!" | "-"

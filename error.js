@@ -2,7 +2,6 @@
 
 const error = (message, location) => {
   let msg = message;
-
   if (location && location.line) {
     msg += ` at line ${location.line}`;
     if (location.col) {

@@ -10,6 +10,7 @@ const fs = require('fs');
 const error = require('./error');
 const Program = require('./entities/program.js');
 const Block = require('./entities/block.js');
+const Assignment = require('./entities/assign.js');
 const BinaryExpression = require('./entities/binaryexpression.js');
 const BooleanLiteral = require('./entities/booleanliteral.js');
 const Case = require('./entities/case.js');
@@ -42,9 +43,13 @@ const Parameters = require('./entities/params.js');
 const PropertyDeclaration = require('./entities/propertydeclaration.js');
 const VariableDeclaration = require('./entities/variabledeclaration.js');
 const VariableAssignment = require('./entities/varassignment.js');
+const VariableExpression = require('./entities/varexp.js');
 const Parens = require('./entities/parens.js');
 const DoUntilStatement = require('./entities/dountil.js');
 const SimpleIf = require('./entities/simpleif.js');
+const FullStatement = require('./entities/fullstmt.js');
+const Statement = require('./entities/stmt.js');
+const Type = require('./entities/type.js');
 
 const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
 
@@ -52,7 +57,8 @@ const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
 const semantics = grammar.createSemantics().addOperation('ast', {
   Program(b) { return new Program(b.ast()); },
   Block(s) { return new Block(s.ast()); },
-  FullStmt(s, _) { return s.ast(); },
+  FullStmt(s, _) { return new FullStatement(s.ast()); },
+  Stmt(s) { return new Statement(s.ast()); },
   Suite(nl, indent, s, nl2, _) {
     return new Suite(s.ast());
   },
@@ -74,16 +80,8 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   ClassBody(fields, nl, methods) {
     return new ClassBody(fields.ast(), methods.ast());
   },
-  VarDecl(l, id, type, a) {
-    return new VariableDeclaration(id.ast(), type.ast(), a.ast());
-  },
-  Assignment(_, e) {
-    const eAst = e.ast().toString();
-    if (eAst.length > 0) {
-      return ` = ${eAst}`;
-    }
-
-    return '';
+  VarDecl(l, id, type, _, exp) {
+    return new VariableDeclaration(id.ast(), type.ast(), exp.ast());
   },
   OpAssign(id, op, e) {
     return new VariableAssignment(
@@ -94,13 +92,16 @@ const semantics = grammar.createSemantics().addOperation('ast', {
         e.ast()));
   },
   Type_single(_, t) {
-    return `(Type ${t.sourceString})`;
+    return new Type(t.sourceString);
   },
   Type_list(_, open, type, close) {
     return `(Type List(${type.sourceString}))`;
   },
-  VarAssignment(id, _, val) {
-    return new VariableAssignment(id.ast(), val.ast());
+  VarAssignment(vexp, _, val) {
+    return new VariableAssignment(vexp.ast(), val.ast());
+  },
+  VarExp(name) {
+    return new VariableExpression(name.sourceString);
   },
   fielddecl(open, id) {
     return new FieldDeclaration(id.sourceString);
