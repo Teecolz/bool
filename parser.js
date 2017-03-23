@@ -92,7 +92,7 @@ const semantics = grammar.createSemantics().addOperation('ast', {
         e.ast()));
   },
   Type_single(_, t) {
-    return new Type(t.sourceString);
+    return Type.Construct(t.sourceString);
   },
   Type_list(_, open, type, close) {
     return `(Type List(${type.sourceString}))`;

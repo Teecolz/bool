@@ -19,11 +19,11 @@ class BinaryExpression {
       case '**':
         this.mustHaveNumericalOperands();
         // how to handle operations that take int and float?
-        this.type = new Type('float');
+        this.type = Type.FLOAT;
         break;
       case '%':
         this.mustHaveIntegerOperands();
-        this.type = new Type('int');
+        this.type = Type.INT;
         break;
       case '>':
       case '>=':
@@ -32,13 +32,14 @@ class BinaryExpression {
       case '<=':
       case '<==':
         this.mustHaveNumericalOperands();
-        this.type = new Type('bool');
+        this.type = Type.BOOL;
         break;
       case '==':
       case '===':
       case '!=':
       case '!==':
         this.mustHaveCompatibleOperands();
+        this.type = Type.BOOL;
         break;
       default:
         break;
@@ -47,8 +48,8 @@ class BinaryExpression {
 
   mustHaveNumericalOperands() {
     const errorMessage = `Operator '${this.op}' requires numerical operands`;
-    this.left.type.mustBeCompatibleWith('int', errorMessage, this.op);
-    this.right.type.mustBeCompatibleWith('int', errorMessage, this.op);
+    this.left.type.mustBeCompatibleWith(Type.INT, errorMessage, this.op);
+    this.right.type.mustBeCompatibleWith(Type.INT, errorMessage, this.op);
   }
 
   mustHaveIntegerOperands() {

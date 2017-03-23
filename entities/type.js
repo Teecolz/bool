@@ -26,4 +26,10 @@ class Type {
   }
 }
 
-module.exports = Type;
+module.exports = {
+  BOOL: new Type('bool'),
+  INT: new Type('int'),
+  FLOAT: new Type('float'),
+  STRING: new Type('string'),
+  Construct(forName) { return new Type(forName); },
+};

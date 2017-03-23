@@ -5,7 +5,7 @@ class IntegerLiteral {
     this.val = val;
   }
   analyze(context) {
-    this.type = new Type('int');
+    this.type = Type.INT;
   }
   toString() {
     return `${this.val}`;
