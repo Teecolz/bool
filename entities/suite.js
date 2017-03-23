@@ -1,10 +1,15 @@
 class Suite {
   constructor(statements) {
-    this.body = statements;
+    this.stmts = statements;
   }
-
+  analyze(context) {
+    const localContext = context.createChildContext();
+    for (let stmt of this.stmts) {
+      stmt.analyze(localContext);
+    }
+  }
   toString() {
-    return `(Suite ${this.body.join(', ').replace(/, $/, '')})`;
+    return `(Suite ${this.stmts.join(', ').replace(/, $/, '')})`;
   }
 }
 

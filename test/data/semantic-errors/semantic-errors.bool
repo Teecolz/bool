@@ -10,3 +10,11 @@ x // 3.4
 3.4 % 2
 1 - 2
 x - x
+
+if x == 3:
+indent 1
+dedent
+
+if x:
+indent 1
+dedent

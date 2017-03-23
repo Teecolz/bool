@@ -5,7 +5,9 @@ class FullStatement {
 
   analyze(context) {
     // stmt array can be 0 or 1 element
-    this.stmt[0].analyze(context);
+    if (this.stmt.length > 0) {
+      this.stmt[0].analyze(context);
+    }
   }
 
   toString() {

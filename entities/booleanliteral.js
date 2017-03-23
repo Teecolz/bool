@@ -6,7 +6,7 @@ class BooleanLiteral extends LiteralExpression {
     return `${this.val}`;
   }
   analyze(context) {
-    this.type = new Type('bool');
+    this.type = Type.BOOL;
   }
 }
 

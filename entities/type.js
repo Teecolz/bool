@@ -21,6 +21,11 @@ class Type {
       error(message, location);
     }
   }
+  mustBeBoolean(message, location) {
+    if (this.name !== 'bool') {
+      error(message, location);
+    }
+  }
   toString() {
     return `${this.name}`;
   }
