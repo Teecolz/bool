@@ -18,3 +18,31 @@ dedent
 if x:
 indent 1
 dedent
+
+fun x (a:int b:int):
+indent a + b
+dedent
+
+fun x (a:int b:int):
+indent ret a + b
+dedent
+
+fun y (a:int b:int):
+indent ret a + b
+dedent
+
+fun xx:int (a:int b:int):
+indent ret a + b
+dedent
+
+fun yy (a b):
+indent ret a + b
+dedent
+
+fun z ():
+indent ret 1
+dedent
+
+fun zz:int ():
+indent ret "hello"
+dedent

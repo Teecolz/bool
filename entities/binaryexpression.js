@@ -19,7 +19,11 @@ class BinaryExpression {
       case '**':
         this.mustHaveNumericalOperands();
         // how to handle operations that take int and float?
-        this.type = Type.FLOAT;
+        if (this.left.type.isInt() && this.right.type.isInt()) {
+          this.type = Type.INT;
+        } else {
+          this.type = Type.FLOAT;
+        }
         break;
       case '%':
         this.mustHaveIntegerOperands();

@@ -6,6 +6,9 @@ class Suite {
     const localContext = context.createChildContext();
     for (let stmt of this.stmts) {
       stmt.analyze(localContext);
+      if (stmt.isReturn) {
+        this.type = stmt.type;
+      }
     }
   }
   toString() {

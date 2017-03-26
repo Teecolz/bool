@@ -50,7 +50,7 @@ const SimpleIf = require('./entities/simpleif.js');
 const FullStatement = require('./entities/fullstmt.js');
 const Statement = require('./entities/stmt.js');
 const Type = require('./entities/type.js');
-
+const ParameterDeclaration = require('./entities/paramdecl.js');
 const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
 
 /* eslint no-unused-vars: 1 */
@@ -65,8 +65,11 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   SimpleSuite(_, ind, exp, nl, ded) {
     return exp.ast();
   },
-  params(p0, id1, p1, ids, _) {
+  Params(open, id1, ids, _) {
     return new Parameters([id1.ast()].concat(ids.ast()));
+  },
+  ParamDecl(id, type) {
+    return new ParameterDeclaration(id.ast(), type.ast());
   },
   Funparams(_, p1, rest, close) {
     return new Parameters([p1.ast()].concat(rest.ast()));
@@ -118,8 +121,8 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   PropertyDecl(id, col, e) {
     return new PropertyDeclaration(id.sourceString, e.ast());
   },
-  FunDecl(f, id, params, col, s) {
-    return new FunctionDeclaration(id.sourceString, params.ast(), s.ast());
+  FunDecl(f, id, type, params, col, s) {
+    return new FunctionDeclaration(id.sourceString, type.ast(), params.ast(), s.ast());
   },
   Conditional(i, c, elifs, cases, el, col, b) {
     return new ConditionalStatement([c.ast()].concat(cases.ast()), b.ast());

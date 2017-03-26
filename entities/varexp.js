@@ -1,3 +1,5 @@
+const Type = require('./type.js');
+
 class VariableExpression {
   constructor(id) {
     this.name = id;
@@ -7,7 +9,6 @@ class VariableExpression {
     this.referent = context.lookupVariable(this.name);
     this.type = this.referent.type;
   }
-
   toString() {
     return `${this.name}`;
   }

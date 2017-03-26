@@ -10,12 +10,24 @@ class AnalysisContext {
     return new AnalysisContext(this);
   }
 
+  createFunctionContext() {
+    const funContext = new AnalysisContext(this);
+    funContext.isFunctionContext = true;
+    return funContext;
+  }
   mustNotBeLocal(name) {
     if (this.symTable[name]) {
       error(`Cannot redeclare variable ${name} in this scope`, name);
     }
   }
+  lookupFunction(name) {
+    const func = this.symTable[name];
+    if (func) {
+      return func;
+    }
 
+    return false;
+  }
   lookupVariable(name) {
     const variable = this.symTable[name];
     if (variable) {

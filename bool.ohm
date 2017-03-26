@@ -45,7 +45,7 @@ Bool {
       = id ":" Exp
 
     FunDecl
-      = "fun" id params ":" Suite
+      = "fun" id Type? Params ":" Suite
 
     VarDecl
       = "let" VarExp (Type)? ("=" Exp)?
@@ -67,8 +67,11 @@ Bool {
     Funparams
       = "(" (SimpleLit (SimpleLit)*)? ")"
 
-    params
-      = "(" (id (" " id)*)? ")"
+    Params
+      = "(" (ParamDecl (ParamDecl)*)? ")"
+
+    ParamDecl
+      = id Type?
 
     Conditional
       = "if" Case ("elif" Case)* ("el" ":" Suite)?
@@ -148,14 +151,14 @@ Bool {
     intlit = ~(digit* ".") digit+
     floatlit = digit+ "." (digit+)? | (digit+)? "." digit+
     stringlit = "\"" char* "\"" | "\'" char* "\'"
-    ClassInst = "new" id params
+    ClassInst = "new" id Funparams
 
     Objlit
       = "{" PropertyDecl? "}" --singleprop
       | "{" newline indent (PropertyDecl newline)* dedent "}" --multiprop
 
     // should also allow for one line statement here
-    Funlit = params ":" Suite
+    Funlit = Params ":" Suite
 
     reserved
       = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"

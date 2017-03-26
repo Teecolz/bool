@@ -13,6 +13,8 @@ class Type {
   isCompatibleWith(otherType) {
     if (this.name === 'int' || this.name === 'float') {
       return (otherType.name === 'int' || otherType.name === 'float');
+    } else if (this.name === '<arbitrary_type>') {
+      return true;
     }
     return this.name === otherType.name;
   }
@@ -21,8 +23,16 @@ class Type {
       error(message, location);
     }
   }
+  isInt() {
+    return this.name === 'int';
+  }
   mustBeBoolean(message, location) {
     if (this.name !== 'bool') {
+      error(message, location);
+    }
+  }
+  mustBeArbitrary(message, location) {
+    if (this.name !== '<arbitrary_type>') {
       error(message, location);
     }
   }
@@ -36,5 +46,6 @@ module.exports = {
   INT: new Type('int'),
   FLOAT: new Type('float'),
   STRING: new Type('string'),
+  ARBITRARY: new Type('<arbitrary_type>'),
   Construct(forName) { return new Type(forName); },
 };
