@@ -1,106 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+
+  <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Bool Programming Language</title>
+    <title>Bool Language</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="css/bool.css" rel="stylesheet">
-</head>
-<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+  </head>
+
+  <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand page-scroll" href="#page-top">Bool</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
-                    <li class="hidden">
-                        <a class="page-scroll" href="#page-top"></a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="#about">About</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="#examples">Examples</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="#diagrams">Diagrams</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
+      <div class="container">
+        <div class="navbar-header page-scroll">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand page-scroll" href="#page-top">Bool</a>
         </div>
-        <!-- /.container -->
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+            <li class="hidden">
+              <a class="page-scroll" href="#page-top"></a>
+            </li>
+            <li>
+              <a class="page-scroll" href="#about">About</a>
+            </li>
+            <li>
+              <a class="page-scroll" href="#examples">Examples</a>
+            </li>
+            <li>
+              <a class="page-scroll" href="#diagrams">Diagrams</a>
+            </li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+      <!-- /.container -->
     </nav>
     <!-- Intro Section -->
     <section id="intro" class="intro-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                </div>
-            </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+          </div>
         </div>
+      </div>
     </section>
     <!-- About Section -->
     <section id="about" class="about-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>About Section</h1>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                </div>
+      <div class="container">
+        <div class="row">
+          <h1>The Story of Bool</h1>
+          <div class="col-lg-6 about">
+            <p>
+              Bool is an object-oriented, dynamically typed, and strongly-typed programming language influenced by the languages of Python and OCaml. Bool comes with a plethora of benefits including the ability to be compiled to Javascript, the absence of curly braces
+              and semi-colons, intuitive and simple readability, and so much more. Bool's simple, easy to learn syntax emphasizes readability and therefore reduces the cost of program maintenance.
+            </p>
+            <p>
+              Often, programmers will fall in love with Bool because of its similarity to Python and the productivity it provides. The original reason we decided to create Bool was to create a language that would allow programmers to have a similar "out-of-the-box,"
+              "plug-and-play" coding experience that each of us liked about Python. To make it more user-friendly, we decided to combine the safety and power of another favorite language, OCaml. The pattern-matching aspect of OCaml is a really intuitive
+              way of programming and with its compile-time analysis of programs, this rules out many programming errors. More precisely, this protects the integrity of the data manipulated by an OCaml program.
+            </p>
+            For Bool, security is a high concern, and so we tried to adopt many of the same things that worked for the two parent languages that ensure some degree of protection and help for the programmer.
+            </p>
+          </div>
+          <div class="container">
+            <div class="col-lg-6">
+              <img class="python" src="https://techspawn.com/wp-content/uploads/2016/10/Python_logo.png" alt="Python">
             </div>
+            <div class="col-lg-6">
+              <img class="ocaml" src="http://ocaml.org/logo/Colour/PNG/colour-logo.png" alt="OCaml">
+            </div>
+          </div>
         </div>
+      </div>
     </section>
     <!-- Examples Section -->
     <section id="examples" class="examples-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Examples Section</h1>
-                </div>
-            </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <h1>Examples Section</h1>
+          </div>
         </div>
+      </div>
     </section>
     <!-- Diagrams Section -->
     <section id="diagrams" class="diagrams-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Diagrams Section</h1>
-                </div>
-            </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <h1>Diagrams Section</h1>
+          </div>
         </div>
+      </div>
     </section>
     <footer>
       <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-                <h1>Footer information</h1>
-                <a class="btn btn-default page-scroll" href="#page-top">Scroll</a>
+        <div class="row">
+          <div class="col-lg-12">
+            <h1>Footer information</h1>
+            <a class="btn btn-default page-scroll" href="#page-top">Scroll</a>
           </div>
-      </div>
+        </div>
     </footer>
     <script src="js/jquery.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/jquery.easing.min.js"></script>
     <script src="js/scrolling-nav.js"></script>
-</body>
+  </body>
 
 </html>
