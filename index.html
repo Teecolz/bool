@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="../images/bool.png">
 
     <title>Bool Language</title>
 
@@ -93,10 +94,120 @@
     <section id="examples" class="examples-section">
       <div class="container">
         <div class="row">
+          <h1>Examples of Bool</h1>
+          <div class="col-lg-6 boolCode">
+            <h3>Variable Declaration</h3>
+            <pre>
+              <code>
+foo:int = 101                                   var foo = 101;
+bar:string = 101                                var bar = "101";
+              </code>
+            </pre>
+          <div class="col-lg-6 boolCode">
+            <h3>Arithmetic</h3>
+            <pre>
+              <code>
+a + b
+a - b
+a * b
+a / b
+a % b  --modulo
+a ** b --exponentiation
+a // b --root
+              </code>
+            </pre>
+          </div>
+
+          <div class="col-lg-6 boolCode">
+            <h3>Booleans and Expressions</h3>
+            <pre>
+              <code>
+tru      => true
+fal      => false
+
+!a       => not a
+a > b    => a greater than b
+a < b    => a less than b
+a >= b   => a greater than/equal to b
+a <= b   => a less than/equal to b
+a == b   => a equals b
+a != b   => a does not equal b
+              </code>
+            </pre>
+          </div>
+
           <div class="col-lg-12">
-            <h1>Examples Section</h1>
+            <h3>Higher Order Functions</h3>
+            <pre>
+              <code>
+foods [                                       foods [
+  {name: 'apple', kind: 'fruit'}                {name: 'apple', kind: 'fruit'},
+  {name: 'carrot', kind: 'veg'}                 {name: 'carrot', kind: 'veg'},
+  {name: 'banana', kind: 'fruit'}               {name: 'banana', kind: 'fruit'},
+  {name: 'broccoli', kind: 'veg'}               {name: 'broccoli', kind: 'veg'},
+  {name: 'strawberry', kind: 'fruit'}           {
+]                                                 name: 'strawberry',
+                                                  kind:'fruit'
+                                                },
+                                              ];
+
+fun fruits = foods.filter((food):     var fruits = foods.filter(function(foods) {
+  ret food.kind === fruit                 return food.kind === 'fruit';
+)                                     });
+              </code>
+            </pre>
           </div>
         </div>
+        <div class="col-lg-6 boolCode">
+          <h3>For Loops & Conditional Statements</h3>
+          <pre>
+            <code>
+fun foo (bar):                                  var foo = function(bar) {
+  result:string                                 var result;
+  for i in range(bar):                          for (var i = 0; i < bar; i += 1) {
+    if i < 5:                                       if (i < 5) {
+      result = "foobar"                                 result = "foobar";
+    elif i > 7:                                     } else if (i > 7) {
+      result = "barfoo"                                 result = "barfoo";
+  ret result                                        }
+                                                    return result;
+                                                };
+            </code>
+          </pre>
+        <div class="col-lg-12 boolCode">
+          <h3>While Loops</h3>
+          <pre>
+            <code>
+while a < 99:                                   while (a < 99) {
+a += 5                                            a += 5;
+                                                }
+            </code>
+          </pre>
+        </div>
+
+        <div class="col-lg-12 boolCode">
+          <h3>Array Comprehension</h3>
+          <pre>
+            <code>
+fun doubleEvens (array):                      var doubleEvens = function(array) {
+  ret [for i in array if i % 2 === 0 i * 2]     return [for (i of                                                                  array) if (i % 2 === 0) i * 2];
+                                              }
+            </code>
+          </pre>
+        </div>
+
+        <div class="col-lg-12 boolCode">
+          <h3>Comments</h3>
+          <pre>
+            <code>
+# This is a comment in Bool                 // This is a comment in Javascript
+
+## If you need more lines, Bool can         /* If you need more lines, Javascript
+do that too. ##                             handles it like this. */
+            </code>
+          </pre>
+        </div>
+      </div>
       </div>
     </section>
     <!-- Diagrams Section -->

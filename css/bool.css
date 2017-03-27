@@ -34,14 +34,12 @@ html {
 }
 
 .examples-section {
-    height: 100%;
     padding-top: 75px;
     text-align: center;
     background: #fff;
 }
 
 .diagrams-section {
-    height: 100%;
     padding-top: 75px;
     text-align: center;
     background: #eee;
@@ -61,6 +59,10 @@ footer {
 .about {
   text-align: left;
   line-height: 25px;
+}
+
+pre {
+  text-align: left;
 }
 
 /* Images */
