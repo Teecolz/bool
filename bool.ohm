@@ -188,7 +188,7 @@ Bool {
     multicomment = "##" (~"##" any)* "##"
     indent = "indent" // placeholder
     dedent = "dedent" // placeholder
-    id = ~("_"? reserved) idName
+    id = ~("_"? reserved ~(idChar+)) idName
     idName = idStart (idChar)*
     idStart = letter | "$"
     idChar = alnum | "-" | "_"
