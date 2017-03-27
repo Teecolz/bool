@@ -8,7 +8,11 @@ class VariableDeclaration {
   analyze(context) {
     context.mustNotBeLocal(this.name); // cannot already be declared in local scope
     this.value.analyze(context);
-    this.mustHaveCompatibleTypes();
+    if (!this.type) {
+      this.type = this.value.type;
+    } else {
+      this.mustHaveCompatibleTypes();
+    }
     context.addVariable(this.name, this);
   }
 
