@@ -1,8 +1,9 @@
 const error = require('../error.js');
 
 class Type {
-  constructor(type) {
+  constructor(type, parent) {
     this.name = type;
+    this.parent = parent;
   }
   // need to handle arbitrary types
   mustBeCompatibleWith(otherType, message, location) {
@@ -41,11 +42,13 @@ class Type {
   }
 }
 
+const NUMBER = new Type('number');
+
 module.exports = {
   BOOL: new Type('bool'),
-  INT: new Type('int'),
-  FLOAT: new Type('float'),
+  INT: new Type('int', NUMBER),
+  FLOAT: new Type('float', NUMBER),
   STRING: new Type('string'),
   ARBITRARY: new Type('<arbitrary_type>'),
-  Construct(forName) { return new Type(forName); },
+  Construct(forName, parent) { return new Type(forName, parent); },
 };

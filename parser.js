@@ -97,8 +97,8 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   Type_single(_, t) {
     return Type.Construct(t.sourceString);
   },
-  Type_list(_, open, type, close) {
-    return `(Type List(${type.sourceString}))`;
+  Type_list(_, open, t, close) {
+    return Type.Construct(`[${t.sourceString}]`);
   },
   VarAssignment(vexp, _, val) {
     return new VariableAssignment(vexp.ast(), val.ast());
