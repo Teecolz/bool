@@ -7,7 +7,7 @@ class VariableAssignment {
   analyze(context) {
     this.name.analyze(context);
     this.val.analyze(context);
-    this.type.mustBeCompatibleWith(this.val.type);
+    this.name.type.mustBeCompatibleWith(this.val.type);
   }
 
   toString() {

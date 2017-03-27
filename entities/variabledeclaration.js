@@ -1,3 +1,5 @@
+const Type = require('./type.js');
+
 class VariableDeclaration {
   constructor(id, type, exp) {
     this.name = id;
@@ -7,10 +9,14 @@ class VariableDeclaration {
 
   analyze(context) {
     context.mustNotBeLocal(this.name); // cannot already be declared in local scope
-    this.value.analyze(context);
+    if (this.value) {
+      this.value.analyze(context);
+    } else if (!this.Type) {
+      this.type = Type.ARBITRARY;
+    }
     if (!this.type) {
       this.type = this.value.type;
-    } else {
+    } else if (this.value) {
       this.mustHaveCompatibleTypes();
     }
     context.addVariable(this.name, this);
