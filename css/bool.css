@@ -14,8 +14,8 @@ html {
 
 .intro-section {
     height: 100%;
-    padding-top: 150px;
-    background-image: url(../images/LASkyline.jpg);
+    padding-top: 80px;
+    background-image: linear-gradient(rgba(0,0,0, .5), rgba(0,0,0, .5)), url(../images/LASkyline.jpg);
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
@@ -23,7 +23,7 @@ html {
 }
 
 .about-section {
-    padding-top: 25px;
+    padding-top: 75px;
     padding-bottom: 25px;
     text-align: center;
     background: #eee;
@@ -31,12 +31,14 @@ html {
 
 .about-section h1 {
     font-size: 40px;
+    margin-bottom: 40px;
 }
 
 .examples-section {
     padding-top: 75px;
     text-align: center;
-    background: #fff;
+    background-color: #222;
+    color: #9d9d9d;
 }
 
 .diagrams-section {
@@ -46,8 +48,15 @@ html {
 }
 
 footer {
-  padding: 50px 0px;
+  padding: 50px 0px 10px 0px;
   text-align: center;
+  background-color: #222;
+  color: #9d9d9d;
+}
+
+footer small {
+  display: block;
+  margin-top: 25px;
 }
 
 /* BootStrap Custom */
