@@ -118,9 +118,9 @@ Bool {
       | Exp8
     Exp8
       =
+      | "(" Exp ")"   --parens
       | SimpleLit
       | Funlit
-      | "(" Exp ")"   --parens
       | Objlit
       | Listlit
       | fielddecl
