@@ -3,6 +3,7 @@ class ClassSuite {
     this.body = body;
   }
 
+
   toString() {
     return `(ClassSuite ${this.body})`;
   }

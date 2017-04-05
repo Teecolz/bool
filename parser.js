@@ -82,7 +82,7 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   ClassSuite(nl, ind, cb, ded) {
     return new ClassSuite(cb.ast());
   },
-  ClassBody(fields, nl, methods) {
+  ClassBody(fields, _, builder, methods) {
     return new ClassBody(fields.ast(), methods.ast());
   },
   VarDecl(l, id, type, _, exp) {
@@ -110,6 +110,9 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   },
   fielddecl(open, id) {
     return new FieldDeclaration(id.sourceString);
+  },
+  ConstructorDecl(id, params, col, s) {
+    return new MethodDeclaration(id.sourceString, params.ast(), s.ast());
   },
   MethodDecl(id, params, col, s) {
     return new MethodDeclaration(id.sourceString, params.ast(), s.ast());

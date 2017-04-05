@@ -26,10 +26,13 @@ Bool {
         = newline indent ClassBody dedent
 
     ClassBody
-        = (fielddecl newline)* (MethodDecl)+
+        = (fielddecl newline)* ConstructorDecl MethodDecl+
 
     fielddecl
       = "_" id
+
+    ConstructorDecl
+      = "build" Params ":" Suite
 
     MethodDecl
         = id methodparams ":" Suite
@@ -164,7 +167,7 @@ Bool {
 
     reserved
       = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"
-      | "while" | "until" | "class" | "isa" | "in" | "new" | "#" | "ret"
+      | "while" | "until" | "build" | "class" | "isa" | "in" | "new" | "#" | "ret"
       | "indent" | "dedent" | "[" | "]" | "let" | "string" | "float" | "int"
       | "bool" | "obj" | addop | mulop | expop
       | relop

@@ -28,15 +28,16 @@ class AnalysisContext {
 
     return false;
   }
+
   lookupVariable(name) {
     const variable = this.symTable[name];
     if (variable) {
       return variable;
     } else if (!this.parent) {
-      error(`Variable ${name} not yet declared`, name);
-    } else {
-      return this.parent.lookupVariable(name);
+      return error(`Variable ${name} not yet declared`, name);
     }
+
+    return this.parent.lookupVariable(name);
   }
 
   addVariable(name, entity) {
