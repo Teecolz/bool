@@ -44,8 +44,8 @@ const PropertyDeclaration = require('./entities/propertydeclaration.js');
 const VariableDeclaration = require('./entities/variabledeclaration.js');
 const VariableAssignment = require('./entities/varassignment.js');
 const VariableExpression = require('./entities/varexp.js');
-const Parens = require('./entities/parens.js');
 const DoUntilStatement = require('./entities/dountil.js');
+const DoWhileStatement = require('./entities/dowhile.js');
 const SimpleIf = require('./entities/simpleif.js');
 const FullStatement = require('./entities/fullstmt.js');
 const Statement = require('./entities/stmt.js');
@@ -194,14 +194,17 @@ const semantics = grammar.createSemantics().addOperation('ast', {
     return new BinaryExpression(e1.ast(), '.', e2.ast());
   },
   Exp8_parens(_, e, close) {
-    return new Parens(e.ast());
+    return e.ast();
   },
   Loop_forIn(_, id, n, l, colon, s) {
     return new ForStatement(id.sourceString, l.ast(), s.ast());
   },
   Loop_while(_, exp, colon, s) { return new WhileStatement(exp.ast(), s.ast()); },
-  Loop_doUntil(_, col, s1, unt, col2, s2) {
-    return new DoUntilStatement(s1.ast(), s2.ast());
+  Loop_doUntil(_, col, s, unt, cond) {
+    return new DoUntilStatement(s.ast(), cond.ast());
+  },
+  Loop_doWhile(_, col, s, whl, cond) {
+    return new DoWhileStatement(s.ast(), cond.ast());
   },
   Return(_, exp) { return new ReturnStatement(exp.ast()); },
   boollit(b) { return new BooleanLiteral(b.sourceString); },
