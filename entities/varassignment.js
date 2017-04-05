@@ -1,13 +1,15 @@
 class VariableAssignment {
   constructor(id, exp) {
-    this.name = id;
-    this.val = exp;
+    this.target = id;
+    this.source = exp;
   }
 
   analyze(context) {
-    this.name.analyze(context);
-    this.val.analyze(context);
-    this.name.type.mustBeCompatibleWith(this.val.type);
+    this.target.analyze(context);
+    this.source.analyze(context);
+
+    const errorMessage = `Incompatible types: Expected ${this.target.type.name}, got ${this.source.type.name}`;
+    this.target.type.mustBeCompatibleWith(this.source.type, errorMessage, this.target);
   }
 
   toString() {

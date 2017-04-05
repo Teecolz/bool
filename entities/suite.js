@@ -8,6 +8,7 @@ class Suite {
       stmt.analyze(localContext);
       if (stmt.isReturn) {
         this.type = stmt.type;
+        this.returnValue = stmt.returnValue;
       }
     }
   }

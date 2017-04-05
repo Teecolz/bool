@@ -4,7 +4,9 @@ class VariableExpression {
   constructor(id) {
     this.name = id;
   }
-
+  setType(context, type) {
+    this.type = type;
+  }
   analyze(context) {
     this.referent = context.lookupVariable(this.name);
     this.type = this.referent.type;

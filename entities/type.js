@@ -12,11 +12,12 @@ class Type {
     }
   }
   isCompatibleWith(otherType) {
-    if (this.name === 'int' || this.name === 'float') {
-      return (otherType.name === 'int' || otherType.name === 'float');
-    } else if (this.name === '<arbitrary_type>') {
+    if (this.name === '<arbitrary_type>' || otherType.name === '<arbitrary_type>') {
       return true;
+    } else if (this.name === 'int' || this.name === 'float') {
+      return (otherType.name === 'int' || otherType.name === 'float');
     }
+
     return this.name === otherType.name;
   }
   mustBeInteger(message, location) {
@@ -24,8 +25,19 @@ class Type {
       error(message, location);
     }
   }
+  isArbitrary() {
+    return this.name === '<arbitrary_type';
+  }
   isInt() {
     return this.name === 'int';
+  }
+  isFunction() {
+    return this.name === '<function>';
+  }
+  mustBeFunction(message, location) {
+    if (!this.isFunction()) {
+      error(message, location);
+    }
   }
   mustBeBoolean(message, location) {
     if (this.name !== 'bool') {
@@ -33,7 +45,7 @@ class Type {
     }
   }
   mustBeArbitrary(message, location) {
-    if (this.name !== '<arbitrary_type>') {
+    if (!this.isArbitrary()) {
       error(message, location);
     }
   }
@@ -50,5 +62,6 @@ module.exports = {
   FLOAT: new Type('float', NUMBER),
   STRING: new Type('string'),
   ARBITRARY: new Type('<arbitrary_type>'),
+  FUNCTION: new Type('<function>'),
   Construct(forName, parent) { return new Type(forName, parent); },
 };

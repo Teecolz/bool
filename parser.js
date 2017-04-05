@@ -51,6 +51,8 @@ const FullStatement = require('./entities/fullstmt.js');
 const Statement = require('./entities/stmt.js');
 const Type = require('./entities/type.js');
 const ParameterDeclaration = require('./entities/paramdecl.js');
+const FunctionParameters = require('./entities/funparams.js');
+
 const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
 
 /* eslint no-unused-vars: 1 */
@@ -65,14 +67,14 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   SimpleSuite(_, ind, exp, nl, ded) {
     return exp.ast();
   },
-  Params(open, id1, ids, _) {
-    return new Parameters([id1.ast()].concat(ids.ast()));
+  Params(open, ids, _) {
+    return new Parameters(ids.ast());
   },
   ParamDecl(id, type) {
-    return new ParameterDeclaration(id.ast(), type.ast());
+    return new ParameterDeclaration(id.sourceString, type.ast());
   },
-  Funparams(_, p1, rest, close) {
-    return new Parameters([p1.ast()].concat(rest.ast()));
+  Funparams(_, params, close) {
+    return new FunctionParameters(params.ast());
   },
   ClassDecl(cl, id, isa, superId, col, cs) {
     return new ClassDeclaration(id.sourceString, superId.sourceString, cs.ast());

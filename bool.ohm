@@ -65,10 +65,10 @@ Bool {
       = id Funparams+
 
     Funparams
-      = "(" (SimpleLit (SimpleLit)*)? ")"
+      = "(" SimpleLit* ")"
 
     Params
-      = "(" (ParamDecl (ParamDecl)*)? ")"
+      = "(" ParamDecl* ")"
 
     ParamDecl
       = id Type?
@@ -127,6 +127,7 @@ Bool {
       | ClassInst
 
     // need to add support for single line objects
+    // May also want support for lists
     SimpleLit
       = boollit
       | floatlit
