@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="images/bool.png">
+
+    <title>Bool Programming Language</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/bool.css" rel="stylesheet">
+  </head>
+
+  <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header page-scroll">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand page-scroll" href="#page-top">BOOL</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+            <li class="hidden">
+              <a class="page-scroll" href="#page-top"></a>
+            </li>
+            <li>
+              <a class="page-scroll" href="#about">About</a>
+            </li>
+            <li>
+              <a class="page-scroll" href="#examples">Examples</a>
+            </li>
+            <li>
+              <a class="page-scroll" href="#diagrams">Diagrams</a>
+            </li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+      <!-- /.container -->
+    </nav>
+    <!-- Intro Section -->
+    <section id="intro" class="intro-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <img class="logo" src="images/bool.png" alt="Bool Logo">
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- About Section -->
+    <section id="about" class="about-section">
+      <div class="container">
+        <div class="row">
+          <h1>The Story of Bool</h1>
+          <div class="col-lg-6 about">
+            <p>
+              Bool is an object-oriented, dynamically typed, and strongly-typed programming language influenced by the languages of Python and OCaml. Bool comes with a plethora of benefits including the ability to be compiled to Javascript, the absence of curly braces
+              and semi-colons, intuitive and simple readability, and so much more. Bool's simple, easy to learn syntax emphasizes readability and therefore reduces the cost of program maintenance.
+            </p>
+            <p>
+              Often, programmers will fall in love with Bool because of its similarity to Python and the productivity it provides. The original reason we decided to create Bool was to create a language that would allow programmers to have a similar "out-of-the-box,"
+              "plug-and-play" coding experience that each of us liked about Python. To make it more user-friendly, we decided to combine the safety and power of another favorite language, OCaml. The pattern-matching aspect of OCaml is a really intuitive
+              way of programming and with its compile-time analysis of programs, this rules out many programming errors. More precisely, this protects the integrity of the data manipulated by an OCaml program.
+            </p>
+            For Bool, security is a high concern, and so we tried to adopt many of the same things that worked for the two parent languages that ensure some degree of protection and help for the programmer.
+            </p>
+          </div>
+          <div class="container">
+            <div class="col-lg-6">
+              <img class="python" src="https://techspawn.com/wp-content/uploads/2016/10/Python_logo.png" alt="Python">
+            </div>
+            <div class="col-lg-6">
+              <img class="ocaml" src="http://ocaml.org/logo/Colour/PNG/colour-logo.png" alt="OCaml">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Examples Section -->
+    <section id="examples" class="examples-section">
+      <div class="container">
+        <div class="row">
+          <h1>Examples of Bool</h1>
+          <div class="col-lg-6 boolCode">
+            <h3>Variable Declaration</h3>
+            <pre>
+              <code>
+foo:int = 101                                   var foo = 101;
+bar:string = 101                                var bar = "101";
+              </code>
+            </pre>
+          <div class="col-lg-6 boolCode">
+            <h3>Arithmetic</h3>
+            <pre>
+              <code>
+a + b
+a - b
+a * b
+a / b
+a % b  --modulo
+a ** b --exponentiation
+a // b --root
+              </code>
+            </pre>
+          </div>
+
+          <div class="col-lg-6 boolCode">
+            <h3>Booleans and Expressions</h3>
+            <pre>
+              <code>
+tru      => true
+fal      => false
+
+!a       => not a
+a > b    => a greater than b
+a < b    => a less than b
+a >= b   => a greater than/equal to b
+a <= b   => a less than/equal to b
+a == b   => a equals b
+a != b   => a does not equal b
+              </code>
+            </pre>
+          </div>
+
+          <div class="col-lg-12">
+            <h3>Higher Order Functions</h3>
+            <pre>
+              <code>
+foods [                                       foods [
+  {name: 'apple', kind: 'fruit'}                {name: 'apple', kind: 'fruit'},
+  {name: 'carrot', kind: 'veg'}                 {name: 'carrot', kind: 'veg'},
+  {name: 'banana', kind: 'fruit'}               {name: 'banana', kind: 'fruit'},
+  {name: 'broccoli', kind: 'veg'}               {name: 'broccoli', kind: 'veg'},
+  {name: 'strawberry', kind: 'fruit'}           {
+]                                                 name: 'strawberry',
+                                                  kind:'fruit'
+                                                },
+                                              ];
+
+fun fruits = foods.filter((food):     var fruits = foods.filter(function(foods) {
+  ret food.kind === fruit                 return food.kind === 'fruit';
+)                                     });
+              </code>
+            </pre>
+          </div>
+        </div>
+        <div class="col-lg-6 boolCode">
+          <h3>For Loops & Conditional Statements</h3>
+          <pre>
+            <code>
+fun foo (bar):                                  var foo = function(bar) {
+  result:string                                 var result;
+  for i in range(bar):                          for (var i = 0; i < bar; i += 1) {
+    if i < 5:                                       if (i < 5) {
+      result = "foobar"                                 result = "foobar";
+    elif i > 7:                                     } else if (i > 7) {
+      result = "barfoo"                                 result = "barfoo";
+  ret result                                        }
+                                                    return result;
+                                                };
+            </code>
+          </pre>
+        <div class="col-lg-12 boolCode">
+          <h3>While Loops</h3>
+          <pre>
+            <code>
+while a < 99:                                   while (a < 99) {
+a += 5                                            a += 5;
+                                                }
+            </code>
+          </pre>
+        </div>
+
+        <div class="col-lg-12 boolCode">
+          <h3>Array Comprehension</h3>
+          <pre>
+            <code>
+fun doubleEvens (array):                      var doubleEvens = function(array) {
+  ret [for i in array if i % 2 === 0 i * 2]     return [for (i of                                                                  array) if (i % 2 === 0) i * 2];
+                                              }
+            </code>
+          </pre>
+        </div>
+
+        <div class="col-lg-12 boolCode">
+          <h3>Comments</h3>
+          <pre>
+            <code>
+# This is a comment in Bool                 // This is a comment in Javascript
+
+## If you need more lines, Bool can         /* If you need more lines, Javascript
+do that too. ##                             handles it like this. */
+            </code>
+          </pre>
+        </div>
+      </div>
+      </div>
+    </section>
+    <!-- Diagrams Section -->
+    <section id="diagrams" class="diagrams-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <h1>Diagrams Section</h1>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <a class="btn btn-default page-scroll" href="#page-top">Scroll To Top</a>
+            <small>&copy; Copyright 2017, Bool</small>
+          </div>
+        </div>
+    </footer>
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/scrolling-nav.js"></script>
+  </body>
+
+</html>
