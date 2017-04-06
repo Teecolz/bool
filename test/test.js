@@ -178,6 +178,10 @@ describe('Parser Tests', () => {
         expected: '(Program (Block [a]))',
       },
       {
+        arg: 'let x:[int] = [2, 3] \n',
+        expected: '(Program (Block (VarDecl x [int] [2, 3])))',
+      },
+      {
         arg: '[a, b] \n',
         expected: '(Program (Block [a, b]))',
       },
@@ -304,7 +308,7 @@ describe('Parser Tests', () => {
           expected:
             '(Case tru, (Suite (Return 1))), ' +
             '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x))), ' +
-            '(Case (BinExp a > b), (Suite (VarAssign a = (Parens (BinExp 2 ** 3))), (Return a)))',
+            '(Case (BinExp a > b), (Suite (VarAssign a = (BinExp 2 ** 3))), (Return a))',
         },
       ];
 
@@ -343,7 +347,7 @@ describe('Parser Tests', () => {
           expected:
             '(Case tru, (Suite (Return 1))), ' +
             '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x))), ' +
-            '(Suite (VarDecl x:(Type int) = (Parens (BinExp 2 ** 3))), (Return x))',
+            '(Suite (VarDecl x:(Type int) = (BinExp 2 ** 3)), (Return x))',
         },
       ];
 
@@ -399,7 +403,7 @@ describe('Parser Tests', () => {
         },
         {
           arg: 'fun x (a b):\n indent ret x + (a + b)\n dedent\n',
-          expected: '(Function x (Params a,b) : (Suite (Return (BinExp x + (Parens (BinExp a + b))))))',
+          expected: '(Function x (Params a,b) : (Suite (Return (BinExp x + (BinExp a + b)))))',
         },
         {
           arg: 'fun foo(x y z):\n indent ret tru\n dedent\n',
@@ -427,23 +431,23 @@ describe('Parser Tests', () => {
       tests = [
         {
           arg: 'x()\n',
-          expected: '(FunCall x (Params ))',
+          expected: '(FunCall x (FunParams ))',
         },
         {
           arg: 'x ()\n',
-          expected: '(FunCall x (Params ))',
+          expected: '(FunCall x (FunParams ))',
         },
         {
           arg: 'x ()()\n',
-          expected: '(FunCall x (Params ), (Params ))',
+          expected: '(FunCall x (FunParams ), (FunParams ))',
         },
         {
           arg: 'x (a)(b)\n',
-          expected: '(FunCall x (Params a), (Params b))',
+          expected: '(FunCall x (FunParams a), (FunParams b))',
         },
         {
           arg: 'x (a)("b")\n',
-          expected: '(FunCall x (Params a), (Params "b"))',
+          expected: '(FunCall x (FunParams a), (FunParams "b"))',
         },
       ];
 
@@ -600,7 +604,7 @@ describe('Parser Tests', () => {
         },
         {
           arg: '(x.y)[0]\n',
-          expected: '(Parens (BinExp x . y)) [] 0',
+          expected: '(BinExp x . y) [] 0',
         },
         {
           arg: '[1,2,3][1]\n',
