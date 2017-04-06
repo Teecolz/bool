@@ -216,62 +216,49 @@ do that too. ##                             handles it like this. */
             <div class="row">
                 <div class="col-lg-12">
                     <h1>Diagrams Section</h1>
-                    <div>
-
-                        <body>
-                            <div class="col-md-4">
-
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Program">Program:</a></p>
                                 <img border="0" src="images/diagram/Program.png" height="36" width="110" usemap="#Program.map"><map name="Program.map">
                      <area shape="rect" coords="29,1,81,33" href="#Block" title="Block"></map>
-
                                 <p>
-
                                     <div class="ebnf"><pre><a href="#Program" title="Program" shape="rect">Program</a>  ::= <a href="#Block" title="Block" shape="rect">Block</a></pre></div>
-
                                 </p>
-
-                                <p>no references</p><br>
+                                <p>no references</p>
+                </div>
+                <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Block">Block:</a></p>
                                 <img border="0" src="images/diagram/Block.png" height="100" width="208" usemap="#Block.map"><map name="Block.map">
                      <area shape="rect" coords="49,45,117,77" href="#FullStmt" title="FullStmt">
                      <area shape="rect" coords="49,1,159,33" href="#singlecomment" title="singlecomment"></map>
-
                                 <p>
-
                                     <div class="ebnf"><pre><a href="#Block" title="Block" shape="rect">Block</a>    ::= ( <a href="#FullStmt" title="FullStmt" shape="rect">FullStmt</a> | <a href="#singlecomment" title="singlecomment" shape="rect">singlecomment</a> )*</pre></div>
-
                                 </p>
-
                                 <p>referenced by:
-
                                     <ul>
-
                                         <li><a href="#Program" title="Program">Program</a></li>
-
                                     </ul>
-
-                                </p><br>
+                                </p>
+                </div>
+                <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="FullStmt">FullStmt:</a></p>
                                 <img border="0" src="images/diagram/FullStmt.png" height="68" width="232" usemap="#FullStmt.map"><map name="FullStmt.map">
                      <area shape="rect" coords="49,33,99,65" href="#Stmt" title="Stmt">
                      <area shape="rect" coords="139,1,203,33" href="#newline" title="newline"></map>
-
                                 <p>
-
                                     <div class="ebnf"><pre><a href="#FullStmt" title="FullStmt" shape="rect">FullStmt</a> ::= <a href="#Stmt" title="Stmt" shape="rect">Stmt</a>? <a href="#newline" title="newline" shape="rect">newline</a></pre></div>
-
                                 </p>
-
                                 <p>referenced by:
-
                                     <ul>
-
                                         <li><a href="#Block" title="Block">Block</a></li>
-
                                     </ul>
-
-                                </p><br>
+                                </p>
+                 </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Stmt">Stmt:</a></p>
                                 <img border="0" src="images/diagram/Stmt.png" height="432" width="206" usemap="#Stmt.map"><map name="Stmt.map">
                      <area shape="rect" coords="49,1,125,33" href="#ClassDecl" title="ClassDecl">
@@ -310,7 +297,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+              </div>
+              <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="ClassDecl">ClassDecl:</a></p>
                                 <img border="0" src="images/diagram/ClassDecl.png" height="68" width="452" usemap="#ClassDecl.map"><map name="ClassDecl.map">
                      <area shape="rect" coords="101,1,131,33" href="#id" title="id">
@@ -332,7 +321,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                </div>
+                <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="ClassSuite">ClassSuite:</a></p>
                                 <img border="0" src="images/diagram/ClassSuite.png" height="36" width="390" usemap="#ClassSuite.map"><map name="ClassSuite.map">
                      <area shape="rect" coords="29,1,93,33" href="#newline" title="newline">
@@ -353,7 +344,11 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                  </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
                                 <p style="font-size: 14px; font-weight:bold"><a name="ClassBody">ClassBody:</a></p>
                                 <img border="0" src="images/diagram/ClassBody.png" height="68" width="574" usemap="#ClassBody.map"><map name="ClassBody.map">
                      <area shape="rect" coords="69,17,135,49" href="#fielddecl" title="fielddecl">
@@ -376,7 +371,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                  </div>
+                  <div class="col-md-6">
                                 <p style="font-size: 14px; font-weight:bold"><a name="fielddecl">fielddecl:</a></p>
                                 <img border="0" src="images/diagram/fielddecl.png" height="36" width="136" usemap="#fielddecl.map"><map name="fielddecl.map">
                      <area shape="rect" coords="77,1,107,33" href="#id" title="id"></map>
@@ -400,7 +397,11 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="ConstructorDecl">ConstructorDecl:</a></p>
                                 <img border="0" src="images/diagram/ConstructorDecl.png" height="36" width="306" usemap="#ConstructorDecl.map"><map name="ConstructorDecl.map">
                      <area shape="rect" coords="99,1,163,33" href="#Params" title="Params">
@@ -421,7 +422,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="MethodDecl">MethodDecl:</a></p>
                                 <img border="0" src="images/diagram/MethodDecl.png" height="36" width="332" usemap="#MethodDecl.map"><map name="MethodDecl.map">
                      <area shape="rect" coords="29,1,59,33" href="#id" title="id">
@@ -443,7 +446,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="methodparams">methodparams:</a></p>
                                 <img border="0" src="images/diagram/methodparams.png" height="140" width="336" usemap="#methodparams.map"><map name="methodparams.map">
                      <area shape="rect" coords="135,45,165,77" href="#id" title="id">
@@ -464,7 +469,11 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-7">
                                 <p style="font-size: 14px; font-weight:bold"><a name="ObjDecl">ObjDecl:</a></p>
                                 <img border="0" src="images/diagram/ObjDecl.png" height="68" width="672" usemap="#ObjDecl.map"><map name="ObjDecl.map">
                      <area shape="rect" coords="29,17,59,49" href="#id" title="id">
@@ -486,7 +495,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-5">
                                 <p style="font-size: 14px; font-weight:bold"><a name="PropertyDecl">PropertyDecl:</a></p>
                                 <img border="0" src="images/diagram/PropertyDecl.png" height="36" width="194" usemap="#PropertyDecl.map"><map name="PropertyDecl.map">
                      <area shape="rect" coords="29,1,59,33" href="#id" title="id">
@@ -509,7 +520,11 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="FunDecl">FunDecl:</a></p>
                                 <img border="0" src="images/diagram/FunDecl.png" height="68" width="454" usemap="#FunDecl.map"><map name="FunDecl.map">
                      <area shape="rect" coords="89,1,119,33" href="#id" title="id">
@@ -531,7 +546,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="VarDecl">VarDecl:</a></p>
                                 <img border="0" src="images/diagram/VarDecl.png" height="68" width="436" usemap="#VarDecl.map"><map name="VarDecl.map">
                      <area shape="rect" coords="85,1,147,33" href="#Var" title="VarExp">
@@ -552,7 +569,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="OpAssign">OpAssign:</a></p>
                                 <img border="0" src="images/diagram/OpAssign.png" height="36" width="242" usemap="#OpAssign.map"><map name="OpAssign.map">
                      <area shape="rect" coords="29,1,59,33" href="#id" title="id">
@@ -573,7 +592,11 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="assignop">assignop:</a></p>
                                 <img border="0" src="images/diagram/assignop.png" height="168" width="144">
 
@@ -594,7 +617,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="VarAssignment">VarAssignment:</a></p>
                                 <img border="0" src="images/diagram/VarAssignment.png" height="36" width="232" usemap="#VarAssignment.map"><map name="VarAssignment.map">
                      <area shape="rect" coords="29,1,91,33" href="#VarExp" title="VarExp">
@@ -615,7 +640,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Return">Return:</a></p>
                                 <img border="0" src="images/diagram/Return.png" height="36" width="158" usemap="#Return.map"><map name="Return.map">
                      <area shape="rect" coords="87,1,129,33" href="#Exp" title="Exp"></map>
@@ -634,7 +661,11 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Funcall">Funcall:</a></p>
                                 <img border="0" src="images/diagram/Funcall.png" height="52" width="234" usemap="#Funcall.map"><map name="Funcall.map">
                      <area shape="rect" coords="29,17,59,49" href="#id" title="id">
@@ -654,7 +685,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Funparams">Funparams:</a></p>
                                 <img border="0" src="images/diagram/Funparams.png" height="70" width="262" usemap="#Funparams.map"><map name="Funparams.map">
                      <area shape="rect" coords="95,1,167,33" href="#SimpleLit" title="SimpleLit"></map>
@@ -676,7 +709,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Params">Params:</a></p>
                                 <img border="0" src="images/diagram/Params.png" height="70" width="272" usemap="#Params.map"><map name="Params.map">
                      <area shape="rect" coords="95,1,177,33" href="#ParamDecl" title="ParamDecl"></map>
@@ -699,7 +734,11 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="ParamDecl">ParamDecl:</a></p>
                                 <img border="0" src="images/diagram/ParamDecl.png" height="68" width="196" usemap="#ParamDecl.map"><map name="ParamDecl.map">
                      <area shape="rect" coords="29,1,59,33" href="#id" title="id">
@@ -720,7 +759,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Conditional">Conditional:</a></p>
                                 <img border="0" src="images/diagram/Conditional.png" height="112" width="400" usemap="#Conditional.map"><map name="Conditional.map">
                      <area shape="rect" coords="97,45,147,77" href="#Case" title="Case">
@@ -741,7 +782,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Case">Case:</a></p>
                                 <img border="0" src="images/diagram/Case.png" height="36" width="214" usemap="#Case.map"><map name="Case.map">
                      <area shape="rect" coords="29,1,71,33" href="#Exp" title="Exp">
@@ -761,7 +804,11 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Suite">Suite:</a></p>
                                 <img border="0" src="images/diagram/Suite.png" height="52" width="482" usemap="#Suite.map"><map name="Suite.map">
                      <area shape="rect" coords="29,17,93,49" href="#newline" title="newline">
@@ -794,7 +841,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-6">
                                 <p style="font-size: 14px; font-weight:bold"><a name="SimpleSuite">SimpleSuite:</a></p>
                                 <img border="0" src="images/diagram/SimpleSuite.png" height="68" width="474" usemap="#SimpleSuite.map"><map name="SimpleSuite.map">
                      <area shape="rect" coords="49,33,113,65" href="#newline" title="newline">
@@ -808,7 +857,12 @@ do that too. ##                             handles it like this. */
 
                                 </p>
 
-                                <p>no references</p><br>
+                                <p>no references</p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Loop">Loop:</a></p>
                                 <img border="0" src="images/diagram/Loop.png" height="256" width="506" usemap="#Loop.map"><map name="Loop.map">
                      <area shape="rect" coords="127,1,157,33" href="#id" title="id">
@@ -837,7 +891,10 @@ do that too. ##                             handles it like this. */
 
                                 </p>
                       </div>
-                      <div class="col-md-4"><br>
+                      <div class="col-md-3"></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Exp">Exp:</a></p>
                                 <img border="0" src="images/diagram/Exp.png" height="68" width="272" usemap="#Exp.map"><map name="Exp.map">
                      <area shape="rect" coords="29,1,79,33" href="#Exp1" title="Exp1">
@@ -879,7 +936,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-3">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Exp1">Exp1:</a></p>
                                 <img border="0" src="images/diagram/Exp1.png" height="68" width="282" usemap="#Exp1.map"><map name="Exp1.map">
                      <area shape="rect" coords="29,1,79,33" href="#Exp2" title="Exp2">
@@ -899,7 +958,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-3">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Exp2">Exp2:</a></p>
                                 <img border="0" src="images/diagram/Exp2.png" height="68" width="288" usemap="#Exp2.map"><map name="Exp2.map">
                      <area shape="rect" coords="29,1,79,33" href="#Exp3" title="Exp3">
@@ -920,7 +981,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-3">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Exp3">Exp3:</a></p>
                                 <img border="0" src="images/diagram/Exp3.png" height="68" width="294" usemap="#Exp3.map"><map name="Exp3.map">
                      <area shape="rect" coords="29,1,79,33" href="#Exp4" title="Exp4">
@@ -941,7 +1004,11 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Exp4">Exp4:</a></p>
                                 <img border="0" src="images/diagram/Exp4.png" height="68" width="294" usemap="#Exp4.map"><map name="Exp4.map">
                      <area shape="rect" coords="29,1,79,33" href="#Exp5" title="Exp5">
@@ -962,7 +1029,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-3">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Exp5">Exp5:</a></p>
                                 <img border="0" src="images/diagram/Exp5.png" height="68" width="294" usemap="#Exp5.map"><map name="Exp5.map">
                      <area shape="rect" coords="29,1,79,33" href="#Exp6" title="Exp6">
@@ -983,7 +1052,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-3">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Exp6">Exp6:</a></p>
                                 <img border="0" src="images/diagram/Exp6.png" height="68" width="236" usemap="#Exp6.map"><map name="Exp6.map">
                      <area shape="rect" coords="49,33,117,65" href="#prefixop" title="prefixop">
@@ -1003,7 +1074,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-3">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Exp7">Exp7:</a></p>
                                 <img border="0" src="images/diagram/Exp7.png" height="112" width="310" usemap="#Exp7.map"><map name="Exp7.map">
                      <area shape="rect" coords="29,1,79,33" href="#Exp8" title="Exp8">
@@ -1024,7 +1097,11 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Exp8">Exp8:</a></p>
                                 <img border="0" src="images/diagram/Exp8.png" height="320" width="232" usemap="#Exp8.map"><map name="Exp8.map">
                      <area shape="rect" coords="95,21,137,53" href="#Exp" title="Exp">
@@ -1051,7 +1128,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-3">
                                 <p style="font-size: 14px; font-weight:bold"><a name="SimpleLit">SimpleLit:</a></p>
                                 <img border="0" src="images/diagram/SimpleLit.png" height="256" width="160" usemap="#SimpleLit.map"><map name="SimpleLit.map">
                      <area shape="rect" coords="49,1,103,33" href="#boollit" title="boollit">
@@ -1083,7 +1162,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-3">
                                 <p style="font-size: 14px; font-weight:bold"><a name="VarExp">VarExp:</a></p>
                                 <img border="0" src="images/diagram/VarExp.png" height="36" width="88" usemap="#VarExp.map"><map name="VarExp.map">
                      <area shape="rect" coords="29,1,59,33" href="#id" title="id"></map>
@@ -1106,7 +1187,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-3">
                                 <p style="font-size: 14px; font-weight:bold"><a name="addop">addop:</a></p>
                                 <img border="0" src="images/diagram/addop.png" height="80" width="128">
 
@@ -1127,7 +1210,11 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3">
                                 <p style="font-size: 14px; font-weight:bold"><a name="mulop">mulop:</a></p>
                                 <img border="0" src="images/diagram/mulop.png" height="124" width="132">
 
@@ -1149,7 +1236,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                        </div>
+                        <div class="col-md-3">
                                 <p style="font-size: 14px; font-weight:bold"><a name="prefixop">prefixop:</a></p>
                                 <img border="0" src="images/diagram/prefixop.png" height="80" width="124">
 
@@ -1168,7 +1257,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                      </div>
+                      <div class="col-md-3">
                                 <p style="font-size: 14px; font-weight:bold"><a name="expop">expop:</a></p>
                                 <img border="0" src="images/diagram/expop.png" height="80" width="136">
 
@@ -1189,7 +1280,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                      </div>
+                      <div class="col-md-3">
                                 <p style="font-size: 14px; font-weight:bold"><a name="relop">relop:</a></p>
                                 <img border="0" src="images/diagram/relop.png" height="344" width="148">
 
@@ -1216,7 +1309,11 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Explist">Explist:</a></p>
                                 <img border="0" src="images/diagram/Explist.png" height="80" width="148" usemap="#Explist.map"><map name="Explist.map">
                      <area shape="rect" coords="49,45,99,77" href="#Exp8" title="Exp8"></map>
@@ -1235,7 +1332,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-6">
                                 <p style="font-size: 14px; font-weight:bold"><a name="ListExp">ListExp:</a></p>
                                 <img border="0" src="images/diagram/ListExp.png" height="80" width="494" usemap="#ListExp.map"><map name="ListExp.map">
                      <area shape="rect" coords="29,1,71,33" href="#Exp" title="Exp">
@@ -1258,7 +1357,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-3">
                                 <p style="font-size: 14px; font-weight:bold"><a name="SimpleIf">SimpleIf:</a></p>
                                 <img border="0" src="images/diagram/SimpleIf.png" height="36" width="148" usemap="#SimpleIf.map"><map name="SimpleIf.map">
                      <area shape="rect" coords="77,1,119,33" href="#Exp" title="Exp"></map>
@@ -1277,7 +1378,11 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Listlit">Listlit:</a></p>
                                 <img border="0" src="images/diagram/Listlit.png" height="112" width="252" usemap="#Listlit.map"><map name="Listlit.map">
                      <area shape="rect" coords="95,33,157,65" href="#ListExp" title="ListExp">
@@ -1301,7 +1406,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="Range">Range:</a></p>
                                 <img border="0" src="images/diagram/Range.png" height="36" width="266" usemap="#Range.map"><map name="Range.map">
                      <area shape="rect" coords="113,1,191,33" href="#RangeExp" title="RangeExp"></map>
@@ -1320,7 +1427,9 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
+                    <div class="col-md-4">
                                 <p style="font-size: 14px; font-weight:bold"><a name="RangeExp">RangeExp:</a></p>
                                 <img border="0" src="images/diagram/RangeExp.png" height="132" width="484" usemap="#RangeExp.map"><map name="RangeExp.map">
                      <area shape="rect" coords="29,1,73,33" href="#intlit" title="intlit">
@@ -1341,7 +1450,8 @@ do that too. ##                             handles it like this. */
 
                                     </ul>
 
-                                </p><br>
+                                </p>
+                    </div>
                                 <p style="font-size: 14px; font-weight:bold"><a name="boollit">boollit:</a></p>
                                 <img border="0" src="images/diagram/boollit.png" height="80" width="136">
 
