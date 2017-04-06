@@ -45,7 +45,7 @@ Bool {
 
     // may need to expand this
     PropertyDecl
-      = id ":" Exp
+      = VarExp ":" Exp
 
     FunDecl
       = "fun" id Type? Params ":" Suite

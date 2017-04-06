@@ -53,3 +53,30 @@ dedent
 fun zz:int ():
 indent ret "hello"
 dedent
+
+a = z()
+a = z(1)
+a = z()()
+a = 'hi'
+
+while (a):
+indent ret a
+dedent
+
+do:
+indent a = a + 1
+dedent while a
+
+do:
+indent a = a + 1
+dedent until a
+
+testObj :=
+indent a : 1
+b : 'hello, world'
+dedent
+
+let testObj2 = {
+indent a : 1
+b : 'hello, world'
+dedent }
