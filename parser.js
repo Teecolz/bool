@@ -137,7 +137,7 @@ const semantics = grammar.createSemantics().addOperation('ast', {
     return new ExpList([e1.ast()].concat(el.ast()));
   },
   ListExp(e, _, id, n, list, cond) {
-    return new ListExpression(e.ast(), id.ast(), list.ast(), cond.ast());
+    return new ListExpression(e.ast(), id.sourceString, list.ast(), cond.ast());
   },
   SimpleIf(_, e) {
     return new SimpleIf(e.ast());

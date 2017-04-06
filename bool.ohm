@@ -147,7 +147,7 @@ Bool {
     expop = "**" | "//"
     relop =  ">=" | "<=" | ">" | "<" | "!==" | "===" | "==" | "!="
     Explist = Exp8 ("," Exp8)*
-    ListExp = Exp "for" id "in" (id | Listlit) SimpleIf?
+    ListExp = Exp "for" id "in" (VarExp | Listlit) SimpleIf?
     SimpleIf = "if" Exp
     Listlit = "[" (ListExp | Explist)? "]"
     Range = "range(" RangeExp ")"

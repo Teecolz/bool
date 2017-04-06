@@ -10,6 +10,8 @@ class VariableAssignment {
 
     const errorMessage = `Incompatible types: Expected ${this.target.type.name}, got ${this.source.type.name}`;
     this.target.type.mustBeCompatibleWith(this.source.type, errorMessage, this.target);
+
+    context.addVariable(this.target.name, this.source);
   }
 
   toString() {

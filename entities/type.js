@@ -5,6 +5,10 @@ class Type {
     this.name = type;
     this.parent = parent;
   }
+  getElementType() {
+    const str = this.name.substring(1, this.name.length - 1);
+    return new Type(str);
+  }
   // need to handle arbitrary types
   mustBeCompatibleWith(otherType, message, location) {
     if (!this.isCompatibleWith(otherType)) {
@@ -40,6 +44,9 @@ class Type {
   isFunction() {
     return this.name === '<function>';
   }
+  isList() {
+    return this.name.match(/\[.*\]/);
+  }
   isObject() {
     return this.name === 'object';
   }
@@ -56,6 +63,11 @@ class Type {
       error(message, location);
     }
   }
+  mustBeList(message, location) {
+    if (!this.isArbitrary() && !this.isList()) {
+      error(message, location);
+    }
+  }
   mustBeArbitrary(message, location) {
     if (!this.isArbitrary()) {
       error(message, location);
@@ -66,6 +78,7 @@ class Type {
       error(message, location);
     }
   }
+
 
   toString() {
     return `${this.name}`;

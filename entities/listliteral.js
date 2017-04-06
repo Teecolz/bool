@@ -1,18 +1,19 @@
 const Type = require('./type.js');
 
 class ListLiteral {
-  constructor(elements) {
-    this.elements = elements;
+  constructor(exp) {
+    this.exp = exp;
   }
   analyze(context) {
-    if (this.elements.length > 0) {
-      const el = this.elements[0];
-      el.analyze(context);
-      this.type = el.type;
+    if (this.exp.length > 0) {
+      const elements = this.exp[0];
+      elements.analyze(context);
+      this.type = elements.type;
+      this.elementType = elements.elementType;
     }
   }
   toString() {
-    return `[${this.elements}]`;
+    return `[${this.exp}]`;
   }
 }
 
