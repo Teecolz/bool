@@ -29,7 +29,9 @@ html {
     background: #eee;
 }
 
-.about-section h1 {
+.about-section h1,
+.examples-section h1,
+.diagrams-section h1 {
     font-size: 40px;
     margin-bottom: 40px;
 }
@@ -81,4 +83,22 @@ pre {
 .ocaml,
 .logo {
   width: 100%;
+}
+
+/* Media Queries */
+@media (min-width: 1200px) {
+
+  .first-row {
+    border-top: 2px solid #222;;
+  }
+
+  .diagram-row {
+    margin-bottom: 50px;
+    border-bottom: 2px solid #222;;
+    padding: 25px;
+  }
+
+  .last-row {
+    margin-bottom: 0px;
+  }
 }
