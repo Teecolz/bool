@@ -12,6 +12,17 @@ class BinaryExpression {
     this.right.analyze(context);
     switch (this.op) {
       case '+':
+        if (this.left.type.isString()) {
+          this.type = Type.STRING;
+        } else {
+          this.mustHaveNumericalOperands();
+          if (this.left.type.isInt() && this.right.type.isInt()) {
+            this.type = Type.INT;
+          } else {
+            this.type = Type.FLOAT;
+          }
+        }
+        break;
       case '-':
       case '*':
       case '/':
