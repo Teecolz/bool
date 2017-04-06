@@ -45,11 +45,27 @@ class BinaryExpression {
         this.mustHaveCompatibleOperands();
         this.type = Type.BOOL;
         break;
+      case '.':
+        this.mustBeObject();
+        this.type = this.left.referent.objectContext.lookupProperty(this.right);
+        break;
+      case '[]':
+        this.mustBeObject();
+        if (this.left.type.isObject()) { // object
+          this.type = this.left.referent.objectContext.lookupProperty(this.right);
+        } else { // list
+          this.right.type.mustBeInteger('Cannot access non-integer index of list', this.op);
+          this.type = this.left.elementType; // what if out of index?
+        }
+        break;
       default:
         break;
     }
   }
-
+  mustBeObject() {
+    const errorMessage = `Operator '${this.op}' requires left operand to be object`;
+    this.left.type.mustBeObject(errorMessage, this.op);
+  }
   mustHaveNumericalOperands() {
     const errorMessage = `Operator '${this.op}' requires numerical operands`;
     this.left.type.mustBeCompatibleWith(Type.INT, errorMessage, this.op);

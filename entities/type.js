@@ -28,11 +28,23 @@ class Type {
   isArbitrary() {
     return this.name === '<arbitrary_type';
   }
+  isBool() {
+    return this.name === 'bool';
+  }
+  isFloat() {
+    return this.name === 'float';
+  }
   isInt() {
     return this.name === 'int';
   }
   isFunction() {
     return this.name === '<function>';
+  }
+  isObject() {
+    return this.name === 'object';
+  }
+  isString() {
+    return this.name === 'string';
   }
   mustBeFunction(message, location) {
     if (!this.isFunction()) {
@@ -49,6 +61,12 @@ class Type {
       error(message, location);
     }
   }
+  mustBeObject(message, location) {
+    if (this.isInt() || this.isFloat() || this.isFunction() || this.isString() || this.isBool()) {
+      error(message, location);
+    }
+  }
+
   toString() {
     return `${this.name}`;
   }
@@ -63,5 +81,6 @@ module.exports = {
   STRING: new Type('string'),
   ARBITRARY: new Type('<arbitrary_type>'),
   FUNCTION: new Type('<function>'),
+  OBJECT: new Type('object'),
   Construct(forName, parent) { return new Type(forName, parent); },
 };

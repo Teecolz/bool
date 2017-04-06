@@ -117,8 +117,8 @@ Bool {
       | Exp7
     // may need to make this lexical
     Exp7
-      = Exp8 "." Exp8       --access
-      | Exp8 "[" Exp8 "]"   --listAccess
+      = Exp8 "." (id | stringlit)                --access
+      | Exp8 "[" (id | intlit | stringlit) "]"   --listAccess
       | Exp8
     Exp8
       =

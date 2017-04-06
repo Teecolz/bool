@@ -1,4 +1,5 @@
 const error = require('./error.js');
+const Undefined = require('./entities/undefined.js');
 
 class AnalysisContext {
   constructor(parent) {
@@ -40,6 +41,14 @@ class AnalysisContext {
     return this.parent.lookupVariable(name);
   }
 
+  lookupProperty(name) {
+    const variable = this.symTable[name];
+    if (variable) {
+      return variable;
+    }
+
+    return new Undefined();
+  }
   addVariable(name, entity) {
     this.symTable[name] = entity;
   }

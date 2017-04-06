@@ -1,3 +1,5 @@
+const Type = require('./type.js');
+
 class ObjectDeclaration {
   constructor(id, properties) {
     this.id = id;
@@ -5,10 +7,11 @@ class ObjectDeclaration {
   }
   analyze(context) {
     context.mustNotBeLocal(this.id);
-    const localContext = context.createChildContext();
+    this.objectContext = context.createChildContext();
     for (let i = 0; i < this.propDecls.length; i += 1) {
-      this.propDecls[i].analyze(localContext);
+      this.propDecls[i].analyze(this.objectContext);
     }
+    this.type = Type.OBJECT;
     context.addVariable(this.id, this);
   }
   toString() {

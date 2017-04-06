@@ -80,3 +80,8 @@ let testObj2 = {
 indent a : 1
 b : 'hello, world'
 dedent }
+
+testObj.a
+testObj[a]
+lilList[0]
+lilList['hi']

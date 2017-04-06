@@ -3,9 +3,9 @@ class ObjectLiteral {
     this.props = props;
   }
   analyze(context) {
-    const localContext = context.createChildContext();
+    this.objectContext = context.createChildContext();
     for (let i = 0; i < this.props.length; i += 1) {
-      this.props[i].analyze(localContext);
+      this.props[i].analyze(this.objectContext);
     }
   }
   toString() {
