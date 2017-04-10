@@ -1,4 +1,4 @@
-class FullStatement {
+class NormalStatement {
   constructor(stmt) {
     this.stmt = stmt;
   }
@@ -15,4 +15,4 @@ class FullStatement {
   }
 }
 
-module.exports = FullStatement;
+module.exports = NormalStatement;

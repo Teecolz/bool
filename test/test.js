@@ -65,69 +65,69 @@ describe('Grammar tests (all have trailing newline)', () => {
   });
 
   describe('Functions', () => {
-    describe('fun a(): \n indent 3 + 2 \n dedent', () => {
+    describe('fun a(): \n ⇨ 3 + 2 \n ⇦', () => {
       it('should succeed on empty block', () => {
-        const match = gram.match('fun a(): \n indent 3 + 2 \n dedent \n');
+        const match = gram.match('fun a(): \n ⇨ 3 + 2 \n ⇦ \n');
         assert.ok(match.succeeded());
       });
     });
 
-    describe('fun a(): \n indent ret 3 + 2 \n dedent', () => {
+    describe('fun a(): \n ⇨ ret 3 + 2 \n ⇦', () => {
       it('should succeed on normal block', () => {
-        const match = gram.match('fun a(): \n indent ret 3 + 2 \n dedent \n');
+        const match = gram.match('fun a(): \n ⇨ ret 3 + 2 \n ⇦ \n');
         assert.ok(match.succeeded());
       });
     });
 
-    describe('fun a(x y): \n indent ret 3 + x \n dedent \n', () => {
+    describe('fun a(x y): \n ⇨ ret 3 + x \n ⇦ \n', () => {
       it('should succeed on parameters', () => {
-        const match = gram.match('fun a(x y): \n indent ret 3 + x \n dedent \n');
+        const match = gram.match('fun a(x y): \n ⇨ ret 3 + x \n ⇦ \n');
         assert.ok(match.succeeded());
       });
     });
 
-    describe('(x y): \n indent ret 3 + x - y \n dedent \n', () => {
+    describe('(x y): \n ⇨ ret 3 + x - y \n ⇦ \n', () => {
       it('should succeed on function literal', () => {
-        const match = gram.match('(x y): \n indent ret 3 + x \n dedent \n');
+        const match = gram.match('(x y): \n ⇨ ret 3 + x \n ⇦ \n');
         assert.ok(match.succeeded());
       });
     });
 
-    describe('(x y): \n indent z = y \n ret 3 + x - y \n dedent \n', () => {
+    describe('(x y): \n ⇨ z = y \n ret 3 + x - y \n ⇦ \n', () => {
       it('should succeed on function literal (multiple expressions)', () => {
-        const match = gram.match('(x y): \n indent z = y \n ret 3 + x \n dedent \n');
+        const match = gram.match('(x y): \n ⇨ z = y \n ret 3 + x \n ⇦ \n');
         assert.ok(match.succeeded());
       });
     });
   });
 
   describe('Objects', () => {
-    describe('x := \n indent dedent', () => {
-      it('should succeed on empty object', () => {
-        const match = gram.match('x := \n indent dedent \n');
-        assert.ok(match.succeeded());
+    describe('x := \n ⇨ ⇦', () => {
+      it('should fail on empty object', () => {
+        const match = gram.match('x := \n ⇨ ⇦ \n');
+        assert.ok(!match.succeeded());
       });
     });
 
-    describe('x := \n indent a: \n indent b \n dedent \n dedent', () => {
+    describe('x := \n ⇨ a: \n ⇨ b \n ⇦ \n ⇦', () => {
       it('should succeed on normal object', () => {
-        const match = gram.match('x := \n indent a: b \n dedent \n');
+        const match = gram.match('x := \n ⇨ a: b \n ⇦ \n');
         assert.ok(match.succeeded());
       });
     });
 
-    describe('{ \n indent a: indent b \n dedent dedent }', () => {
+    describe('{ \n ⇨ a: ⇨ b \n ⇦ ⇦ }', () => {
       it('should succeed on object literal', () => {
-        const match = gram.match('{ \n indent a: b \n dedent } \n');
+        const match = gram.match('{ \n ⇨ a: b \n ⇦ } \n');
         assert.ok(match.succeeded());
       });
     });
   });
 
   describe('Classes', () => {
-    describe('class Person: \n indent _name \n maker(_name): \n indent ret _name \n dedent dedent \n', () => {
+    describe('class Person: \n ⇨ _name \n maker(_name): \n ⇨ ret _name \n ⇦ ⇦ \n', () => {
       it('should succeed on class dec with one field', () => {
-        const match = gram.match('class Person: \n indent _name \n maker(_name): \n indent ret _name \n dedent dedent \n');
+        const match = gram.match('class Person: \n ⇨ _name \n maker(_name): \n ⇨ ret _name \n ⇦ ⇦ \n');
         assert.ok(match.succeeded());
       });
     });
@@ -226,23 +226,23 @@ describe('Parser Tests', () => {
         expected: '(Program (Block (Objlit {(PropDecl a : b)})))',
       },
       {
-        arg: '{\n indent a: b\n dedent}\n',
+        arg: '{\n  a: b\n}\n',
         expected: '(Program (Block (Objlit {(PropDecl a : b)})))',
       },
       {
-        arg: '{\n indent a: b\n c: d\n dedent}\n',
+        arg: '{\n  a: b\n  c: d\n}\n',
         expected: '(Program (Block (Objlit {(PropDecl a : b), (PropDecl c : d)})))',
       },
       {
-        arg: '():\n indent ret "Hello, world" \n dedent \n',
+        arg: '():\n  ret "Hello, world"\n',
         expected: '(Program (Block (Funlit (Params ) : (Suite (Return "Hello, world")))))',
       },
       {
-        arg: '(a):\n indent ret a + 2\n dedent\n',
+        arg: '(a):\n  ret a + 2\n',
         expected: '(Program (Block (Funlit (Params a) : (Suite (Return (BinExp a + 2))))))',
       },
       {
-        arg: '(a b):\n indent let b = a + b\n ret b\n dedent\n',
+        arg: '(a b):\n  let b = a + b\n  ret b\n',
         expected: '(Program (Block (Funlit (Params a,b) : (Suite (VarDecl b = (BinExp a + b)), (Return b)))))',
       },
     ];
@@ -258,19 +258,19 @@ describe('Parser Tests', () => {
     describe('Simple Ifs', () => {
       tests = [
         {
-          arg: 'if tru:\n indent ret 1\n dedent\n',
+          arg: 'if tru:\n  ret 1\n',
           expected: '(Case tru, (Suite (Return 1)))',
         },
         {
-          arg: 'if tru :\n indent ret 1\n dedent\n',
+          arg: 'if tru :\n  ret 1\n',
           expected: '(Case tru, (Suite (Return 1)))',
         },
         {
-          arg: 'if a + b :\n indent [1, 2, 3]\n dedent\n',
+          arg: 'if a + b :\n  [1, 2, 3]\n',
           expected: '(Case (BinExp a + b), (Suite [1, 2, 3]))',
         },
         {
-          arg: 'if a + b :\n indent let x = [1, 2, 3]\n ret x\n dedent\n',
+          arg: 'if a + b :\n  let x = [1, 2, 3]\n  ret x\n',
           expected: '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x)))',
         },
       ];
@@ -286,25 +286,25 @@ describe('Parser Tests', () => {
       tests = [
         {
           arg:
-            'if tru:\n indent ret 1\n dedent' +
-            'elif a + b :\n indent [1, 2, 3]\n dedent\n',
+            'if tru:\n  ret 1\n' +
+            'elif a + b :\n  [1, 2, 3]\n',
           expected:
             '(Case tru, (Suite (Return 1))), ' +
             '(Case (BinExp a + b), (Suite [1, 2, 3]))',
         },
         {
           arg:
-            'if tru:\n indent ret 1\n dedent' +
-            'elif a + b :\n indent let x:[int] = [1, 2, 3]\n ret x\n dedent\n',
+            'if tru:\n  ret 1\n' +
+            'elif a + b :\n  let x:[int] = [1, 2, 3]\n  ret x\n',
           expected:
             '(Case tru, (Suite (Return 1))), ' +
             '(Case (BinExp a + b), (Suite (VarDecl x:(Type List(int)) = [1, 2, 3]), (Return x)))',
         },
         {
           arg:
-            'if tru:\n indent ret 1\n dedent' +
-            'elif a + b :\n indent let x = [1, 2, 3]\n ret x\n dedent' +
-            'elif a > b :\n indent a = (2 ** 3)\n ret a\n dedent\n',
+            'if tru:\n  ret 1\n' +
+            'elif a + b :\n  let x = [1, 2, 3]\n  ret x\n' +
+            'elif a > b :\n  a = (2 ** 3)\n  ret a\n',
           expected:
             '(Case tru, (Suite (Return 1))), ' +
             '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x))), ' +
@@ -323,17 +323,17 @@ describe('Parser Tests', () => {
       tests = [
         {
           arg:
-            'if tru:\n indent ret 1\n dedent' +
-            'el:\n indent [1, 2, 3]\n dedent\n',
+            'if tru:\n  ret 1\n' +
+            'el:\n  [1, 2, 3]\n',
           expected:
             '(Case tru, (Suite (Return 1))), ' +
             '(Suite [1, 2, 3])',
         },
         {
           arg:
-            'if tru:\n indent ret 1\n dedent' +
-            'elif a + b :\n indent let x = [1, 2, 3]\n ret x\n dedent' +
-            'el:\n indent ret fal\n dedent\n',
+            'if tru:\n  ret 1\n' +
+            'elif a + b :\n  let x = [1, 2, 3]\n  ret x\n' +
+            'el:\n  ret fal\n',
           expected:
             '(Case tru, (Suite (Return 1))), ' +
             '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x))), ' +
@@ -341,9 +341,9 @@ describe('Parser Tests', () => {
         },
         {
           arg:
-            'if tru:\n indent ret 1\n dedent' +
-            'elif a + b :\n indent let x = [1, 2, 3]\n ret x\n dedent' +
-            'el:\n indent let x:int = (2 ** 3)\n ret x\n dedent\n',
+            'if tru:\n  ret 1\n' +
+            'elif a + b :\n  let x = [1, 2, 3]\n  ret x\n' +
+            'el:\n  let x:int = (2 ** 3)\n  ret x\n',
           expected:
             '(Case tru, (Suite (Return 1))), ' +
             '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x))), ' +
@@ -390,32 +390,32 @@ describe('Parser Tests', () => {
     describe('Declarations', () => {
       tests = [
         {
-          arg: 'fun x():\n indent ret x\n dedent\n',
+          arg: 'fun x():\n  ret x\n',
           expected: '(Function x (Params ) : (Suite (Return x)))',
         },
         {
-          arg: 'fun x ():\n indent ret x\n dedent\n',
+          arg: 'fun x ():\n ret x\n',
           expected: '(Function x (Params ) : (Suite (Return x)))',
         },
         {
-          arg: 'fun x () :\n indent ret x\n dedent\n',
+          arg: 'fun x () :\n  ret x\n',
           expected: '(Function x (Params ) : (Suite (Return x)))',
         },
         {
-          arg: 'fun x (a b):\n indent ret x + (a + b)\n dedent\n',
+          arg: 'fun x (a b):\n  ret x + (a + b)\n',
           expected: '(Function x (Params a,b) : (Suite (Return (BinExp x + (BinExp a + b)))))',
         },
         {
-          arg: 'fun foo(x y z):\n indent ret tru\n dedent\n',
+          arg: 'fun foo(x y z):\n  ret tru\n',
           expected: '(Function foo (Params x,y,z) : (Suite (Return tru)))',
         },
         {
-          arg: 'fun bar(x y z a b c):\n indent ret x + y > z ** b\n dedent\n',
+          arg: 'fun bar(x y z a b c):\n  ret x + y > z ** b\n',
           expected: '(Function bar (Params x,y,z,a,b,c) : ' +
                '(Suite (Return (BinExp (BinExp x + y) > (BinExp z ** b)))))',
         },
         {
-          arg: 'fun blah(x):\n indent ret x + 1\n dedent\n',
+          arg: 'fun blah(x):\n  ret x + 1\n',
           expected: '(Function blah (Params x) : (Suite (Return (BinExp x + 1))))',
         },
       ];
@@ -497,27 +497,27 @@ describe('Parser Tests', () => {
   describe('Loop Tests', () => {
     tests = [
       {
-        arg: 'while x == 1:\n indent ret 1\n dedent\n',
+        arg: 'while x == 1:\n  ret 1\n',
         expected: '(Program (Block (while (BinExp x == 1) (Suite (Return 1)))))',
       },
       {
-        arg: 'for x in y:\n indent ret 1\n dedent\n',
+        arg: 'for x in y:\n  ret 1\n',
         expected: '(Program (Block (for x in y : (Suite (Return 1)))))',
       },
       {
-        arg: 'for x in [1,2,3]:\n indent ret tru\n dedent\n',
+        arg: 'for x in [1,2,3]:\n  ret tru\n',
         expected: '(Program (Block (for x in [1, 2, 3] : (Suite (Return tru)))))',
       },
       {
-        arg: 'for x in range(1):\n indent ret tru\n dedent\n',
+        arg: 'for x in range(1):\n  ret tru\n',
         expected: '(Program (Block (for x in (Range 1) : (Suite (Return tru)))))',
       },
       {
-        arg: 'for x in range(1, 2):\n indent ret tru\n dedent\n',
+        arg: 'for x in range(1, 2):\n  ret tru\n',
         expected: '(Program (Block (for x in (Range 1, 2) : (Suite (Return tru)))))',
       },
       {
-        arg: 'for x in range(1, 2, 3):\n indent ret tru\n dedent\n',
+        arg: 'for x in range(1, 2, 3):\n  ret tru\n',
         expected: '(Program (Block (for x in (Range 1, 2, 3) : (Suite (Return tru)))))',
       },
     ];
@@ -533,15 +533,15 @@ describe('Parser Tests', () => {
     describe('Declarations', () => {
       tests = [
         {
-          arg: 'class hello:\n indent main():\n indent ret "Hello, world!"\n dedent dedent\n',
+          arg: 'class hello:\n ⇨ main():\n ⇨ ret "Hello, world!"\n ⇦ ⇦\n',
           expected: 'hello  : (ClassSuite (ClassBody  (Method main (Params ) : (Suite (Return "Hello, world!")))))',
         },
         {
-          arg: 'class hello:\n indent _hi\n main():\n indent ret "Hello, world!"\n dedent dedent\n',
+          arg: 'class hello:\n ⇨ _hi\n main():\n ⇨ ret "Hello, world!"\n ⇦ ⇦\n',
           expected: 'hello  : (ClassSuite (ClassBody (Field _hi) (Method main (Params ) : (Suite (Return "Hello, world!")))))',
         },
         {
-          arg: 'class hello:\n indent _hi\n _hi2\n main():\n indent ret "Hello, world!"\n dedent dedent\n',
+          arg: 'class hello:\n ⇨ _hi\n _hi2\n main():\n ⇨ ret "Hello, world!"\n ⇦ ⇦\n',
           expected: 'hello  : (ClassSuite (ClassBody (Field _hi),(Field _hi2) (Method main (Params ) : (Suite (Return "Hello, world!")))))',
         },
       ];
@@ -572,15 +572,15 @@ describe('Parser Tests', () => {
     describe('Declaration', () => {
       tests = [
         {
-          arg: 'foo :=\n indent bar:5\n dedent\n',
+          arg: 'foo :=\n  bar:5\n',
           expected: '(Program (Block (ObjDecl foo (PropDecl bar : 5))))',
         },
         {
-          arg: 'foo :=\n indent bar:5\n a:1\n b:2\n c:3\n dedent\n',
+          arg: 'foo :=\n  bar:5\n  a:1\n  b:2\n  c:3\n',
           expected: '(Program (Block (ObjDecl foo (PropDecl bar : 5),(PropDecl a : 1),(PropDecl b : 2),(PropDecl c : 3))))',
         },
         {
-          arg: 'foo :=\n indent bar:fal\n a:tru\n dedent\n',
+          arg: 'foo :=\n  bar:fal\n  a:tru\n',
           expected: '(Program (Block (ObjDecl foo (PropDecl bar : fal),(PropDecl a : tru))))',
         },
       ];

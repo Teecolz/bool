@@ -47,11 +47,13 @@ const VariableExpression = require('./entities/varexp.js');
 const DoUntilStatement = require('./entities/dountil.js');
 const DoWhileStatement = require('./entities/dowhile.js');
 const SimpleIf = require('./entities/simpleif.js');
-const FullStatement = require('./entities/fullstmt.js');
+const NormalStatement = require('./entities/normalstmt.js');
+const IndentStatement = require('./entities/indentstmt.js');
 const Statement = require('./entities/stmt.js');
 const Type = require('./entities/type.js');
 const ParameterDeclaration = require('./entities/paramdecl.js');
 const FunctionParameters = require('./entities/funparams.js');
+const Preparser = require('./preparser.js');
 
 const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
 
@@ -59,9 +61,11 @@ const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
 const semantics = grammar.createSemantics().addOperation('ast', {
   Program(b) { return new Program(b.ast()); },
   Block(s) { return new Block(s.ast()); },
-  FullStmt(s, _) { return new FullStatement(s.ast()); },
-  Stmt(s) { return new Statement(s.ast()); },
-  Suite(nl, indent, s, nl2, _) {
+  FullStmt_normal(s, _) { return new NormalStatement(s.ast()); },
+  FullStmt_indent(s) { return new IndentStatement(s.ast()); },
+  IndentStmt(s) { return new Statement(s.ast()); },
+  NormalStmt(s) { return new Statement(s.ast()); },
+  Suite(nl, indent, s, nlEnd, _) {
     return new Suite(s.ast());
   },
   SimpleSuite(_, ind, exp, nl, ded) {
@@ -203,10 +207,10 @@ const semantics = grammar.createSemantics().addOperation('ast', {
     return new ForStatement(id.sourceString, l.ast(), s.ast());
   },
   Loop_while(_, exp, colon, s) { return new WhileStatement(exp.ast(), s.ast()); },
-  Loop_doUntil(_, col, s, unt, cond) {
+  DoLoop_doUntil(_, col, s, unt, cond) {
     return new DoUntilStatement(s.ast(), cond.ast());
   },
-  Loop_doWhile(_, col, s, whl, cond) {
+  DoLoop_doWhile(_, col, s, whl, cond) {
     return new DoWhileStatement(s.ast(), cond.ast());
   },
   Return(_, exp) { return new ReturnStatement(exp.ast()); },
@@ -220,7 +224,7 @@ const semantics = grammar.createSemantics().addOperation('ast', {
 });
 
 module.exports = (text) => {
-  const match = grammar.match(text);
+  const match = grammar.match(Preparser(text));
   if (match.succeeded()) {
     return semantics(match).ast();
   }

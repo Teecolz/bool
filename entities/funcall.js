@@ -23,14 +23,12 @@ class FunctionCall {
     for (let i = 0; i < this.params.length; i += 1) {
       isPhantomFunction = false;
 
-      if (i > 0) {
-        // Cannot call non function
-        if (!this.type.isFunction()) {
-          errorMessage = 'Cannot call non-function as function';
-          this.type.mustBeFunction(errorMessage, this.id);
-          this.type = Type.FUNCTION; // make type compatible
-          isPhantomFunction = true;
-        }
+      // Cannot call non function
+      if (!curFun.type.isFunction()) {
+        errorMessage = 'Cannot call non-function as function';
+        curFun.type.mustBeFunction(errorMessage, this.id);
+        curFun.type = Type.FUNCTION; // make type compatible
+        isPhantomFunction = true;
       }
 
       paramGroup = this.params[i];

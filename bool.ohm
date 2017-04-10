@@ -6,7 +6,23 @@ Bool {
     // of a line
     Block
         = (FullStmt | singlecomment)*
-    FullStmt = Stmt? newline
+    FullStmt
+      = IndentStmt          --indent
+      | NormalStmt? newline --normal
+    NormalStmt
+      = VarDecl
+      | OpAssign
+      | VarAssignment
+      | DoLoop
+      | Exp
+      | Return
+    IndentStmt
+      = ClassDecl
+      | FunDecl
+      | ObjDecl
+      | Conditional
+      | Loop
+      // need to split loops into indent and no indent
     Stmt
       = ClassDecl
       | FunDecl
@@ -41,7 +57,7 @@ Bool {
 
     // need to make this work where second newline not necessary before closing dedent
     ObjDecl
-        = id ":=" newline indent (PropertyDecl newline)* dedent
+        = id ":=" newline indent (PropertyDecl newline*)+ dedent
 
     // may need to expand this
     PropertyDecl
@@ -83,7 +99,7 @@ Bool {
       = Exp ":" Suite
 
     Suite
-      = newline indent (Stmt newline)+ dedent
+      = newline indent (FullStmt)+ newline* dedent
 
     SimpleSuite
       = (newline indent)? Exp newline dedent
@@ -91,7 +107,8 @@ Bool {
     Loop
         = "for" id "in" (Range | id | Listlit ) ":" Suite     --forIn
         | "while" Exp ":" Suite                               --while
-        | "do" ":" Suite "until" Exp                          --doUntil
+    DoLoop
+        = "do" ":" Suite "until" Exp                          --doUntil
         | "do" ":" Suite "while" Exp                          --doWhile
 
     Exp
@@ -169,7 +186,7 @@ Bool {
       = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"
       | "while" | "until" | "build" | "class" | "isa" | "in" | "new" | "#" | "ret"
       | "indent" | "dedent" | "[" | "]" | "let" | "string" | "float" | "int"
-      | "bool" | "obj" | addop | mulop | expop
+      | "bool" | "obj" | "⇦" | "⇨" | addop | mulop | expop
       | relop
     Type
       = ":" ("string" | "float" | "int" | "bool" | "obj" | id) --single
@@ -191,8 +208,8 @@ Bool {
       | singlecomment
     singlecomment =  "#" ~"#" (~"\n" any)* "\n"
     multicomment = "##" (~"##" any)* "##"
-    indent = "indent" // placeholder
-    dedent = "dedent" // placeholder
+    indent = "⇨" // placeholder
+    dedent = "⇦" // placeholder
     id = ~("_"? reserved ~(idChar+)) idName
     idName = idStart (idChar)*
     idStart = letter | "$"

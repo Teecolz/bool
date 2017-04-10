@@ -19,40 +19,33 @@ x // 3.4
 x - x
 
 if x == 3:
-indent 1
-dedent
+  1
 
 if x:
-indent 1
-dedent
+  1
 
 fun x (a:int b:int):
-indent a + b
-dedent
+  a + b
 
 fun x (a:int b:int):
-indent ret a + b
-dedent
+  ret a + b
 
 fun y (a:int b:int):
-indent ret a + b
-dedent
+  ret a + b
 
 fun xx:int (a:int b:int):
-indent ret a + b
-dedent
+  ret a + b
 
 fun yy (a b):
-indent ret a + b
-dedent
+  ret a + b
 
 fun z ():
-indent ret 1
-dedent
+  ret 1
 
 fun zz:int ():
-indent ret "hello"
-dedent
+  ret "hello"
+
+x(1 2)
 
 a = z()
 a = z(1)
@@ -60,26 +53,25 @@ a = z()()
 a = 'hi'
 
 while (a):
-indent ret a
-dedent
+  ret a
 
 do:
-indent a = a + 1
-dedent while a
+  a = a + 1
+while tru
 
 do:
-indent a = a + 1
-dedent until a
+  a = a + 1
+until a
 
 testObj :=
-indent a : 1
-b : 'hello, world'
-dedent
+  a : 1
+  b : 'hello, world'
+
 
 let testObj2 = {
-indent a : 1
-b : 'hello, world'
-dedent }
+  a : 1
+  b : 'hello, world'
+}
 
 testObj.a
 testObj[a]
