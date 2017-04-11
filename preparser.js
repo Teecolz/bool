@@ -14,6 +14,7 @@
  *   tabs, are illegal.
  */
 
+// TODO: add check to prevent indents and dedents inside of multiline comments"
 module.exports = (source) => {
   const stack = [0];
   let result = '';
