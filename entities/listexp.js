@@ -25,7 +25,7 @@ class ListExpression {
     this.type = Type.Construct(`[${this.exp.type}]`);
   }
   toString() {
-    return `${this.exp} for ${this.id} in ${this.lst} ${this.cond}`.replace(/ $/, '');
+    return `${this.exp} for ${this.iterator} in ${this.lst} ${this.cond}`.replace(/ $/, '');
   }
 }
 

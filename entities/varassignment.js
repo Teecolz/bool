@@ -15,7 +15,7 @@ class VariableAssignment {
   }
 
   toString() {
-    return `(= ${this.left} ${this.right})`;
+    return `(= ${this.target} ${this.source})`;
   }
 }
 

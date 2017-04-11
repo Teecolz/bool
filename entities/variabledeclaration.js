@@ -28,7 +28,7 @@ class VariableDeclaration {
   }
 
   toString() {
-    return `(VarDecl ${this.name} ${this.type} ${this.value})`;
+    return `(VarDecl ${this.name}:${this.type || '<no type>'}${this.value ? ` = ${this.value}` : ''})`;
   }
 }
 
