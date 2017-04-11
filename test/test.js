@@ -86,16 +86,16 @@ describe('Grammar tests (all have trailing newline)', () => {
       });
     });
 
-    describe('(x y): \n ⇨ ret 3 + x - y \n ⇦ \n', () => {
+    describe('lambda (x y): \n ⇨ ret 3 + x - y \n ⇦ \n', () => {
       it('should succeed on function literal', () => {
-        const match = gram.match('(x y): \n ⇨ ret 3 + x \n ⇦ \n');
+        const match = gram.match('lambda (x y): \n ⇨ ret 3 + x \n ⇦ \n');
         assert.ok(match.succeeded());
       });
     });
 
-    describe('(x y): \n ⇨ z = y \n ret 3 + x - y \n ⇦ \n', () => {
+    describe('lambda (x y): \n ⇨ z = y \n ret 3 + x - y \n ⇦ \n', () => {
       it('should succeed on function literal (multiple expressions)', () => {
-        const match = gram.match('(x y): \n ⇨ z = y \n ret 3 + x \n ⇦ \n');
+        const match = gram.match('lambda (x y): \n ⇨ z = y \n ret 3 + x \n ⇦ \n');
         assert.ok(match.succeeded());
       });
     });
@@ -179,7 +179,7 @@ describe('Parser Tests', () => {
       },
       {
         arg: 'let x:[int] = [2, 3] \n',
-        expected: '(Program (Block (VarDecl x [int] [2, 3])))',
+        expected: '(Program (Block (VarDecl x:[int] = [2, 3])))',
       },
       {
         arg: '[a, b] \n',
@@ -234,16 +234,20 @@ describe('Parser Tests', () => {
         expected: '(Program (Block (Objlit {(PropDecl a : b), (PropDecl c : d)})))',
       },
       {
-        arg: '():\n  ret "Hello, world"\n',
+        arg: 'lambda ():\n  ret "Hello, world"\n',
         expected: '(Program (Block (Funlit (Params ) : (Suite (Return "Hello, world")))))',
       },
       {
-        arg: '(a):\n  ret a + 2\n',
+        arg: 'lambda (): "Hello, world"\n',
+        expected: '(Program (Block (Funlit (Params ) : "Hello, world")))',
+      },
+      {
+        arg: 'lambda (a):\n  ret (a + 2)\n',
         expected: '(Program (Block (Funlit (Params a) : (Suite (Return (BinExp a + 2))))))',
       },
       {
-        arg: '(a b):\n  let b = a + b\n  ret b\n',
-        expected: '(Program (Block (Funlit (Params a,b) : (Suite (VarDecl b = (BinExp a + b)), (Return b)))))',
+        arg: 'lambda (a b):\n  let b = a + b\n  ret b\n',
+        expected: '(Program (Block (Funlit (Params a,b) : (Suite (VarDecl b:<no type> = (BinExp a + b)), (Return b)))))',
       },
     ];
 
@@ -271,7 +275,7 @@ describe('Parser Tests', () => {
         },
         {
           arg: 'if a + b :\n  let x = [1, 2, 3]\n  ret x\n',
-          expected: '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x)))',
+          expected: '(Case (BinExp a + b), (Suite (VarDecl x:<no type> = [1, 2, 3]), (Return x)))',
         },
       ];
 
@@ -298,7 +302,7 @@ describe('Parser Tests', () => {
             'elif a + b :\n  let x:[int] = [1, 2, 3]\n  ret x\n',
           expected:
             '(Case tru, (Suite (Return 1))), ' +
-            '(Case (BinExp a + b), (Suite (VarDecl x:(Type List(int)) = [1, 2, 3]), (Return x)))',
+            '(Case (BinExp a + b), (Suite (VarDecl x:[int] = [1, 2, 3]), (Return x)))',
         },
         {
           arg:
@@ -307,8 +311,8 @@ describe('Parser Tests', () => {
             'elif a > b :\n  a = (2 ** 3)\n  ret a\n',
           expected:
             '(Case tru, (Suite (Return 1))), ' +
-            '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x))), ' +
-            '(Case (BinExp a > b), (Suite (VarAssign a = (BinExp 2 ** 3))), (Return a))',
+            '(Case (BinExp a + b), (Suite (VarDecl x:<no type> = [1, 2, 3]), (Return x))), ' +
+            '(Case (BinExp a > b), (Suite (= a (BinExp 2 ** 3)), (Return a)))',
         },
       ];
 
@@ -336,7 +340,7 @@ describe('Parser Tests', () => {
             'el:\n  ret fal\n',
           expected:
             '(Case tru, (Suite (Return 1))), ' +
-            '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x))), ' +
+            '(Case (BinExp a + b), (Suite (VarDecl x:<no type> = [1, 2, 3]), (Return x))), ' +
             '(Suite (Return fal))',
         },
         {
@@ -346,8 +350,8 @@ describe('Parser Tests', () => {
             'el:\n  let x:int = (2 ** 3)\n  ret x\n',
           expected:
             '(Case tru, (Suite (Return 1))), ' +
-            '(Case (BinExp a + b), (Suite (VarDecl x = [1, 2, 3]), (Return x))), ' +
-            '(Suite (VarDecl x:(Type int) = (BinExp 2 ** 3)), (Return x))',
+            '(Case (BinExp a + b), (Suite (VarDecl x:<no type> = [1, 2, 3]), (Return x))), ' +
+            '(Suite (VarDecl x:int = (BinExp 2 ** 3)), (Return x))',
         },
       ];
 
@@ -370,11 +374,11 @@ describe('Parser Tests', () => {
         expected: '(BinExp 1 + 2)',
       },
       {
-        arg: '## This \n comment \n has multiple \n lines ##',
+        arg: '## This\ncomment\nhas multiple\nlines ##\n',
         expected: '',
       },
       {
-        arg: '## This \n comment \n has multiple \n lines ## [1, 2, 3]\n',
+        arg: '## This\ncomment\nhas multiple\nlines ## [1, 2, 3]\n',
         expected: '[1, 2, 3]',
       },
     ];
@@ -482,7 +486,7 @@ describe('Parser Tests', () => {
         expected: '(Program (Block (BinExp 6 / 2)))',
       },
       {
-        arg: '2 + 5\n - 2 + 42\n',
+        arg: '2 + 5\n -2 + 42\n',
         expected: '(Program (Block (BinExp 2 + 5), (BinExp (UnExp - 2) + 42)))',
       },
     ];
@@ -557,7 +561,7 @@ describe('Parser Tests', () => {
       tests = [
         {
           arg: 'x = new hello()\n',
-          expected: '(VarAssign x = (New hello (Params )))',
+          expected: '(= x (New hello (FunParams )))',
         },
       ];
 
