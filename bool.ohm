@@ -139,9 +139,9 @@ Bool {
       | Exp8
     Exp8
       =
+      | Funlit
       | "(" Exp ")"   --parens
       | SimpleLit
-      | Funlit
       | Objlit
       | Listlit
       | fielddecl
@@ -180,7 +180,7 @@ Bool {
       | "{" newline indent (PropertyDecl newline)* dedent "}" --multiprop
 
     // should also allow for one line statement here
-    Funlit = Params ":" Suite
+    Funlit = "lambda" Params ":" (Suite | Exp)
 
     reserved
       = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"
@@ -204,10 +204,11 @@ Bool {
 
     escape = "\\" // still need to fully define these
     comment
-      = multicomment
-      | singlecomment
-    singlecomment =  "#" ~"#" (~"\n" any)* "\n"
+      = singlecomment
+      | multicomment
     multicomment = "##" (~"##" any)* "##"
+    singlecomment =  "#" ~"#" (~"\n" any)* "\n"
+
     indent = "⇨" // placeholder
     dedent = "⇦" // placeholder
     id = ~("_"? reserved ~(idChar+)) idName

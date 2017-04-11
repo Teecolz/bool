@@ -158,7 +158,7 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   Objlit_multiprop(_, nl, ind, props, nl2, ded, close) {
     return new ObjectLiteral(props.ast());
   },
-  Funlit(params, _, s) {
+  Funlit(lambda, params, _, s) {
     return new FunctionLiteral(params.ast(), s.ast());
   },
   Range(_, exp, close) {
