@@ -3,6 +3,7 @@
 const fs = require('fs');
 const parse = require('./parser.js');
 const error = require('./error.js');
+require('./generator.js');
 const argv = require('yargs')
   .usage('$0 [-a] filename')
   .boolean(['a'])
@@ -19,4 +20,5 @@ fs.readFile(argv._[0], 'utf-8', (err, text) => {
     console.log(program.toString());
     program.toString();
   }
+  program.gen();
 });

@@ -1,0 +1,13 @@
+fun t (x):
+  let x:int = 0
+  let b:int = 1
+  let c:int
+  if (x < 3):
+    ret 1
+  do:
+    c = a + b
+    a = b
+    b = c
+    x += 1
+  until x > 0
+  ret c
