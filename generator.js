@@ -131,10 +131,6 @@ Object.assign(BinaryExpression.prototype, {
   gen() { return `(${this.left.gen()} ${makeOp(this.op)} ${this.right.gen()})`; },
 });
 
-Object.assign(BooleanLiteral.prototype, {
-  gen() { return `${makeBoolean(this.val)}`; },
-});
-
 Object.assign(ConditionalStatement.prototype, {
   gen() {
     this.cases.forEach((c, index) => {
@@ -213,13 +209,12 @@ Object.assign(Suite.prototype, {
 /* ************
  *  Literals  *
  **************/
-Object.assign(ListLiteral.prototype, {
-  gen() {
-    const list = this.exp;
-    if (list instanceof ExpList) {
-      emit(`[${list.gen()}]`);
-    } // TODO add else for listexp
-  },
+Object.assign(BooleanLiteral.prototype, {
+  gen() { return `${makeBoolean(this.val)}`; },
+});
+
+Object.assign(ExpList.prototype, {
+  gen() { return `${this.exps}`; },
 });
 
 Object.assign(IntegerLiteral.prototype, {
@@ -228,6 +223,20 @@ Object.assign(IntegerLiteral.prototype, {
   },
 });
 
-Object.assign(ExpList.prototype, {
-  gen() { return `${this.exps}`; },
+Object.assign(ListExpression.prototype, {
+  gen() {
+    let expression = `for (${this.iterator} of ${this.lst}) `;
+    if (this.cond) {
+      expression += `if (${this.cond}) `;
+    }
+    expression += `${this.exp}`;
+    return expression;
+  },
+});
+
+Object.assign(ListLiteral.prototype, {
+  gen() {
+    const list = this.exp;
+    emit(`[${list.gen()}]`);
+  },
 });
