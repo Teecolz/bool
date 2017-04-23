@@ -155,7 +155,7 @@ Object.assign(ConditionalStatement.prototype, {
     });
     if (this.block.length > 0) {
       emit('} else {');
-      this.block.gen();
+      getStatementList(this.block);
     }
     emit('}');
   },
