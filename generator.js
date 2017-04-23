@@ -136,17 +136,13 @@ Object.assign(Parameters.prototype, {
 
 Object.assign(VariableAssignment.prototype, {
   gen() {
-    const targets = this.targets.map(t => t.gen());
-    const sources = this.sources.map(s => s.gen());
-    emit(`${bracketIfNecessary(targets)} = ${bracketIfNecessary(sources)};`);
+    return `${this.target.gen()} = ${this.source.gen()}`;
   },
 });
 
 Object.assign(VariableDeclaration.prototype, {
   gen() {
-    const variables = this.variables.map(v => v.gen());
-    const initializers = this.initializers.map(i => i.gen());
-    return `let ${bracketIfNecessary(variables)} = ${bracketIfNecessary(initializers)};`;
+    return `let ${this.name} = ${this.value}`;
   },
 });
 
