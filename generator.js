@@ -58,7 +58,11 @@ function preEmit(line) {
 
 function getStatementList(statements) {
   indentLevel += 1;
-  statements.forEach(statement => statement.gen());
+  statements.forEach((statement) => {
+    if (statement !== '' && statement !== []) {
+      statement.gen();
+    }
+  });
   indentLevel -= 1;
 }
 
@@ -107,14 +111,17 @@ function makeBoolean(bool) {
 
 Object.assign(Program.prototype, {
   gen() {
-    // console.log(this);
     this.block.gen();
   },
 });
 
 Object.assign(Block.prototype, {
   gen() {
-    this.body.forEach(body => body.gen());
+    this.body.forEach((stmt) => {
+      if (stmt) {
+        stmt.gen();
+      }
+    });
   },
 });
 
@@ -139,7 +146,7 @@ Object.assign(VariableDeclaration.prototype, {
   gen() {
     const variables = this.variables.map(v => v.gen());
     const initializers = this.initializers.map(i => i.gen());
-    emit(`let ${bracketIfNecessary(variables)} = ${bracketIfNecessary(initializers)};`);
+    return `let ${bracketIfNecessary(variables)} = ${bracketIfNecessary(initializers)};`;
   },
 });
 
@@ -168,7 +175,6 @@ Object.assign(ConditionalStatement.prototype, {
     this.cases.forEach((c, index) => {
       const prefix = index === 0 ? 'if' : '} else if';
       emit(`${prefix} (${c.condition.gen()}) {`);
-      console.log(c.body);
       c.body.gen();
     });
     if (this.block.length > 0) {
@@ -180,7 +186,7 @@ Object.assign(ConditionalStatement.prototype, {
 });
 
 Object.assign(ReturnStatement.prototype, {
-  gen() { emit(`return ${this.returnValue.gen()};`); },
+  gen() { return `return ${this.returnValue.gen()}`; },
 });
 
 Object.assign(WhileStatement.prototype, {
@@ -208,7 +214,7 @@ Object.assign(ForStatement.prototype, {
 });
 
 /* ************
- *  Functions *
+ *  FUNCTIONS *
  **************/
 
 Object.assign(FunctionLiteral.prototype, {
@@ -234,28 +240,28 @@ Object.assign(FunctionDeclaration.prototype, {
   },
 });
 
-/* ************
- * Statements *
- **************/
-Object.assign(NormalStatement.prototype, {
+Object.assign(FunctionCall.prototype, {
   gen() {
-    if (this.stmt) {
-      this.stmt.gen();
-    } else {
-      emit('');
-    }
+    return `${this.id}${this.params.map(p => `(${p.gen()})`).join('')}`;
   },
 });
 
-Object.assign(IndentStatement.prototype, {
+Object.assign(FunctionParameters.prototype, {
   gen() {
-    this.stmt.gen();
+    return this.params.map(p => p.gen()).join(', ');
   },
 });
+
+/* ************
+ * STATEMENTS *
+ **************/
 
 Object.assign(Statement.prototype, {
   gen() {
-    this.stmt.gen();
+    const generated = (this.stmt.gen());
+    if (generated) {
+      emit(`${generated};`); // only emits statements that are not yet emitted
+    }
   },
 });
 

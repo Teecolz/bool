@@ -5,10 +5,10 @@ Bool {
     // multi line comments must either exist on their own or at the terminus
     // of a line
     Block
-        = (FullStmt | singlecomment)*
+        = (FullStmt | singlecomment )*
     FullStmt
-      = IndentStmt          --indent
-      | NormalStmt? newline --normal
+      = IndentStmt           --indent
+      | NormalStmt? newline  --normal
     NormalStmt
       = VarDecl
       | OpAssign
