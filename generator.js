@@ -52,10 +52,21 @@ function emit(line) {
   console.log(`${' '.repeat(indentPadding * indentLevel)}${line}`);
 }
 
-function genStatementList(statements) {
+function preEmit(line) {
+  return `${' '.repeat(indentPadding * indentLevel)}${line}`;
+}
+
+function getStatementList(statements) {
   indentLevel += 1;
   statements.forEach(statement => statement.gen());
   indentLevel -= 1;
+}
+
+function getLinesAsArray(statements) {
+  indentLevel += 1;
+  const lineArray = statements.map(s => preEmit(s.gen()));
+  indentLevel -= 1;
+  return lineArray;
 }
 
 function bracketIfNecessary(a) {
@@ -127,6 +138,10 @@ Object.assign(VariableDeclaration.prototype, {
   },
 });
 
+Object.assign(VariableExpression.prototype, {
+  gen() { return `${this.name}`; },
+});
+
 Object.assign(BinaryExpression.prototype, {
   gen() { return `(${this.left.gen()} ${makeOp(this.op)} ${this.right.gen()})`; },
 });
@@ -147,7 +162,7 @@ Object.assign(ConditionalStatement.prototype, {
 });
 
 Object.assign(ReturnStatement.prototype, {
-  gen() { emit(`return ${this.returnValue.gen()}`); },
+  gen() { emit(`return ${this.returnValue.gen()};`); },
 });
 
 Object.assign(WhileStatement.prototype, {
@@ -201,7 +216,7 @@ Object.assign(Statement.prototype, {
 
 Object.assign(Suite.prototype, {
   gen() {
-    genStatementList(this.stmts);
+    getStatementList(this.stmts);
   },
 });
 
@@ -215,6 +230,10 @@ Object.assign(BooleanLiteral.prototype, {
 
 Object.assign(ExpList.prototype, {
   gen() { return `${this.exps}`; },
+});
+
+Object.assign(IdLiteral.prototype, {
+  gen() { return `${this.id}`; },
 });
 
 Object.assign(IntegerLiteral.prototype, {
@@ -237,6 +256,23 @@ Object.assign(ListExpression.prototype, {
 Object.assign(ListLiteral.prototype, {
   gen() {
     const list = this.exp;
-    emit(`[${list.gen()}]`);
+    return `[${list.gen()}]`;
+  },
+});
+
+Object.assign(PropertyDeclaration.prototype, {
+  gen() {
+    return `${this.key}: ${this.val.gen()},`; // TODO: what to do about multiline values?
+  },
+});
+
+Object.assign(ObjectLiteral.prototype, {
+  gen() {
+    let objectString = '{\n';
+    getLinesAsArray(this.props).forEach((p) => {
+      objectString += `${p}\n`;
+    });
+    objectString += preEmit('}');
+    return objectString;
   },
 });
