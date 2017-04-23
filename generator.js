@@ -7,6 +7,7 @@ const ClassDeclaration = require('./entities/classdecl.js');
 const ClassInstantiation = require('./entities/classinstantiation.js');
 const ClassSuite = require('./entities/classsuite.js');
 const ConditionalStatement = require('./entities/conditionalstatement.js');
+const Context = require('./analyzer.js');
 const DoUntilStatement = require('./entities/dountil.js');
 const DoWhileStatement = require('./entities/dowhile.js');
 const ExpList = require('./entities/explist.js');
@@ -42,8 +43,11 @@ const WhileStatement = require('./entities/whilestatement.js');
 const indentPadding = 2;
 let indentLevel = 0;
 
+exports.EMIT_DESTINATION = undefined; // to define output location
+
 function emit(line) {
-  console.log(`${' '.repeat(indentPadding * indentLevel)}${line}`);
+  const output = `${' '.repeat(indentPadding * indentLevel)}${line}`;
+  console.log(output);
 }
 
 function preEmit(line) {
@@ -90,18 +94,18 @@ function makeBoolean(bool) {
   return { tru: 'true', fal: 'false' }[bool];
 }
 
-// function generateLibraryFunctions() {
-//   function generateLibraryStub(name, params, body) {
-//     const entity = Context.INITIAL.variables[name];
-//     emit(`function ${jsName(entity)} (${params}) {${body}}`);
-//   }
-//   // This is sloppy. There should be a better way to do this.
-//   generateLibraryStub('print', 's', 'console.log(s);');
-//   generateLibraryStub('sqrt', 'x', 'return Math.sqrt(x);');
-// }
+function generateLibraryFunctions() {
+  function generateLibraryStub(name, params, body) {
+    const entity = Context.LIBRARY.lookupVariable(name);
+    emit(`function ${jsName(entity)} (${params}) {${body}}`);
+  }
+
+  generateLibraryStub('print', 's', 'console.log(s);');
+}
 
 Object.assign(Program.prototype, {
   gen() {
+    generateLibraryFunctions();
     this.block.gen();
   },
 });

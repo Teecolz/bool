@@ -1,11 +1,17 @@
+const Type = require('./type.js');
+
 class ReturnStatement {
   constructor(expression) {
-    this.returnValue = expression;
+    this.returnValue = expression[0] || undefined;
   }
   analyze(context) {
-    this.returnValue.analyze(context);
+    if (this.returnValue) {
+      this.returnValue.analyze(context);
+      this.type = this.returnValue.type;
+    } else {
+      this.type = Type.ARBITRARY;
+    }
     this.isReturn = true;
-    this.type = this.returnValue.type;
   }
   toString() {
     return `(Return ${this.returnValue})`;

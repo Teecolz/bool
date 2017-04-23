@@ -78,7 +78,7 @@ Bool {
     VarAssignment
       = VarExp "=" Exp
 
-    Return = "ret" Exp
+    Return = "ret" Exp?
 
     Funcall
       = id Funparams+
