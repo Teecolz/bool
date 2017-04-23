@@ -1,49 +1,49 @@
-const Context = require('./analyzer.js');
-const Program = require('./entities/program.js');
-const Block = require('./entities/block.js');
 const Assignment = require('./entities/assign.js');
 const BinaryExpression = require('./entities/binaryexpression.js');
+const Block = require('./entities/block.js');
 const BooleanLiteral = require('./entities/booleanliteral.js');
 const Case = require('./entities/case.js');
+const ClassBody = require('./entities/classbody.js');
 const ClassDeclaration = require('./entities/classdecl.js');
-const ConditionalStatement = require('./entities/conditionalstatement.js');
-const ForStatement = require('./entities/forstatement.js');
-const FunctionDeclaration = require('./entities/fundecl.js');
-const ListLiteral = require('./entities/listliteral.js');
-const ObjectDeclaration = require('./entities/objdecl.js');
-const ObjectLiteral = require('./entities/objectliteral.js');
-const ReturnStatement = require('./entities/returnstatement.js');
-const StringLiteral = require('./entities/stringliteral.js');
-const UnaryExpression = require('./entities/unaryexpression.js');
-const WhileStatement = require('./entities/whilestatement.js');
-const FieldDeclaration = require('./entities/fielddecl.js');
-const MethodDeclaration = require('./entities/methoddecl.js');
-const Suite = require('./entities/suite.js');
-const IntegerLiteral = require('./entities/intliteral.js');
-const FloatLiteral = require('./entities/floatliteral.js');
-const RangeExpression = require('./entities/rangeexpression.js');
-const FunctionCall = require('./entities/funcall.js');
 const ClassInstantiation = require('./entities/classinstantiation.js');
 const ClassSuite = require('./entities/classsuite.js');
-const ClassBody = require('./entities/classbody.js');
-const FunctionLiteral = require('./entities/functionliteral.js');
-const IdLiteral = require('./entities/idliteral.js');
-const ExpList = require('./entities/explist.js');
-const ListExpression = require('./entities/listexp.js');
-const Parameters = require('./entities/params.js');
-const PropertyDeclaration = require('./entities/propertydeclaration.js');
-const VariableDeclaration = require('./entities/variabledeclaration.js');
-const VariableAssignment = require('./entities/varassignment.js');
-const VariableExpression = require('./entities/varexp.js');
+const ConditionalStatement = require('./entities/conditionalstatement.js');
+const Context = require('./analyzer.js');
 const DoUntilStatement = require('./entities/dountil.js');
 const DoWhileStatement = require('./entities/dowhile.js');
-const SimpleIf = require('./entities/simpleif.js');
-const NormalStatement = require('./entities/normalstmt.js');
-const IndentStatement = require('./entities/indentstmt.js');
-const Statement = require('./entities/stmt.js');
-const Type = require('./entities/type.js');
-const ParameterDeclaration = require('./entities/paramdecl.js');
+const ExpList = require('./entities/explist.js');
+const FieldDeclaration = require('./entities/fielddecl.js');
+const FloatLiteral = require('./entities/floatliteral.js');
+const ForStatement = require('./entities/forstatement.js');
+const FunctionCall = require('./entities/funcall.js');
+const FunctionDeclaration = require('./entities/fundecl.js');
+const FunctionLiteral = require('./entities/functionliteral.js');
 const FunctionParameters = require('./entities/funparams.js');
+const IdLiteral = require('./entities/idliteral.js');
+const IndentStatement = require('./entities/indentstmt.js');
+const IntegerLiteral = require('./entities/intliteral.js');
+const ListExpression = require('./entities/listexp.js');
+const ListLiteral = require('./entities/listliteral.js');
+const MethodDeclaration = require('./entities/methoddecl.js');
+const NormalStatement = require('./entities/normalstmt.js');
+const ObjectDeclaration = require('./entities/objdecl.js');
+const ObjectLiteral = require('./entities/objectliteral.js');
+const ParameterDeclaration = require('./entities/paramdecl.js');
+const Parameters = require('./entities/params.js');
+const Program = require('./entities/program.js');
+const PropertyDeclaration = require('./entities/propertydeclaration.js');
+const RangeExpression = require('./entities/rangeexpression.js');
+const ReturnStatement = require('./entities/returnstatement.js');
+const SimpleIf = require('./entities/simpleif.js');
+const Statement = require('./entities/stmt.js');
+const StringLiteral = require('./entities/stringliteral.js');
+const Suite = require('./entities/suite.js');
+const Type = require('./entities/type.js');
+const UnaryExpression = require('./entities/unaryexpression.js');
+const VariableAssignment = require('./entities/varassignment.js');
+const VariableDeclaration = require('./entities/variabledeclaration.js');
+const VariableExpression = require('./entities/varexp.js');
+const WhileStatement = require('./entities/whilestatement.js');
 
 const indentPadding = 2;
 let indentLevel = 0;
@@ -103,7 +103,7 @@ Object.assign(Program.prototype, {
 
 Object.assign(Block.prototype, {
   gen() {
-    genStatementList(this.body);
+    this.body.forEach(statement => statement.gen());
   },
 });
 
@@ -150,6 +150,10 @@ Object.assign(ConditionalStatement.prototype, {
   },
 });
 
+Object.assign(ReturnStatement.prototype, {
+  gen() { emit(`return ${this.returnValue.gen()}`); },
+});
+
 Object.assign(WhileStatement.prototype, {
   gen() {
     emit(`while (${this.condition}) {`);
@@ -174,18 +178,53 @@ Object.assign(ForStatement.prototype, {
   },
 });
 
+/* ************
+ * Statements *
+ **************/
+Object.assign(NormalStatement.prototype, {
+  gen() {
+    if (this.stmt) {
+      this.stmt.gen();
+    } else {
+      emit('');
+    }
+  },
+});
+
+Object.assign(IndentStatement.prototype, {
+  gen() {
+    this.stmt.gen();
+  },
+});
+
+Object.assign(Statement.prototype, {
+  gen() {
+    this.stmt.gen();
+  },
+});
+
 Object.assign(Suite.prototype, {
   gen() {
     genStatementList(this.stmts);
   },
 });
 
+
+/* ************
+ *  Literals  *
+ **************/
 Object.assign(ListLiteral.prototype, {
   gen() {
     const list = this.exp;
     if (list instanceof ExpList) {
       emit(`[${list.gen()}]`);
     } // TODO add else for listexp
+  },
+});
+
+Object.assign(IntegerLiteral.prototype, {
+  gen() {
+    return `${this.val}`;
   },
 });
 
