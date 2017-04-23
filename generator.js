@@ -119,7 +119,12 @@ Object.assign(Block.prototype, {
 });
 
 Object.assign(Parameters.prototype, {
-  gen() { return this.expression.gen(); },
+  gen() {
+    let paramString = '';
+    this.params.forEach((p) => { paramString += `${p}, `; });
+    paramString = paramString.replace(/, $/, '');
+    return paramString;
+  },
 });
 
 Object.assign(VariableAssignment.prototype, {
@@ -203,6 +208,33 @@ Object.assign(ForStatement.prototype, {
 });
 
 /* ************
+ *  Functions *
+ **************/
+
+Object.assign(FunctionLiteral.prototype, {
+  gen() {
+    let funText = `(${this.params.gen()}) => `;
+    if (this.body instanceof Suite) {
+      funText += '{\n';
+      const bodyAr = getLinesAsArray(this.body.stmts);
+      bodyAr.forEach((line) => { funText += line; });
+      funText += '}';
+    } else {
+      funText += `${this.body.gen()}`;
+    }
+    return funText;
+  },
+});
+
+Object.assign(FunctionDeclaration.prototype, {
+  gen() {
+    emit(`let ${this.id} = (${this.params.gen()}) => {`);
+    this.body.gen();
+    emit('};');
+  },
+});
+
+/* ************
  * Statements *
  **************/
 Object.assign(NormalStatement.prototype, {
@@ -217,17 +249,13 @@ Object.assign(NormalStatement.prototype, {
 
 Object.assign(IndentStatement.prototype, {
   gen() {
-    for (const statement in this.stmt) {
-      if (this.stmt[statement] !== null) {
-        (this.stmt[statement]).gen();
-      }
-    }
+    this.stmt.gen();
   },
 });
 
 Object.assign(Statement.prototype, {
   gen() {
-
+    this.stmt.gen();
   },
 });
 
