@@ -1,4 +1,3 @@
-const Assignment = require('./entities/assign.js');
 const BinaryExpression = require('./entities/binaryexpression.js');
 const Block = require('./entities/block.js');
 const BooleanLiteral = require('./entities/booleanliteral.js');
@@ -8,7 +7,6 @@ const ClassDeclaration = require('./entities/classdecl.js');
 const ClassInstantiation = require('./entities/classinstantiation.js');
 const ClassSuite = require('./entities/classsuite.js');
 const ConditionalStatement = require('./entities/conditionalstatement.js');
-const Context = require('./analyzer.js');
 const DoUntilStatement = require('./entities/dountil.js');
 const DoWhileStatement = require('./entities/dowhile.js');
 const ExpList = require('./entities/explist.js');
@@ -20,15 +18,12 @@ const FunctionDeclaration = require('./entities/fundecl.js');
 const FunctionLiteral = require('./entities/functionliteral.js');
 const FunctionParameters = require('./entities/funparams.js');
 const IdLiteral = require('./entities/idliteral.js');
-const IndentStatement = require('./entities/indentstmt.js');
 const IntegerLiteral = require('./entities/intliteral.js');
 const ListExpression = require('./entities/listexp.js');
 const ListLiteral = require('./entities/listliteral.js');
 const MethodDeclaration = require('./entities/methoddecl.js');
-const NormalStatement = require('./entities/normalstmt.js');
 const ObjectDeclaration = require('./entities/objdecl.js');
 const ObjectLiteral = require('./entities/objectliteral.js');
-const ParameterDeclaration = require('./entities/paramdecl.js');
 const Parameters = require('./entities/params.js');
 const Program = require('./entities/program.js');
 const PropertyDeclaration = require('./entities/propertydeclaration.js');
@@ -38,7 +33,6 @@ const SimpleIf = require('./entities/simpleif.js');
 const Statement = require('./entities/stmt.js');
 const StringLiteral = require('./entities/stringliteral.js');
 const Suite = require('./entities/suite.js');
-const Type = require('./entities/type.js');
 const UnaryExpression = require('./entities/unaryexpression.js');
 const VariableAssignment = require('./entities/varassignment.js');
 const VariableDeclaration = require('./entities/variabledeclaration.js');
@@ -91,9 +85,6 @@ const jsName = (() => {
   };
 })();
 
-function makeOp(op) {
-  return { not: '!', '==': '===', '!=': '!==' }[op] || op;
-}
 
 function makeBoolean(bool) {
   return { tru: 'true', fal: 'false' }[bool];
@@ -146,14 +137,26 @@ Object.assign(VariableDeclaration.prototype, {
   },
 });
 
+/* *************
+ * EXPRESSIONS *
+ ***************/
+
 Object.assign(VariableExpression.prototype, {
   gen() { return `${this.name}`; },
 });
 
+
 Object.assign(BinaryExpression.prototype, {
-  gen() { return `(${this.left.gen()} ${makeOp(this.op)} ${this.right.gen()})`; },
+  gen() { return `(${this.left.gen()} ${this.op} ${this.right.gen()})`; },
 });
 
+Object.assign(UnaryExpression.prototype, {
+  gen() { return `${this.op}${this.operand}`; },
+});
+
+/* **************
+ * CONDITIONALS *
+ ****************/
 Object.assign(SimpleIf.prototype, {
   gen() {
     return `${this.name}`;
@@ -181,10 +184,9 @@ Object.assign(ConditionalStatement.prototype, {
   },
 });
 
-Object.assign(ReturnStatement.prototype, {
-  gen() { return `return ${this.returnValue.gen()}`; },
-});
-
+/* *******
+ * LOOPS *
+ *********/
 Object.assign(WhileStatement.prototype, {
   gen() {
     emit(`while (${this.condition}) {`);
@@ -252,6 +254,10 @@ Object.assign(FunctionParameters.prototype, {
  * STATEMENTS *
  **************/
 
+Object.assign(ReturnStatement.prototype, {
+  gen() { return `return ${this.returnValue.gen()}`; },
+});
+
 Object.assign(Statement.prototype, {
   gen() {
     const generated = (this.stmt.gen());
@@ -268,7 +274,7 @@ Object.assign(Suite.prototype, {
 });
 
 /* ************
- *  Literals  *
+ *  LITERALS  *
  **************/
 Object.assign(BooleanLiteral.prototype, {
   gen() { return `${makeBoolean(this.val)}`; },
@@ -276,6 +282,12 @@ Object.assign(BooleanLiteral.prototype, {
 
 Object.assign(ExpList.prototype, {
   gen() { return `${this.exps}`; },
+});
+
+Object.assign(FloatLiteral.prototype, {
+  gen() {
+    return `${this.val}`;
+  },
 });
 
 Object.assign(IdLiteral.prototype, {
@@ -321,4 +333,8 @@ Object.assign(ObjectLiteral.prototype, {
     objectString += preEmit('}');
     return objectString;
   },
+});
+
+Object.assign(StringLiteral.prototype, {
+  gen() { return `${this.val}`; },
 });
