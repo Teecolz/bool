@@ -20,5 +20,6 @@ fs.readFile(argv._[0], 'utf-8', (err, text) => {
     console.log(program.toString());
     program.toString();
   }
+  console.log(program.constructor.name);
   program.gen();
 });
