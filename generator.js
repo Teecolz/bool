@@ -51,6 +51,12 @@ function emit(line) {
   console.log(`${' '.repeat(indentPadding * indentLevel)}${line}`);
 }
 
+function genStatementList(statements) {
+  indentLevel += 1;
+  statements.forEach(statement => statement.gen());
+  indentLevel -= 1;
+}
+
 function bracketIfNecessary(a) {
   if (a.length === 1) {
     return `${a}`;
@@ -60,6 +66,10 @@ function bracketIfNecessary(a) {
 
 function makeOp(op) {
   return { not: '!', '==': '===', '!=': '!==' }[op] || op;
+}
+
+function makeBoolean(bool) {
+  return { tru: 'true', fal: 'false' }[bool];
 }
 
 Object.assign(Parameters.prototype, {
@@ -76,4 +86,66 @@ Object.assign(VariableAssignment.prototype, {
 
 Object.assign(BinaryExpression.prototype, {
   gen() { return `(${this.left.gen()} ${makeOp(this.op)} ${this.right.gen()})`; },
+});
+
+Object.assign(BooleanLiteral.prototype, {
+  gen() { return `${makeBoolean(this.val)}`; },
+});
+
+Object.assign(ConditionalStatement.prototype, {
+  gen() {
+    this.cases.forEach((c, index) => {
+      const prefix = index === 0 ? 'if' : '} else if';
+      emit(`${prefix} (${c.condition.gen()}) {`);
+      c.body.gen();
+    });
+    if (this.block.length > 0) {
+      emit('} else {');
+      this.block.gen();
+    }
+    emit('}');
+  },
+});
+
+Object.assign(WhileStatement.prototype, {
+  gen() {
+    emit(`while (${this.condition}) {`);
+    this.body.gen();
+    emit('}');
+  },
+});
+
+Object.assign(ForStatement.prototype, {
+  gen() {
+    const list = this.list;
+    if (list instanceof RangeExpression) {
+      const boundsCheck = list.step > 0 ? '<' : '>';
+      emit(`for (let ${this.iterator} = ${list.start}; ${this.iterator} ${boundsCheck} ${list.end}; ${this.iterator} += ${list.step}) {`);
+      this.block.gen();
+      emit('}');
+    } else {
+      emit(`${list.gen()}.forEach((${this.iterator}) => {`);
+      this.block.gen();
+      emit('});');
+    }
+  },
+});
+
+Object.assign(Suite.prototype, {
+  gen() {
+    genStatementList(this.stmts);
+  },
+});
+
+Object.assign(ListLiteral.prototype, {
+  gen() {
+    const list = this.exp;
+    if (list instanceof ExpList) {
+      emit(`[${list.gen()}]`);
+    } // TODO add else for listexp
+  },
+});
+
+Object.assign(ExpList.prototype, {
+  gen() { return `${this.exps}`; },
 });
