@@ -5,10 +5,12 @@ class Suite {
   analyze(context) {
     const localContext = context.createChildContext();
     for (let stmt of this.stmts) {
-      stmt.analyze(localContext);
-      if (stmt.isReturn) {
-        this.type = stmt.type;
-        this.returnValue = stmt.returnValue;
+      if (stmt) {
+        stmt.analyze(localContext);
+        if (stmt.isReturn) {
+          this.type = stmt.type;
+          this.returnValue = stmt.returnValue;
+        }
       }
     }
   }
