@@ -4,6 +4,11 @@ class ClassInstantiation {
     this.params = params;
   }
 
+  analyze(context) {
+    this.id.analyze(context);
+    this.params.analyze(context);
+  }
+
   toString() {
     return `(New ${this.id} ${this.params})`;
   }

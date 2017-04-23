@@ -1,3 +1,4 @@
+const Context = require('./analyzer.js');
 const Program = require('./entities/program.js');
 const Block = require('./entities/block.js');
 const Assignment = require('./entities/assign.js');
@@ -45,7 +46,7 @@ const ParameterDeclaration = require('./entities/paramdecl.js');
 const FunctionParameters = require('./entities/funparams.js');
 
 const indentPadding = 2;
-let indentLevel = 0;
+const indentLevel = 0;
 
 function emit(line) {
   console.log(`${' '.repeat(indentPadding * indentLevel)}${line}`);
@@ -58,9 +59,38 @@ function bracketIfNecessary(a) {
   return `[${a.join(', ')}]`;
 }
 
+
+const jsName = (() => {
+  let lastId = 0;
+  const map = new Map();
+  return (v) => {
+    if (!(map.has(v))) {
+      map.set(v, ++lastId); // eslint-disable-line no-plusplus
+    }
+    return `${v.id}_${map.get(v)}`;
+  };
+})();
+
 function makeOp(op) {
   return { not: '!', '==': '===', '!=': '!==' }[op] || op;
 }
+
+// function generateLibraryFunctions() {
+//   function generateLibraryStub(name, params, body) {
+//     const entity = Context.INITIAL.variables[name];
+//     emit(`function ${jsName(entity)} (${params}) {${body}}`);
+//   }
+//   // This is sloppy. There should be a better way to do this.
+//   generateLibraryStub('print', 's', 'console.log(s);');
+//   generateLibraryStub('sqrt', 'x', 'return Math.sqrt(x);');
+// }
+
+Object.assign(Program.prototype, {
+  gen() {
+    // generateLibraryFunctions();
+    this.statements.forEach(statement => statement.gen());
+  },
+});
 
 Object.assign(Parameters.prototype, {
   gen() { return this.expression.gen(); },
@@ -71,6 +101,14 @@ Object.assign(VariableAssignment.prototype, {
     const targets = this.targets.map(t => t.gen());
     const sources = this.sources.map(s => s.gen());
     emit(`${bracketIfNecessary(targets)} = ${bracketIfNecessary(sources)};`);
+  },
+});
+
+Object.assign(VariableDeclaration.prototype, {
+  gen() {
+    const variables = this.variables.map(v => v.gen());
+    const initializers = this.initializers.map(i => i.gen());
+    emit(`let ${bracketIfNecessary(variables)} = ${bracketIfNecessary(initializers)};`);
   },
 });
 
