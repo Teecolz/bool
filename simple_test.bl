@@ -12,13 +12,11 @@
 ##
 
 fun test(x y):
-indent log("This is a test bool file")
+  log("This is a test bool file")
 if a > b:
-indent log("a > b")
-dedent el:
-indent log("a <= b")
-dedent
-dedent
+  log("a > b")
+el:
+  log("a <= b")
 test()
 let x:int = 1
 x += 1

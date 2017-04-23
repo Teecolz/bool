@@ -107,14 +107,14 @@ function makeBoolean(bool) {
 
 Object.assign(Program.prototype, {
   gen() {
-    // generateLibraryFunctions();
+    // console.log(this);
     this.block.gen();
   },
 });
 
 Object.assign(Block.prototype, {
   gen() {
-    this.body.forEach(statement => statement.gen());
+    this.body.forEach(body => body.gen());
   },
 });
 
@@ -146,11 +146,24 @@ Object.assign(BinaryExpression.prototype, {
   gen() { return `(${this.left.gen()} ${makeOp(this.op)} ${this.right.gen()})`; },
 });
 
+Object.assign(SimpleIf.prototype, {
+  gen() {
+    return `${this.name}`;
+  },
+});
+
+Object.assign(Case.prototype, {
+  gen() {
+
+  },
+});
+
 Object.assign(ConditionalStatement.prototype, {
   gen() {
     this.cases.forEach((c, index) => {
       const prefix = index === 0 ? 'if' : '} else if';
       emit(`${prefix} (${c.condition.gen()}) {`);
+      console.log(c.body);
       c.body.gen();
     });
     if (this.block.length > 0) {
@@ -204,13 +217,17 @@ Object.assign(NormalStatement.prototype, {
 
 Object.assign(IndentStatement.prototype, {
   gen() {
-    this.stmt.gen();
+    for (const statement in this.stmt) {
+      if (this.stmt[statement] !== null) {
+        (this.stmt[statement]).gen();
+      }
+    }
   },
 });
 
 Object.assign(Statement.prototype, {
   gen() {
-    this.stmt.gen();
+
   },
 });
 
@@ -219,7 +236,6 @@ Object.assign(Suite.prototype, {
     getStatementList(this.stmts);
   },
 });
-
 
 /* ************
  *  Literals  *

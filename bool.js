@@ -20,9 +20,12 @@ fs.readFile(argv._[0], 'utf-8', (err, text) => {
   if (argv.a) {
     console.log(program.toString());
     program.toString();
+    return;
   }
   if (argv.i) {
     console.log(program.constructor.name);
     program.gen();
+    return;
   }
+  program.gen();
 });

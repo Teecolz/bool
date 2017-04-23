@@ -1,3 +1,2 @@
-fun t (x):
-  let x:int = 0
-  ret x
+if tru:
+  ret fal

@@ -16,11 +16,13 @@ class AnalysisContext {
     funContext.isFunctionContext = true;
     return funContext;
   }
+
   mustNotBeLocal(name) {
     if (this.symTable[name]) {
       error(`Cannot redeclare variable ${name} in this scope`, name);
     }
   }
+
   lookupFunction(name) {
     const func = this.symTable[name];
     if (func) {

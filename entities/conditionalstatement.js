@@ -6,10 +6,10 @@ class ConditionalStatement {
     this.block = block;
   }
   analyze(context) {
-    for (let curCase of this.cases) {
+    for (const curCase of this.cases) {
       curCase.analyze(context);
     }
-    for (let stmt of this.block) {
+    for (const stmt of this.block) {
       stmt.analyze(context);
     }
   }
