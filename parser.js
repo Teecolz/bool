@@ -51,6 +51,7 @@ const Type = require('./entities/type.js');
 const ParameterDeclaration = require('./entities/paramdecl.js');
 const FunctionParameters = require('./entities/funparams.js');
 const Preparser = require('./preparser.js');
+const OpAssignment = require('./entities/opassign.js');
 
 const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
 
@@ -78,13 +79,13 @@ const semantics = grammar.createSemantics().addOperation('ast', {
     return new Parameters(ids.ast());
   },
   ParamDecl(id, type) {
-    return new ParameterDeclaration(id.sourceString, type.ast());
+    return new ParameterDeclaration(id.ast(), type.ast());
   },
   Funparams(_, params, close) {
     return new FunctionParameters(params.ast());
   },
   ClassDecl(cl, id, isa, superId, col, cs) {
-    return new ClassDeclaration(id.sourceString, superId.sourceString, cs.ast());
+    return new ClassDeclaration(id.ast(), superId.sourceString, cs.ast());
   },
   ClassSuite(nl, ind, cb, ded) {
     return new ClassSuite(cb.ast());
@@ -93,15 +94,10 @@ const semantics = grammar.createSemantics().addOperation('ast', {
     return new ClassBody(fields.ast(), methods.ast());
   },
   VarDecl(l, id, type, _, exp) {
-    return new VariableDeclaration(id.ast(), type.ast(), exp.ast());
+    return new VariableDeclaration(id.sourceString, type.ast(), exp.ast());
   },
   OpAssign(id, op, e) {
-    return new VariableAssignment(
-      id.ast(),
-      new BinaryExpression(
-        id.ast(),
-        op.sourceString.charAt(0),
-        e.ast()));
+    return new OpAssignment(id.sourceString, op.sourceString, e.ast());
   },
   Type_single(_, t) {
     return Type.Construct(t.sourceString);
@@ -116,22 +112,22 @@ const semantics = grammar.createSemantics().addOperation('ast', {
     return new VariableExpression(name.sourceString);
   },
   fielddecl(open, id) {
-    return new FieldDeclaration(id.sourceString);
+    return new FieldDeclaration(id.ast());
   },
   ConstructorDecl(id, params, col, s) {
-    return new MethodDeclaration(id.sourceString, params.ast(), s.ast());
+    return new MethodDeclaration(id.ast(), params.ast(), s.ast());
   },
   MethodDecl(id, params, col, s) {
-    return new MethodDeclaration(id.sourceString, params.ast(), s.ast());
+    return new MethodDeclaration(id.ast(), params.ast(), s.ast());
   },
   methodparams(open, id1, sp, ids, close) {
     return new Parameters([id1.ast()].concat(ids.ast()));
   },
   ObjDecl(id, col, nl, ind, props, nl2, ded) {
-    return new ObjectDeclaration(id.sourceString, props.ast());
+    return new ObjectDeclaration(id.ast(), props.ast());
   },
   PropertyDecl(id, col, e) {
-    return new PropertyDeclaration(id.sourceString, e.ast());
+    return new PropertyDeclaration(id.ast(), e.ast());
   },
   FunDecl(f, id, type, params, col, s) {
     return new FunctionDeclaration(id.sourceString, type.ast(), params.ast(), s.ast());
@@ -144,7 +140,7 @@ const semantics = grammar.createSemantics().addOperation('ast', {
     return new ExpList([e1.ast()].concat(el.ast()));
   },
   ListExp(e, _, id, n, list, cond) {
-    return new ListExpression(e.ast(), id.sourceString, list.ast(), cond.ast());
+    return new ListExpression(e.ast(), id.ast(), list.ast(), cond.ast());
   },
   SimpleIf(_, e) {
     return new SimpleIf(e.ast());
@@ -171,7 +167,7 @@ const semantics = grammar.createSemantics().addOperation('ast', {
     return new RangeExpression(st.ast(), end.ast(), step.ast());
   },
   ClassInst(_, id, params) {
-    return new ClassInstantiation(id.sourceString, params.ast());
+    return new ClassInstantiation(id.ast(), params.ast());
   },
   Funcall(id, params) {
     return new FunctionCall(id.sourceString, params.ast());

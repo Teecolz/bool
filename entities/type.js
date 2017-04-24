@@ -68,6 +68,11 @@ class Type {
       error(message, location);
     }
   }
+  mustBeNumber(message, location) {
+    if (this.name !== 'float' && this.name !== 'int') {
+      error(message, location);
+    }
+  }
   mustBeArbitrary(message, location) {
     if (!this.isArbitrary()) {
       error(message, location);

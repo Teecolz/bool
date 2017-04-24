@@ -2,17 +2,17 @@ const Type = require('./type.js');
 
 class VariableExpression {
   constructor(id) {
-    this.name = id;
+    this.id = id;
   }
   setType(context, type) {
     this.type = type;
   }
   analyze(context) {
-    this.referent = context.lookupVariable(this.name);
+    this.referent = context.lookupVariable(this.id);
     this.type = this.referent.type;
   }
   toString() {
-    return `${this.name}`;
+    return `${this.id}`;
   }
 }
 

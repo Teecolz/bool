@@ -25,6 +25,8 @@ const ListLiteral = require('./entities/listliteral.js');
 const MethodDeclaration = require('./entities/methoddecl.js');
 const ObjectDeclaration = require('./entities/objdecl.js');
 const ObjectLiteral = require('./entities/objectliteral.js');
+const OpAssignment = require('./entities/opassign.js');
+const ParameterDeclaration = require('./entities/paramdecl.js');
 const Parameters = require('./entities/params.js');
 const Program = require('./entities/program.js');
 const PropertyDeclaration = require('./entities/propertydeclaration.js');
@@ -97,7 +99,7 @@ function makeBoolean(bool) {
 function generateLibraryFunctions() {
   function generateLibraryStub(name, params, body) {
     const entity = Context.LIBRARY.lookupVariable(name);
-    emit(`function ${jsName(entity)} (${params}) {${body}}`);
+    emit(`function ${jsName(entity)}(${params}) {${body}}`);
   }
 
   generateLibraryStub('print', 's', 'console.log(s);');
@@ -123,10 +125,14 @@ Object.assign(Block.prototype, {
 Object.assign(Parameters.prototype, {
   gen() {
     let paramString = '';
-    this.params.forEach((p) => { paramString += `${p}, `; });
+    this.params.forEach((p) => { paramString += `${p.gen()}, `; });
     paramString = paramString.replace(/, $/, '');
     return paramString;
   },
+});
+
+Object.assign(ParameterDeclaration.prototype, {
+  gen() { return jsName(this); },
 });
 
 Object.assign(VariableAssignment.prototype, {
@@ -137,7 +143,7 @@ Object.assign(VariableAssignment.prototype, {
 
 Object.assign(VariableDeclaration.prototype, {
   gen() {
-    return `let ${this.name} = ${this.value}`;
+    return `let ${jsName(this)} = ${this.value.gen()}`;
   },
 });
 
@@ -146,7 +152,7 @@ Object.assign(VariableDeclaration.prototype, {
  ***************/
 
 Object.assign(VariableExpression.prototype, {
-  gen() { return `${this.name}`; },
+  gen() { return this.referent.gen(); }, // will break before analysis
 });
 
 
@@ -156,6 +162,10 @@ Object.assign(BinaryExpression.prototype, {
 
 Object.assign(UnaryExpression.prototype, {
   gen() { return `${this.op}${this.operand}`; },
+});
+
+Object.assign(OpAssignment.prototype, {
+  gen() { return `${jsName(this.target.referent)} ${this.op} ${this.source}`; },
 });
 
 /* **************
@@ -202,13 +212,14 @@ Object.assign(WhileStatement.prototype, {
 Object.assign(ForStatement.prototype, {
   gen() {
     const list = this.list;
+    const jsIterator = jsName(this);
     if (list instanceof RangeExpression) {
       const boundsCheck = list.step > 0 ? '<' : '>';
-      emit(`for (let ${this.iterator} = ${list.start}; ${this.iterator} ${boundsCheck} ${list.end}; ${this.iterator} += ${list.step}) {`);
+      emit(`for (let ${jsIterator} = ${list.start}; ${jsIterator} ${boundsCheck} ${list.end}; ${jsIterator} += ${list.step}) {`);
       this.block.gen();
       emit('}');
     } else {
-      emit(`${list.gen()}.forEach((${this.iterator}) => {`);
+      emit(`${list.gen()}.forEach((${jsIterator}) => {`);
       this.block.gen();
       emit('});');
     }
@@ -236,7 +247,7 @@ Object.assign(FunctionLiteral.prototype, {
 
 Object.assign(FunctionDeclaration.prototype, {
   gen() {
-    emit(`let ${this.id} = (${this.params.gen()}) => {`);
+    emit(`let ${jsName(this)} = (${this.params.gen()}) => {`);
     this.body.gen();
     emit('};');
   },
@@ -244,7 +255,7 @@ Object.assign(FunctionDeclaration.prototype, {
 
 Object.assign(FunctionCall.prototype, {
   gen() {
-    return `${this.id}${this.params.map(p => `(${p.gen()})`).join('')}`;
+    return `${jsName(this.callee)}${this.params.map(p => `(${p.gen()})`).join('')}`;
   },
 });
 
@@ -295,7 +306,7 @@ Object.assign(FloatLiteral.prototype, {
 });
 
 Object.assign(IdLiteral.prototype, {
-  gen() { return `${this.id}`; },
+  gen() { return `${jsName(this)}`; },
 });
 
 Object.assign(IntegerLiteral.prototype, {

@@ -2,13 +2,13 @@ const Type = require('./type.js');
 
 class VariableDeclaration {
   constructor(id, type, exp) {
-    this.name = id;
+    this.id = id;
     this.type = type[0];
     this.value = exp[0];
   }
 
   analyze(context) {
-    context.mustNotBeLocal(this.name); // cannot already be declared in local scope
+    context.mustNotBeLocal(this.id); // cannot already be declared in local scope
     if (this.value) {
       this.value.analyze(context);
     } else if (!this.Type) {
@@ -19,16 +19,16 @@ class VariableDeclaration {
     } else if (this.value) {
       this.mustHaveCompatibleTypes();
     }
-    context.addVariable(this.name, this);
+    context.addVariable(this.id, this);
   }
 
   mustHaveCompatibleTypes() {
-    const errorMessage = `Incompatible Types: Declared ${this.type.name}, Assigned ${this.value.type.name}`;
-    this.type.mustBeCompatibleWith(this.value.type, errorMessage, this.name);
+    const errorMessage = `Incompatible Types: Declared ${this.type.id}, Assigned ${this.value.type.id}`;
+    this.type.mustBeCompatibleWith(this.value.type, errorMessage, this.id);
   }
 
   toString() {
-    return `(VarDecl ${this.name}:${this.type || '<no type>'}${this.value ? ` = ${this.value}` : ''})`;
+    return `(VarDecl ${this.id}:${this.type || '<no type>'}${this.value ? ` = ${this.value}` : ''})`;
   }
 }
 

@@ -1,4 +1,5 @@
 const IntegerLiteral = require('./intliteral.js');
+const Type = require('./type.js');
 
 class RangeExpression {
   constructor(start, end, step) {
@@ -16,6 +17,12 @@ class RangeExpression {
       this.step = step[0];
     }
   }
+
+  analyze() {
+    this.type = Type.Construct('[int]');
+    this.elementType = Type.INT;
+  }
+
   toString() {
     return `(Range ${this.start}, ${this.end}, ${this.step})`.replace(/(, )*\)$/, ')');
   }

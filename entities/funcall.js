@@ -14,7 +14,8 @@ class FunctionCall {
 
   // Still need to analyze chained calls... this is going to be an issue
   analyze(context) {
-    let curFun = context.lookupVariable(this.id); // ensure function defined within this scope
+    this.callee = context.lookupVariable(this.id);
+    let curFun = this.callee; // ensure function defined within this scope
     let paramGroup;
     let errorMessage;
     let isPhantomFunction; // avoid trying to access properties of fake function

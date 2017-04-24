@@ -1,8 +1,8 @@
 const Type = require('./type.js');
 
 class ParameterDeclaration {
-  constructor(name, type) {
-    this.name = name;
+  constructor(id, type) {
+    this.id = id;
     if (type.length > 0) {
       this.type = type[0];
     } else {
@@ -11,11 +11,11 @@ class ParameterDeclaration {
   }
 
   analyze(context) {
-    context.addVariable(this.name, this);
+    context.addVariable(this.id, this);
   }
 
   toString() {
-    return `${this.name}`;
+    return `${this.id}`;
   }
 }
 

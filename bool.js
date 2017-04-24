@@ -5,15 +5,15 @@ const parse = require('./parser.js');
 const error = require('./error.js');
 require('./generator.js');
 const argv = require('yargs')
-  .usage('$0 [-a] [-i] filename')
-  .boolean(['a', 'i'])
+  .usage('$0 [-a] [-g] filename')
+  .boolean(['a', 'g'])
   .describe('a', 'show abstract syntax tree after parsing then stop')
-  .describe('i', 'generate and show intermediate code then stop')
+  .describe('g', 'generate and show intermediate code then stop')
   .demand(1)
   .argv;
 
 fs.readFile(argv._[0], 'utf-8', (err, text) => {
-  const program = parse(text);
+  let program = parse(text);
   if (error.count > 0) {
     return;
   }
@@ -22,10 +22,8 @@ fs.readFile(argv._[0], 'utf-8', (err, text) => {
     program.toString();
     return;
   }
-  if (argv.i) {
-    console.log(program.constructor.name);
+  program.analyze();
+  if (argv.g) {
     program.gen();
-    return;
   }
-  program.gen();
 });

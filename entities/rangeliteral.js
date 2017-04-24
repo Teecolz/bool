@@ -6,7 +6,8 @@ class RangeLiteral extends LiteralExpression {
     super.toString('Range');
   }
   analyze() {
-    this.type = Type.INT;
+    this.type = Type.Construct('[int]');
+    this.elementType = Type.INT;
   }
 }
 

@@ -4,7 +4,7 @@ class IntegerLiteral {
   constructor(val) {
     this.val = val;
   }
-  analyze(context) {
+  analyze() {
     this.type = Type.INT;
   }
   toString() {
