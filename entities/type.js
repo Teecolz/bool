@@ -42,7 +42,7 @@ class Type {
     return this.name === 'int';
   }
   isFunction() {
-    return this.name === '<function>';
+    return this.name === 'function';
   }
   isList() {
     return this.name.match(/\[.*\]/);

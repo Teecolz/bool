@@ -61,5 +61,5 @@ class AnalysisContext {
 }
 
 exports.LIBRARY = new AnalysisContext(null);
-new FunctionDeclaration(new IdLiteral('print'), [], new Parameters([new ParamDecl('_', [])]), null).analyze(exports.LIBRARY);
+new FunctionDeclaration('print', [], new Parameters([new ParamDecl('_', [])]), null).analyze(exports.LIBRARY);
 exports.initialContext = new AnalysisContext(exports.LIBRARY);

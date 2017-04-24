@@ -486,7 +486,7 @@ describe('Parser Tests', () => {
         expected: '(Program (Block (BinExp 6 / 2)))',
       },
       {
-        arg: '2 + 5\n -2 + 42\n',
+        arg: '2 + 5\n-2 + 42\n',
         expected: '(Program (Block (BinExp 2 + 5), (BinExp (UnExp - 2) + 42)))',
       },
     ];
@@ -514,11 +514,11 @@ describe('Parser Tests', () => {
       },
       {
         arg: 'for x in range(1):\n  ret tru\n',
-        expected: '(Program (Block (for x in (Range 1) : (Suite (Return tru)))))',
+        expected: '(Program (Block (for x in (Range 0, 1, 1) : (Suite (Return tru)))))',
       },
       {
         arg: 'for x in range(1, 2):\n  ret tru\n',
-        expected: '(Program (Block (for x in (Range 1, 2) : (Suite (Return tru)))))',
+        expected: '(Program (Block (for x in (Range 1, 2, 1) : (Suite (Return tru)))))',
       },
       {
         arg: 'for x in range(1, 2, 3):\n  ret tru\n',
