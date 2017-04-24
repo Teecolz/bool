@@ -1,2 +1,3 @@
-if tru:
-  ret fal
+fun test():
+  if tru:
+    ret fal

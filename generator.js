@@ -52,6 +52,12 @@ function emit(line) {
   console.log(output);
 }
 
+function genStatementList(statements) {
+  indentLevel += 1;
+  statements.stmts.forEach(statement => statement.gen());
+  indentLevel -= 1;
+}
+
 function preEmit(line) {
   return `${' '.repeat(indentPadding * indentLevel)}${line}`;
 }
@@ -122,6 +128,14 @@ Object.assign(Block.prototype, {
   },
 });
 
+Object.assign(FunctionDeclaration.prototype, {
+  gen() {
+    emit(`function ${jsName(this)} (${this.params.params.map(p => p.gen()).join(', ')}) {`);
+    genStatementList(this.body);
+    emit('}');
+  },
+});
+
 Object.assign(Parameters.prototype, {
   gen() {
     let paramString = '';
@@ -185,6 +199,7 @@ Object.assign(Case.prototype, {
 
 Object.assign(ConditionalStatement.prototype, {
   gen() {
+    // console.log(this);
     this.cases.forEach((c, index) => {
       const prefix = index === 0 ? 'if' : '} else if';
       emit(`${prefix} (${c.condition.gen()}) {`);
@@ -279,6 +294,14 @@ Object.assign(Statement.prototype, {
     if (generated) {
       emit(`${generated};`); // only emits statements that are not yet emitted
     }
+  },
+});
+
+Object.assign(DoUntilStatement.prototype, {
+  gen() {
+    emit('do:');
+    this.doSuite.gen();
+    emit(`while${this.untilExp.gen()}`);
   },
 });
 
