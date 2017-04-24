@@ -52,6 +52,12 @@ function emit(line) {
   console.log(`${' '.repeat(indentPadding * indentLevel)}${line}`);
 }
 
+function genStatementList(statements) {
+  indentLevel += 1;
+  statements.stmts.forEach(statement => statement.gen());
+  indentLevel -= 1;
+}
+
 function preEmit(line) {
   return `${' '.repeat(indentPadding * indentLevel)}${line}`;
 }
@@ -118,6 +124,14 @@ Object.assign(Block.prototype, {
   },
 });
 
+Object.assign(FunctionDeclaration.prototype, {
+  gen() {
+    emit(`function ${jsName(this)} (${this.params.params.map(p => p.gen()).join(', ')}) {`);
+    genStatementList(this.body);
+    emit('}');
+  },
+});
+
 Object.assign(Parameters.prototype, {
   gen() { return this.expression.gen(); },
 });
@@ -160,10 +174,10 @@ Object.assign(Case.prototype, {
 
 Object.assign(ConditionalStatement.prototype, {
   gen() {
+    // console.log(this);
     this.cases.forEach((c, index) => {
       const prefix = index === 0 ? 'if' : '} else if';
       emit(`${prefix} (${c.condition.gen()}) {`);
-      console.log(c.body);
       c.body.gen();
     });
     if (this.block.length > 0) {
@@ -218,7 +232,7 @@ Object.assign(NormalStatement.prototype, {
 Object.assign(IndentStatement.prototype, {
   gen() {
     for (const statement in this.stmt) {
-      if (this.stmt[statement] !== null) {
+      if (typeof this.stmt[statement] === 'object') {
         (this.stmt[statement]).gen();
       }
     }
@@ -227,7 +241,7 @@ Object.assign(IndentStatement.prototype, {
 
 Object.assign(Statement.prototype, {
   gen() {
-
+    this.stmt.gen();
   },
 });
 
