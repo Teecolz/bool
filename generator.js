@@ -292,6 +292,14 @@ Object.assign(Statement.prototype, {
   },
 });
 
+Object.assign(DoUntilStatement.prototype, {
+  gen() {
+    emit('do:');
+    this.doSuite.gen();
+    emit(`while${this.untilExp.gen()}`);
+  },
+});
+
 Object.assign(Suite.prototype, {
   gen() {
     getStatementList(this.stmts);
