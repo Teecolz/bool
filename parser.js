@@ -10,7 +10,6 @@ const fs = require('fs');
 const error = require('./error');
 const Program = require('./entities/program.js');
 const Block = require('./entities/block.js');
-const Assignment = require('./entities/assign.js');
 const BinaryExpression = require('./entities/binaryexpression.js');
 const BooleanLiteral = require('./entities/booleanliteral.js');
 const Case = require('./entities/case.js');
@@ -47,8 +46,6 @@ const VariableExpression = require('./entities/varexp.js');
 const DoUntilStatement = require('./entities/dountil.js');
 const DoWhileStatement = require('./entities/dowhile.js');
 const SimpleIf = require('./entities/simpleif.js');
-const NormalStatement = require('./entities/normalstmt.js');
-const IndentStatement = require('./entities/indentstmt.js');
 const Statement = require('./entities/stmt.js');
 const Type = require('./entities/type.js');
 const ParameterDeclaration = require('./entities/paramdecl.js');
@@ -61,8 +58,14 @@ const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
 const semantics = grammar.createSemantics().addOperation('ast', {
   Program(b) { return new Program(b.ast()); },
   Block(s) { return new Block(s.ast()); },
-  FullStmt_normal(s, _) { return new NormalStatement(s.ast()); },
-  FullStmt_indent(s) { return new IndentStatement(s.ast()); },
+  FullStmt_normal(s, _) {
+    const ast = s.ast();
+    if (ast.length > 0) {
+      return ast[0];
+    }
+    return ''; // if statment is just a newline
+  },
+  FullStmt_indent(s) { return s.ast(); },
   IndentStmt(s) { return new Statement(s.ast()); },
   NormalStmt(s) { return new Statement(s.ast()); },
   Suite(nl, indent, s, nlEnd, _) {

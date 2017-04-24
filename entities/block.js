@@ -9,7 +9,9 @@ class Block {
   analyze(context) {
     const localContext = context.createChildContext();
     for (let stmt of this.body) {
-      stmt.analyze(localContext);
+      if (stmt) {
+        stmt.analyze(localContext);
+      }
     }
   }
 

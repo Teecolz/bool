@@ -16,10 +16,12 @@ class FunctionDeclaration {
     context.mustNotBeLocal(this.id);
     const localContext = context.createFunctionContext();
     this.params.analyze(localContext);
-    this.body.analyze(localContext);
+    if (this.body) {
+      this.body.analyze(localContext);
+    }
     this.type = Type.Construct('function');
     // If function returns a value, assign that value's type to function name
-    if (this.body.type) {
+    if (this.body && this.body.type) {
       if (this.returnType) {
         this.returnType.mustBeCompatibleWith(this.body.type, `Incompatible return type. Expected ${this.returnType}, got ${this.body.type}.`, this.returnType);
       }

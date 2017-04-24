@@ -1,5 +1,8 @@
 const error = require('./error.js');
 const Undefined = require('./entities/undefined.js');
+const FunctionDeclaration = require('./entities/fundecl.js');
+const ParamDecl = require('./entities/paramdecl.js');
+const Parameters = require('./entities/params.js');
 
 class AnalysisContext {
   constructor(parent) {
@@ -56,4 +59,6 @@ class AnalysisContext {
   }
 }
 
-exports.initialContext = new AnalysisContext(null);
+exports.LIBRARY = new AnalysisContext(null);
+new FunctionDeclaration('print', [], new Parameters([new ParamDecl('_', [])]), null).analyze(exports.LIBRARY);
+exports.initialContext = new AnalysisContext(exports.LIBRARY);
