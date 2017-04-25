@@ -1,0 +1,2 @@
+fun test (param):
+  ret param

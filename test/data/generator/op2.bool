@@ -1,0 +1,2 @@
+fun bar(x y z a b c):
+ ret x + y > z ** b
