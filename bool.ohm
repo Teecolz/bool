@@ -48,7 +48,7 @@ Bool {
       = "_" id
 
     ConstructorDecl
-      = "build" Params ":" Suite
+      = "build" Params (":" Suite)?
 
     MethodDecl
         = id methodparams ":" Suite
