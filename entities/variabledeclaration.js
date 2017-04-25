@@ -20,7 +20,6 @@ class VariableDeclaration {
     } else if (this.value) {
       this.mustHaveCompatibleTypes();
     }
-
     context.addVariable(this.id, this);
   }
 

@@ -1,1 +1,6 @@
 let a = []
+let b:[int] = [1, 2, 3, 4, 5]
+
+for x in b:
+  if x > 1:
+    print(x)

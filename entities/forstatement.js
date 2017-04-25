@@ -11,11 +11,8 @@ class ForStatement {
     const localContext = context.createChildContext();
     this.list.analyze(localContext);
     this.list.type.mustBeList('Cannot use for-in on non list.', this.list);
-    // assign element type to incrementing variable
-    const incrementer = new VariableExpression(this.iterator);
-    incrementer.type = this.list.type.getElementType();
-    incrementer.referent = this;
-    localContext.addVariable(this.iterator, incrementer);
+    this.type = this.list.type.getElementType();
+    localContext.addVariable(this.iterator, this);
     this.block.analyze(localContext);
   }
   toString() {

@@ -262,45 +262,53 @@ describe('Generator Tests', () => {
   // });
 
 
-  // describe('List Literal Test', () => {
-  //   it('Should properly generate a list literal', (done) => {
-  //     test = {
-  //       argFile: 'list',
-  //       expected: {
-  //         output: [''],
-  //         numLogs: 1,
-  //       },
-  //     };
-  //     jsGenTest(test);
-  //     done();
-  //   });
-  // });
+  describe('List Literal Test', () => {
+    it('Should properly generate list literals', (done) => {
+      test = {
+        argFile: 'list',
+        expected: {
+          output: [
+            'let a_23 = [];',
+            'let b_24 = [1, 2, 3, 4, 5];',
+            'b_24.forEach((x_25) => {',
+            '  if ((x_25 > 1)) {',
+            '    print_1(x_25);',
+            '  }',
+            '});',
+          ],
+          numLogs: 1,
+        },
+      };
+      jsGenTest(test);
+      done();
+    });
+  });
 
-  // describe('ExpList Test', () => {
-  //   it('Should properly generate a expression list', (done) => {
-  //     test = {
-  //       argFile: 'explist',
-  //       expected: {
-  //         output: [''],
-  //         numLogs: 1,
-  //       },
-  //     };
-  //     jsGenTest(test);
-  //     done();
-  //   });
-  // });
+  describe('ListExp Test', () => {
+    it('Should properly generate a list expression', (done) => {
+      test = {
+        argFile: 'listexp',
+        expected: {
+          output: ['let a_26 = [(BinExp x + 2) for x in [1, 2, 3]];'],
+          numLogs: 1,
+        },
+      };
+      jsGenTest(test);
+      done();
+    });
+  });
 
-  // describe('ListExp Test', () => {
-  //   it('Should properly generate a list expression', (done) => {
-  //     test = {
-  //       argFile: 'listexp',
-  //       expected: {
-  //         output: [''],
-  //         numLogs: 1,
-  //       },
-  //     };
-  //     jsGenTest(test);
-  //     done();
-  //   });
-  // });
+  describe('ExpList Test', () => {
+    it('Should properly generate an expression list', (done) => {
+      test = {
+        argFile: 'explist',
+        expected: {
+          output: ['let a_27 = [(BinExp 1 + 4), (BinExp 8 - 2), (BinExp 5 * 5), (BinExp 9 / 3)];'],
+          numLogs: 1,
+        },
+      };
+      jsGenTest(test);
+      done();
+    });
+  });
 });

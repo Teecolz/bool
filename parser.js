@@ -67,7 +67,7 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   FullStmt_indent(s) { return s.ast(); },
   IndentStmt(s) { return new Statement(s.ast()); },
   NormalStmt(s) { return new Statement(s.ast()); },
-  Suite(nl, indent, s, nlEnd, _) {
+  Suite(nl, indent, s, _) {
     return new Suite(s.ast());
   },
   SimpleSuite(_, ind, exp, nl, ded) {
