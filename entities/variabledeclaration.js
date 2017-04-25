@@ -23,7 +23,7 @@ class VariableDeclaration {
   }
 
   mustHaveCompatibleTypes() {
-    const errorMessage = `Incompatible Types: Declared ${this.type.id}, Assigned ${this.value.type.id}`;
+    const errorMessage = `Incompatible Types: Declared ${this.type.name}, Assigned ${this.value.type.name}`;
     this.type.mustBeCompatibleWith(this.value.type, errorMessage, this.id);
   }
 
