@@ -1,12 +1,12 @@
 class Break {
   constructor(text) {
-    this.text = text;
+    this.stmt = text;
   }
   analyze(context) {
     context.mustBeLoopContext(this);
   }
   toString() {
-    return this.text;
+    return `${this.stmt}`;
   }
 }
 

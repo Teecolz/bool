@@ -206,7 +206,7 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   },
   Loop_while(_, exp, colon, s) { return new WhileStatement(exp.ast(), s.ast()); },
   Return(_, exp) { return new ReturnStatement(exp.ast()); },
-  breakstmt(txt) { return new Break(txt); },
+  breakstmt(txt) { return new Break(txt.sourceString); },
   boollit(b) { return new BooleanLiteral(b.sourceString); },
   id(i) { return new IdLiteral(i.sourceString); },
   intlit(i) { return new IntegerLiteral(this.sourceString); },

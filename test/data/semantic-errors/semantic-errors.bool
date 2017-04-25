@@ -74,3 +74,5 @@ let listComprehension:[int] = [x + 3 for x in lilList if x > 0]
 let listComprehension2:[string] = ["" + x for x in lilList if x > 0]
 let listComprehension3:[string] = ["" + x for x in lilList if x]
 let listComprehension4:[string] = [x for x in lilList if x > 0]
+
+ret "Shouldn't be able to do this"

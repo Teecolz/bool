@@ -288,7 +288,7 @@ Object.assign(FunctionParameters.prototype, {
  * STATEMENTS *
  **************/
 Object.assign(Break.prototype, {
-  gen() { return `${this.text}`; },
+  gen() { return 'break'; },
 });
 
 Object.assign(ReturnStatement.prototype, {

@@ -29,13 +29,15 @@ const jsGenTest = (testDatum) => {
 let test;
 
 describe('Generator Tests', () => {
-  beforeEach(() => {
+  beforeEach((done) => {
     sinon.stub(console, 'log').returns(void 0);
     sinon.stub(console, 'error').returns(void 0);
+    done();
   });
-  afterEach(() => {
+  afterEach((done) => {
     console.log.restore();
     console.error.restore();
+    done();
   });
 
   describe('Hello World Test', () => {
@@ -165,7 +167,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'range',
         expected: {
-          output: ['for (let x_18 = 0; x_18 < 1; x_18 += 1) {', '  return true;', '}'],
+          output: ['for (let x_18 = 0; x_18 < 1; x_18 += 1) {', '  print_1(x_18);', '}'],
           numLogs: 1,
         },
       };
@@ -179,7 +181,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'while',
         expected: {
-          output: ['while (true) {', '  return false;', '}'],
+          output: ['while (true) {', '  break;', '}'],
           numLogs: 1,
         },
       };
@@ -221,7 +223,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'for',
         expected: {
-          output: ['for (let x_21 = 0; x_21 < 25; x_21 += 1) {', '  return true;', '}'],
+          output: ['for (let x_21 = 0; x_21 < 25; x_21 += 1) {', '  print_1(x_21);', '}'],
           numLogs: 1,
         },
       };

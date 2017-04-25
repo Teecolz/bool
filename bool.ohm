@@ -15,6 +15,7 @@ Bool {
       | VarAssignment
       | Exp
       | Return
+      | breakstmt
     IndentStmt
       = ClassDecl
       | FunDecl
@@ -168,9 +169,9 @@ Bool {
     boollit = "tru" | "fal"
     intlit = ~(digit* ".") digit+
     floatlit = digit+ "." (digit+)? | (digit+)? "." digit+
-    stringlit = "\"" char* "\"" | "\'" char* "\'"
+    stringlit = "\"" (char | doublequotechar)* "\"" | "'" (char | singlequotechar)* "'"
     ClassInst = "new" id Funparams
-
+    breakstmt = "break"
     Objlit
       = "{" PropertyDecl? "}" --singleprop
       | "{" newline indent (PropertyDecl newline)* dedent "}" --multiprop
@@ -182,13 +183,16 @@ Bool {
       = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"
       | "while" | "until" | "build" | "class" | "isa" | "in" | "new" | "#" | "ret"
       | "indent" | "dedent" | "[" | "]" | "let" | "string" | "float" | "int"
-      | "bool" | "obj" | "⇦" | "⇨" | addop | mulop | expop
+      | "bool" | "obj" | "⇦" | "⇨" | "break" | addop | mulop | expop
       | relop
     Type
       = ":" ("string" | "float" | "int" | "bool" | "obj" | id) --single
       | ":" "[" ("string" | "float" | "int" | "bool" | "obj" | id) "]" --list
     char
          = alnum | punctuation | escape | stringSpace
+
+    doublequotechar = "'"
+    singlequotechar = "\""
 
     stringSpace
          = " " | "\t" | "\n"
