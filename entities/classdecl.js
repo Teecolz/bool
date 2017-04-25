@@ -7,7 +7,9 @@ class ClassDeclaration {
 
   analyze(context) {
     context.mustNotBeLocal(this.id);
-    this.isa.analyze(context);
+    if (this.isa) {
+      this.isa.analyze(context);
+    }
     this.body.analyze(context);
   }
 
