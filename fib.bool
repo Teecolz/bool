@@ -1,0 +1,13 @@
+fun t (y):
+  let x:int = 0
+  let b:int = 1
+  let c:int
+  let a:int
+  if (x < 3):
+    ret 1
+  while (x < 10):
+    c = a + b
+    a = b
+    b = c
+    x += 1
+  ret c
