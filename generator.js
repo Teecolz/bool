@@ -157,21 +157,25 @@ Object.assign(VariableAssignment.prototype, {
 
 Object.assign(VariableDeclaration.prototype, {
   gen() {
-    return `let ${jsName(this)} = ${this.value.gen()}`;
+    return (this.value) ? `let ${jsName(this)} = ${this.value.gen()}` : `let ${jsName(this)}`;
   },
 });
 
-/* *************
+/** *************
  * EXPRESSIONS *
  ***************/
 
 Object.assign(VariableExpression.prototype, {
-  gen() { return this.referent.gen(); }, // will break before analysis
+  gen() {
+    return jsName(this.referent);  // will break before analysis
+  },
 });
 
 
 Object.assign(BinaryExpression.prototype, {
-  gen() { return `(${this.left.gen()} ${this.op} ${this.right.gen()})`; },
+  gen() {
+    return `(${this.left.gen()} ${this.op} ${this.right.gen()})`;
+  },
 });
 
 Object.assign(UnaryExpression.prototype, {
@@ -179,7 +183,9 @@ Object.assign(UnaryExpression.prototype, {
 });
 
 Object.assign(OpAssignment.prototype, {
-  gen() { return `${jsName(this.target.referent)} ${this.op} ${this.source}`; },
+  gen() {
+    return `${jsName(this.target)} ${this.op} ${this.source}`;
+  },
 });
 
 /* **************
@@ -199,10 +205,9 @@ Object.assign(Case.prototype, {
 
 Object.assign(ConditionalStatement.prototype, {
   gen() {
-    // console.log(this);
     this.cases.forEach((c, index) => {
       const prefix = index === 0 ? 'if' : '} else if';
-      emit(`${prefix} (${c.condition.gen()}) {`);
+      emit(`${prefix} ${c.condition.gen()} {`);
       c.body.gen();
     });
     if (this.block.length > 0) {
@@ -218,7 +223,7 @@ Object.assign(ConditionalStatement.prototype, {
  *********/
 Object.assign(WhileStatement.prototype, {
   gen() {
-    emit(`while (${this.condition}) {`);
+    emit(`while ${this.condition.gen()} {`);
     this.body.gen();
     emit('}');
   },

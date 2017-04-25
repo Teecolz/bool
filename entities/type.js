@@ -100,5 +100,6 @@ module.exports = {
   ARBITRARY: new Type('<arbitrary_type>'),
   FUNCTION: new Type('<function>'),
   OBJECT: new Type('object'),
+  UNDEFINED: new Type('<>'),
   Construct(forName, parent) { return new Type(forName, parent); },
 };

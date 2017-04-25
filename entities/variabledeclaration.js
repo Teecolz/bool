@@ -1,4 +1,5 @@
 const Type = require('./type.js');
+const VarExp = require('./varexp.js');
 
 class VariableDeclaration {
   constructor(id, type, exp) {
@@ -19,6 +20,7 @@ class VariableDeclaration {
     } else if (this.value) {
       this.mustHaveCompatibleTypes();
     }
+
     context.addVariable(this.id, this);
   }
 
