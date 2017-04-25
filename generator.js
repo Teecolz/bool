@@ -205,12 +205,12 @@ Object.assign(ConditionalStatement.prototype, {
   gen() {
     this.cases.forEach((c, index) => {
       const prefix = index === 0 ? 'if' : '} else if';
-      emit(`${prefix} ${c.condition.gen()} {`);
+      emit(`${prefix} (${c.condition.gen()}) {`);
       c.body.gen();
     });
     if (this.block.length > 0) {
       emit('} else {');
-      getStatementList(this.block);
+      getStatementList(this.block); // this might be wrong
     }
     emit('}');
   },
@@ -221,7 +221,7 @@ Object.assign(ConditionalStatement.prototype, {
  *********/
 Object.assign(WhileStatement.prototype, {
   gen() {
-    emit(`while ${this.condition.gen()} {`);
+    emit(`while (${this.condition.gen()}) {`);
     this.body.gen();
     emit('}');
   },
@@ -347,7 +347,7 @@ Object.assign(ListExpression.prototype, {
 Object.assign(ListLiteral.prototype, {
   gen() {
     const list = this.exp;
-    return `[${list.gen()}]`;
+    return `[${list}]`;
   },
 });
 

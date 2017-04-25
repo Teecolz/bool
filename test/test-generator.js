@@ -262,19 +262,27 @@ describe('Generator Tests', () => {
   // });
 
 
-  // describe('List Literal Test', () => {
-  //   it('Should properly generate a list literal', (done) => {
-  //     test = {
-  //       argFile: 'list',
-  //       expected: {
-  //         output: [''],
-  //         numLogs: 1,
-  //       },
-  //     };
-  //     jsGenTest(test);
-  //     done();
-  //   });
-  // });
+  describe('List Literal Test', () => {
+    it('Should properly generate list literals', (done) => {
+      test = {
+        argFile: 'list',
+        expected: {
+          output: [
+            'let a_2 = [];',
+            'let b_3 = [1, 2, 3, 4, 5];',
+            'b_3.forEach((x_4) => {',
+            '  if (x_4 > 1) {',
+            '    print_1(x_4);',
+            '  }',
+            '});',
+          ],
+          numLogs: 1,
+        },
+      };
+      jsGenTest(test);
+      done();
+    });
+  });
 
   // describe('ExpList Test', () => {
   //   it('Should properly generate a expression list', (done) => {
