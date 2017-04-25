@@ -281,31 +281,31 @@ describe('Generator Tests', () => {
     });
   });
 
-  // describe('ExpList Test', () => {
-  //   it('Should properly generate a expression list', (done) => {
-  //     test = {
-  //       argFile: 'explist',
-  //       expected: {
-  //         output: [''],
-  //         numLogs: 1,
-  //       },
-  //     };
-  //     jsGenTest(test);
-  //     done();
-  //   });
-  // });
+  describe('ListExp Test', () => {
+    it('Should properly generate a list expression', (done) => {
+      test = {
+        argFile: 'listexp',
+        expected: {
+          output: ['let a_26 = [(BinExp x + 2) for x in [1, 2, 3]];'],
+          numLogs: 1,
+        },
+      };
+      jsGenTest(test);
+      done();
+    });
+  });
 
-  // describe('ListExp Test', () => {
-  //   it('Should properly generate a list expression', (done) => {
-  //     test = {
-  //       argFile: 'listexp',
-  //       expected: {
-  //         output: [''],
-  //         numLogs: 1,
-  //       },
-  //     };
-  //     jsGenTest(test);
-  //     done();
-  //   });
-  // });
+  describe('ExpList Test', () => {
+    it('Should properly generate an expression list', (done) => {
+      test = {
+        argFile: 'explist',
+        expected: {
+          output: ['let a_27 = [(BinExp 1 + 4), (BinExp 8 - 2), (BinExp 5 * 5), (BinExp 9 / 3)];'],
+          numLogs: 1,
+        },
+      };
+      jsGenTest(test);
+      done();
+    });
+  });
 });
