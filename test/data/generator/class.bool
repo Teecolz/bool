@@ -1,0 +1,3 @@
+class Person
+    _hi "build"(): run():
+        ret tru

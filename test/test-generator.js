@@ -42,7 +42,7 @@ describe('Generator Tests', () => {
   });
 
   describe('Hello World Test', () => {
-    it('Should propery generate "Hello, world!""', (done) => {
+    it('Should properly generate "Hello, world!""', (done) => {
       test = {
         argFile: 'helloworld',
         expected: {
@@ -56,7 +56,7 @@ describe('Generator Tests', () => {
   });
 
   describe('Function Tests', () => {
-    it('Should propery generate a basic function', (done) => {
+    it('Should properly generate a basic function', (done) => {
       test = {
         argFile: 'fun',
         expected: {
@@ -68,7 +68,7 @@ describe('Generator Tests', () => {
       done();
     });
 
-    it('Should propery generate a function with params', (done) => {
+    it('Should properly generate a function with params', (done) => {
       test = {
         argFile: 'funparams',
         expected: {
@@ -82,7 +82,7 @@ describe('Generator Tests', () => {
   });
 
   describe('Variable Tests', () => {
-    it('Should propery generate a basic function', (done) => {
+    it('Should properly generate a basic function', (done) => {
       test = {
         argFile: 'var',
         expected: {
@@ -96,7 +96,7 @@ describe('Generator Tests', () => {
   });
 
   describe('If Tests', () => {
-    it('Should propery generate an if statement', (done) => {
+    it('Should properly generate an if statement', (done) => {
       test = {
         argFile: 'if',
         expected: {
@@ -110,7 +110,7 @@ describe('Generator Tests', () => {
   });
 
   describe('Statement & StringLit Test', () => {
-    it('Should propery generate a normal statement with a string', (done) => {
+    it('Should properly generate a normal statement with a string', (done) => {
       test = {
         argFile: 'stmt',
         expected: {
@@ -124,7 +124,7 @@ describe('Generator Tests', () => {
   });
 
     // describe('Object Test', () => {
-    //     it('Should propery generate an object', (done) => {
+    //     it('Should properly generate an object', (done) => {
     //         test = {
     //             argFile: 'objdecl',
     //             expected: {
@@ -164,7 +164,7 @@ describe('Generator Tests', () => {
   });
 
   describe('Range Test', () => {
-    it('Should propery generate a range expression', (done) => {
+    it('Should properly generate a range expression', (done) => {
       test = {
         argFile: 'range',
         expected: {
@@ -178,7 +178,7 @@ describe('Generator Tests', () => {
   });
 
   describe('While & Unary Expression Test', () => {
-    it('Should propery generate a while statement', (done) => {
+    it('Should properly generate a while statement', (done) => {
       test = {
         argFile: 'while',
         expected: {
@@ -190,4 +190,117 @@ describe('Generator Tests', () => {
       done();
     });
   });
+
+  describe('Float Literal Test', () => {
+    it('Should properly generate a float literal', (done) => {
+      test = {
+        argFile: 'float',
+        expected: {
+          output: ['let x_19 = 3.14;'],
+          numLogs: 1,
+        },
+      };
+      jsGenTest(test);
+      done();
+    });
+  });
+
+  describe('Boolean Literal Test', () => {
+    it('Should properly generate a boolean literal', (done) => {
+      test = {
+        argFile: 'bool',
+        expected: {
+          output: ['let x_20 = true;'],
+          numLogs: 1,
+        },
+      };
+      jsGenTest(test);
+      done();
+    });
+  });
+
+  describe('For Statement Test', () => {
+    it('Should properly generate a for statement', (done) => {
+      test = {
+        argFile: 'for',
+        expected: {
+          output: ['for (let x_21 = 0; x_21 < 25; x_21 += 1) {', '  return true;', '}'],
+          numLogs: 1,
+        },
+      };
+      jsGenTest(test);
+      done();
+    });
+  });
+
+  describe('Conditional Test', () => {
+    it('Should properly generate a conditional statement', (done) => {
+      test = {
+        argFile: 'conditional',
+        expected: {
+          output: ['let test3_22 = () => {', '  if (true) {', '    return true;', '  } else {', '      return false;', '  }', '};'],
+          numLogs: 1,
+        },
+      };
+      jsGenTest(test);
+      done();
+    });
+  });
+
+  // describe('Class Test', () => {
+  //   it('Should properly generate a class', (done) => {
+  //     test = {
+  //       argFile: 'class',
+  //       expected: {
+  //         output: [''],
+  //         numLogs: 1,
+  //       },
+  //     };
+  //     jsGenTest(test);
+  //     done();
+  //   });
+  // });
+
+
+  // describe('List Literal Test', () => {
+  //   it('Should properly generate a list literal', (done) => {
+  //     test = {
+  //       argFile: 'list',
+  //       expected: {
+  //         output: [''],
+  //         numLogs: 1,
+  //       },
+  //     };
+  //     jsGenTest(test);
+  //     done();
+  //   });
+  // });
+
+  // describe('ExpList Test', () => {
+  //   it('Should properly generate a expression list', (done) => {
+  //     test = {
+  //       argFile: 'explist',
+  //       expected: {
+  //         output: [''],
+  //         numLogs: 1,
+  //       },
+  //     };
+  //     jsGenTest(test);
+  //     done();
+  //   });
+  // });
+
+  // describe('ListExp Test', () => {
+  //   it('Should properly generate a list expression', (done) => {
+  //     test = {
+  //       argFile: 'listexp',
+  //       expected: {
+  //         output: [''],
+  //         numLogs: 1,
+  //       },
+  //     };
+  //     jsGenTest(test);
+  //     done();
+  //   });
+  // });
 });
