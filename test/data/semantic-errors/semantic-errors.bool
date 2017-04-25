@@ -55,14 +55,6 @@ a = 'hi'
 while (a):
   ret a
 
-do:
-  a = a + 1
-while tru
-
-do:
-  a = a + 1
-until a
-
 testObj :=
   a : 1
   b : 'hello, world'

@@ -13,7 +13,6 @@ Bool {
       = VarDecl
       | OpAssign
       | VarAssignment
-      | DoLoop
       | Exp
       | Return
     IndentStmt
@@ -107,9 +106,6 @@ Bool {
     Loop
         = "for" id "in" (Range | id | Listlit ) ":" Suite     --forIn
         | "while" Exp ":" Suite                               --while
-    DoLoop
-        = "do" ":" Suite "until" Exp                          --doUntil
-        | "do" ":" Suite "while" Exp                          --doWhile
 
     Exp
       = Exp1 "or" Exp1      --binexp
