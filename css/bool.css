@@ -1,15 +1,15 @@
 body {
-    font-family: Futura,Trebuchet MS,Arial,sans-serif;
-    font-size: 16px;
-    padding-top: 50px;
-    width: 100%;
-    height: 100%;
+  font-family: Futura, Trebuchet MS, Arial, sans-serif;
+  font-size: 16px;
+  padding-top: 50px;
+  width: 100%;
+  height: 100%;
 }
 
 html {
-    width: 100%;
-    height: 100%;
-    font-size: 16px;
+  width: 100%;
+  height: 100%;
+  font-size: 16px;
 }
 
 #brand {
@@ -17,45 +17,56 @@ html {
 }
 
 .intro-section {
-    height: 100%;
-    padding-top: 80px;
-    background-image: linear-gradient(rgba(0,0,0, .5), rgba(0,0,0, .5)), url(../images/LASkyline.jpg);
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+  height: 100%;
+  padding-top: 80px;
+  background-image: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)), url(../images/LASkyline.jpg);
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .about-section {
-    padding-top: 75px;
-    padding-bottom: 30px;
-    text-align: center;
-    background: #eee;
+  padding-top: 75px;
+  padding-bottom: 30px;
+  text-align: center;
+  background: #eee;
 }
 
-.about-section h1,
-.examples-section h1,
-.diagrams-section h1 {
-    font-size: 40px;
-    margin-bottom: 40px;
+.btn-group {
+  margin: 25px;
 }
 
-.examples-section {
-    padding-top: 75px;
-    padding-bottom: 50px;
-    text-align: center;
-    background-color: #222;
-    color: #9d9d9d;
+.about-section h1, .examples-section h1, .diagrams-section h1 {
+  font-size: 40px;
+  margin-bottom: 40px;
+}
+
+.examples-section,
+.errors-section {
+  padding-top: 75px;
+  padding-bottom: 50px;
+  text-align: center;
+  background-color: #222;
+  color: #9d9d9d;
+}
+
+.errors-section code {
+  display: block;
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 10px;
+  font-size: 12px;
 }
 
 .diagrams-section {
-    padding-top: 75px;
-    text-align: center;
-    background: #eee;
+  padding-top: 75px;
+  text-align: center;
+  background: #eee;
 }
 
 footer {
-  padding: 30px 0px 20px 0px;
+  padding: 30px 0px 30px 0px;
   text-align: center;
   background-color: #222;
   color: #9d9d9d;
@@ -63,22 +74,8 @@ footer {
 
 footer small {
   display: block;
-  margin-top: 25px;
 }
 
-footer #github-link {
-  display: block;
-  margin-top: 20px;
-}
-
-footer #github {
-  height: 50px;
-  width: 50px;
-}
-
-footer #github:hover {
-  opacity: 0.7;
-}
 /* BootStrap Custom */
 
 .container {
@@ -94,28 +91,19 @@ pre {
   text-align: left;
 }
 
-/* Images */
-
-.python,
-.ocaml,
-.logo {
-  width: 100%;
+.diagram {
+  margin-bottom: 50px;
 }
 
-/* Media Queries */
-@media (min-width: 1200px) {
+.diagram-header {
+  font-size: 20px;
+  font-family: Futura;
+  color: red;
+}
 
-  .first-row {
-    border-top: 2px solid #222;
-  }
 
-  .diagram-row {
-    margin-bottom: 50px;
-    border-bottom: 2px solid #222;;
-    padding: 25px;
-  }
+/* Images */
 
-  .last-row {
-    margin-bottom: 0px;
-  }
+.python, .ocaml, .logo {
+  width: 100%;
 }
