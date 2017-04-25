@@ -1,3 +1,8 @@
-class Person
-    _hi "build"(): run():
-        ret tru
+class Person:
+    _nameFirst
+    _nameLast
+    _age
+    _occupation
+
+    maker (_nameFirst _nameLast _age):
+        ret
