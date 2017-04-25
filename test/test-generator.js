@@ -20,7 +20,7 @@ const jsGenTest = (testDatum) => {
   const expected = testDatum.expected;
   const expectedOut = LIBRARY_FUNCTIONS.concat(expected.output);
   assert.ok(console.log.called, 'log should have been called.');
-    // assert.equal(console.log.args.length, expectedOut.length);
+  assert.equal(console.log.args.length, expectedOut.length);
   console.log.args.forEach((arg, index) => {
     assert.deepEqual(arg[0], expectedOut[index]);
   });
@@ -111,7 +111,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'stmt',
         expected: {
-          output: ['let x_8 = \'test\';', '};'],
+          output: ['let x_8 = \'test\';'],
           numLogs: 1,
         },
       };
