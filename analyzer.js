@@ -20,9 +20,35 @@ class AnalysisContext {
     return funContext;
   }
 
+  createLoopContext() {
+    const loopContext = new AnalysisContext(this);
+    loopContext.isLoopContext = true;
+    return loopContext;
+  }
+
   mustNotBeLocal(name) {
     if (this.symTable[name]) {
       error(`Cannot redeclare variable ${name} in this scope`, name);
+    }
+  }
+
+  mustBeFunctionContext(location) {
+    if (!this.isFunctionContext) {
+      if (this.parent) {
+        this.parent.mustBeFunctionContext();
+      } else {
+        error('Cannot call return statement from outside function context', location);
+      }
+    }
+  }
+
+  mustBeLoopContext(location) {
+    if (!this.isLoopContext) {
+      if (this.parent) {
+        this.parent.mustBeLoopContext();
+      } else {
+        error('Cannot call break statement from outside loop context', location);
+      }
     }
   }
 

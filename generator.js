@@ -1,6 +1,7 @@
 const BinaryExpression = require('./entities/binaryexpression.js');
 const Block = require('./entities/block.js');
 const BooleanLiteral = require('./entities/booleanliteral.js');
+const Break = require('./entities/break.js');
 const Case = require('./entities/case.js');
 const ClassBody = require('./entities/classbody.js');
 const ClassDeclaration = require('./entities/classdecl.js');
@@ -286,6 +287,9 @@ Object.assign(FunctionParameters.prototype, {
 /* ************
  * STATEMENTS *
  **************/
+Object.assign(Break.prototype, {
+  gen() { return `${this.text}`; },
+});
 
 Object.assign(ReturnStatement.prototype, {
   gen() { return `return ${this.returnValue.gen()}`; },

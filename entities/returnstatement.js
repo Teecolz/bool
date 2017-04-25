@@ -5,6 +5,7 @@ class ReturnStatement {
     this.returnValue = expression[0] || undefined;
   }
   analyze(context) {
+    context.mustBeFunctionContext(this);
     if (this.returnValue) {
       this.returnValue.analyze(context);
       this.type = this.returnValue.type;

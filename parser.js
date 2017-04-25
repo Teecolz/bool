@@ -50,6 +50,7 @@ const ParameterDeclaration = require('./entities/paramdecl.js');
 const FunctionParameters = require('./entities/funparams.js');
 const Preparser = require('./preparser.js');
 const OpAssignment = require('./entities/opassign.js');
+const Break = require('./entities/break.js');
 
 const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
 
@@ -205,6 +206,7 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   },
   Loop_while(_, exp, colon, s) { return new WhileStatement(exp.ast(), s.ast()); },
   Return(_, exp) { return new ReturnStatement(exp.ast()); },
+  breakstmt(txt) { return new Break(txt); },
   boollit(b) { return new BooleanLiteral(b.sourceString); },
   id(i) { return new IdLiteral(i.sourceString); },
   intlit(i) { return new IntegerLiteral(this.sourceString); },

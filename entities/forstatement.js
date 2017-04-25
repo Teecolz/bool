@@ -6,7 +6,7 @@ class ForStatement {
     this.id = id;
   }
   analyze(context) {
-    const localContext = context.createChildContext();
+    const localContext = context.createLoopContext();
     this.list.analyze(localContext);
     this.list.type.mustBeList('Cannot use for-in on non list.', this.list);
     this.type = this.list.type.getElementType();

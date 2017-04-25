@@ -8,7 +8,8 @@ class WhileStatement {
     this.condition.analyze(context);
     const errorMessage = `Conditional expression must evaluate to boolean. Found ${this.condition.type}`;
     this.condition.type.mustBeBoolean(errorMessage, this.condition);
-    this.body.analyze(context);
+    const localContext = context.createLoopContext();
+    this.body.analyze(localContext);
   }
   toString() {
     return `(while ${this.condition} ${this.body})`;
