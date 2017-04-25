@@ -6,9 +6,9 @@ class Parameters {
   }
 
   analyze(context) {
-    for (let param of this.params) {
+    this.params.forEach((param) => {
       param.analyze(context);
-    }
+    });
   }
 
   toString() {

@@ -1,5 +1,3 @@
-const Type = require('./type.js');
-
 class ListLiteral {
   constructor(exp) {
     this.exp = exp;

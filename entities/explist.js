@@ -7,7 +7,7 @@ class ExpList {
   analyze(context) {
     let first = true;
 
-    for (let exp of this.exps) {
+    this.exps.forEach((exp) => {
       exp.analyze(context);
       if (first) {
         this.type = Type.Construct(`[${exp.type}]`, exp.type.parent);
@@ -20,7 +20,7 @@ class ExpList {
           this.type.name = '[float]';
         }
       }
-    }
+    });
   }
   toString() {
     return `${this.exps.join(', ')}`;

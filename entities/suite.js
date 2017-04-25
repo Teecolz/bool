@@ -4,7 +4,7 @@ class Suite {
   }
   analyze(context) {
     const localContext = context.createChildContext();
-    for (let stmt of this.stmts) {
+    this.stmts.forEach((stmt) => {
       if (stmt) {
         stmt.analyze(localContext);
         if (stmt.isReturn) {
@@ -12,7 +12,7 @@ class Suite {
           this.returnValue = stmt.returnValue;
         }
       }
-    }
+    });
   }
   toString() {
     return `(Suite ${this.stmts.join(', ').replace(/, $/, '')})`;

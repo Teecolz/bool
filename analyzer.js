@@ -3,7 +3,6 @@ const Undefined = require('./entities/undefined.js');
 const FunctionDeclaration = require('./entities/fundecl.js');
 const ParamDecl = require('./entities/paramdecl.js');
 const Parameters = require('./entities/params.js');
-const IdLiteral = require('./entities/idliteral.js');
 
 class AnalysisContext {
   constructor(parent) {

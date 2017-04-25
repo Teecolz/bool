@@ -8,11 +8,11 @@ class Block {
 
   analyze(context) {
     const localContext = context.createChildContext();
-    for (let stmt of this.body) {
+    this.body.forEach((stmt) => {
       if (stmt) {
         stmt.analyze(localContext);
       }
-    }
+    });
   }
 
   toString() {

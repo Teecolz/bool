@@ -1,5 +1,3 @@
-const VariableExpression = require('./varexp.js');
-
 class ForStatement {
   constructor(id, list, block) {
     this.iterator = id;

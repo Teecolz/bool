@@ -6,12 +6,12 @@ class ConditionalStatement {
     this.block = block;
   }
   analyze(context) {
-    for (const curCase of this.cases) {
+    this.cases.forEach((curCase) => {
       curCase.analyze(context);
-    }
-    for (const stmt of this.block) {
+    });
+    this.block.forEach((stmt) => {
       stmt.analyze(context);
-    }
+    });
   }
   toString() {
     const out = `(Conditional ${this.cases.join(', ').replace(/, $/, '')}, ${this.block})`;

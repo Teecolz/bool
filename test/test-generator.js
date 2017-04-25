@@ -1,14 +1,11 @@
 /* eslint-env node, mocha */
-
+/* eslint no-void: 0 */
 const fs = require('fs');
-const ohm = require('ohm-js');
 const assert = require('assert');
 const parse = require('../parser.js');
 const sinon = require('sinon');
 require('../generator.js');
 
-const bool = fs.readFileSync('bool.ohm');
-const gram = ohm.grammar(bool);
 const LIBRARY_FUNCTIONS = [
   'function print_1(s) {console.log(s);}',
 ];
@@ -268,11 +265,11 @@ describe('Generator Tests', () => {
         argFile: 'list',
         expected: {
           output: [
-            'let a_2 = [];',
-            'let b_3 = [1, 2, 3, 4, 5];',
-            'b_3.forEach((x_4) => {',
-            '  if (x_4 > 1) {',
-            '    print_1(x_4);',
+            'let a_23 = [];',
+            'let b_24 = [1, 2, 3, 4, 5];',
+            'b_24.forEach((x_25) => {',
+            '  if ((x_25 > 1)) {',
+            '    print_1(x_25);',
             '  }',
             '});',
           ],

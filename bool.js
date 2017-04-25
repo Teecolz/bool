@@ -13,7 +13,7 @@ const argv = require('yargs')
   .argv;
 
 fs.readFile(argv._[0], 'utf-8', (err, text) => {
-  let program = parse(text);
+  const program = parse(text);
   if (error.count > 0) {
     return;
   }
