@@ -205,7 +205,7 @@ Object.assign(ConditionalStatement.prototype, {
   gen() {
     this.cases.forEach((c, index) => {
       const prefix = index === 0 ? 'if' : '} else if';
-      emit(`${prefix} ${c.condition.gen()} {`);
+      emit(`${prefix} (${c.condition.gen()}) {`);
       c.body.gen();
     });
     if (this.block.length > 0) {
