@@ -43,8 +43,6 @@ const PropertyDeclaration = require('./entities/propertydeclaration.js');
 const VariableDeclaration = require('./entities/variabledeclaration.js');
 const VariableAssignment = require('./entities/varassignment.js');
 const VariableExpression = require('./entities/varexp.js');
-const DoUntilStatement = require('./entities/dountil.js');
-const DoWhileStatement = require('./entities/dowhile.js');
 const SimpleIf = require('./entities/simpleif.js');
 const Statement = require('./entities/stmt.js');
 const Type = require('./entities/type.js');
@@ -206,12 +204,6 @@ const semantics = grammar.createSemantics().addOperation('ast', {
     return new ForStatement(id.sourceString, l.ast(), s.ast());
   },
   Loop_while(_, exp, colon, s) { return new WhileStatement(exp.ast(), s.ast()); },
-  DoLoop_doUntil(_, col, s, unt, cond) {
-    return new DoUntilStatement(s.ast(), cond.ast());
-  },
-  DoLoop_doWhile(_, col, s, whl, cond) {
-    return new DoWhileStatement(s.ast(), cond.ast());
-  },
   Return(_, exp) { return new ReturnStatement(exp.ast()); },
   boollit(b) { return new BooleanLiteral(b.sourceString); },
   id(i) { return new IdLiteral(i.sourceString); },

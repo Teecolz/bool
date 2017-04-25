@@ -8,8 +8,6 @@ const ClassInstantiation = require('./entities/classinstantiation.js');
 const ClassSuite = require('./entities/classsuite.js');
 const ConditionalStatement = require('./entities/conditionalstatement.js');
 const Context = require('./analyzer.js');
-const DoUntilStatement = require('./entities/dountil.js');
-const DoWhileStatement = require('./entities/dowhile.js');
 const ExpList = require('./entities/explist.js');
 const FieldDeclaration = require('./entities/fielddecl.js');
 const FloatLiteral = require('./entities/floatliteral.js');
@@ -299,14 +297,6 @@ Object.assign(Statement.prototype, {
     if (generated) {
       emit(`${generated};`); // only emits statements that are not yet emitted
     }
-  },
-});
-
-Object.assign(DoUntilStatement.prototype, {
-  gen() {
-    emit('do:');
-    this.doSuite.gen();
-    emit(`while${this.untilExp.gen()}`);
   },
 });
 
