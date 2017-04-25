@@ -86,7 +86,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'var',
         expected: {
-          output: ['let var_5 = () => {', '  let x_6 = 0;', '  return let x_6 = 0;', '};'],
+          output: ['let var_5 = () => {', '  let x_6 = 0;', '  return x_6;', '};'],
           numLogs: 1,
         },
       };
@@ -142,7 +142,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'op',
         expected: {
-          output: ['let op_9 = () => {', '  let x_10 = 5;', '  return (let x_10 = 5 + 5);', '};'],
+          output: ['let op_9 = () => {', '  let x_10 = 5;', '  return (x_10 + 5);', '};'],
           numLogs: 1,
         },
       };
@@ -182,7 +182,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'while',
         expected: {
-          output: ['while (tru) {', '  return false;', '}'],
+          output: ['while (true) {', '  return false;', '}'],
           numLogs: 1,
         },
       };
