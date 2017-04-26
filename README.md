@@ -1,13 +1,18 @@
 ![Bool Logo](images/bool.png)
 ## Introduction
-Bool is an object-oriented, dynamically-typed, and strongly-typed programming language influenced by the languages of Python and OCaml. Bool comes with a plethora of benefits including the ability to be compiled to Javascript, the absence of curly braces and semi-colons, intuitive and simple readability, and so much more. Programmers everywhere are boolin' with Bool, so give it a shot, we guarantee you won't regret it.
+Bool is an object-oriented, dynamically typed, and strongly-typed programming language influenced by the languages of Python and OCaml. Bool comes with a plethora of benefits including the ability to be compiled to Javascript, the absence of curly braces and semi-colons, intuitive and simple readability, and so much more. Bool's simple, easy to learn syntax emphasizes readability and therefore reduces the cost of program maintenance.
+
+Often, programmers will fall in love with Bool because of its similarity to Python and the productivity it provides. The original reason we decided to create Bool was to create a language that would allow programmers to have a similar "out-of-the-box," "plug-and-play" coding experience that each of us liked about Python. To make it more user-friendly, we decided to combine the safety and power of another favorite language, OCaml. The pattern-matching aspect of OCaml is a really intuitive way of programming and with its compile-time analysis of programs, this rules out many programming errors. More precisely, this protects the integrity of the data manipulated by an OCaml program.
+
+For Bool, security is a high concern, and so we tried to adopt many of the same things that worked for the two parent languages that ensure some degree of protection and help for the programmer.
+
+Feel free to check out [Bool's homepage](https://teecolz.github.io/bool/)to view code examples, syntax diagrams, and semantic error messages.
 
 ## Features
 - Compilation to Javascript
 - Use of indentations instead of curly braces
 - No semi-colons
 - Optional type specification
-- Pattern matching
 - String interpolation
 - List comprehensions
 - First-class functions
@@ -124,10 +129,10 @@ fun fibonacci (x):                              var fibonacci = function(x) {
     c:int                                           while (--x > 0) {
     if (x < 3):                                        c = a + b, a = b, b = c;
        ret 1                                        }
-    do (x += 1):                                    return c;
+    while x > 0:                                    return c;
        c = a + b                                };
        a = b
        b = c
-    until: x > 0
+       x += 1
     ret c
 ````
