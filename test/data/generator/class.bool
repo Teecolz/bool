@@ -1,8 +1,2 @@
 class Person:
-    _nameFirst
-    _nameLast
-    _age
-    _occupation
-
-    maker (_nameFirst _nameLast _age):
-        ret
+  build (_nameFirst _nameLast _age)

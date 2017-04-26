@@ -7,10 +7,13 @@ class ClassDeclaration {
 
   analyze(context) {
     context.mustNotBeLocal(this.id);
-    if (this.isa) {
+    const classContext = context.createClassContext();
+
+    if (this.isa[0]) {
       this.isa.analyze(context);
     }
-    this.body.analyze(context);
+    this.body.analyze(classContext);
+    context.addVariable(this.id, this);
   }
 
   toString() {

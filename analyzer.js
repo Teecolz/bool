@@ -14,6 +14,12 @@ class AnalysisContext {
     return new AnalysisContext(this);
   }
 
+  createClassContext() {
+    const classContext = new AnalysisContext(this);
+    classContext.isClassContext = true;
+    return classContext;
+  }
+
   createFunctionContext() {
     const funContext = new AnalysisContext(this);
     funContext.isFunctionContext = true;
@@ -29,6 +35,16 @@ class AnalysisContext {
   mustNotBeLocal(name) {
     if (this.symTable[name]) {
       error(`Cannot redeclare variable ${name} in this scope`, name);
+    }
+  }
+
+  mustBeClassContext(location) {
+    if (!this.isClassContext) {
+      if (this.parent) {
+        this.parent.mustBeClassContext();
+      } else {
+        error('Cannot use fields outside of class context', location);
+      }
     }
   }
 

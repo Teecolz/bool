@@ -5,52 +5,56 @@
 * DO NOT USE FAT ARROWS *
 ************************/
 
-const ohm = require('ohm-js');
-const fs = require('fs');
-const error = require('./error');
-const Program = require('./entities/program.js');
-const Block = require('./entities/block.js');
 const BinaryExpression = require('./entities/binaryexpression.js');
+const Block = require('./entities/block.js');
 const BooleanLiteral = require('./entities/booleanliteral.js');
+const Break = require('./entities/break.js');
 const Case = require('./entities/case.js');
+const ClassBody = require('./entities/classbody.js');
 const ClassDeclaration = require('./entities/classdecl.js');
-const ConditionalStatement = require('./entities/conditionalstatement.js');
-const ForStatement = require('./entities/forstatement.js');
-const FunctionDeclaration = require('./entities/fundecl.js');
-const ListLiteral = require('./entities/listliteral.js');
-const ObjectDeclaration = require('./entities/objdecl.js');
-const ObjectLiteral = require('./entities/objectliteral.js');
-const ReturnStatement = require('./entities/returnstatement.js');
-const StringLiteral = require('./entities/stringliteral.js');
-const UnaryExpression = require('./entities/unaryexpression.js');
-const WhileStatement = require('./entities/whilestatement.js');
-const FieldDeclaration = require('./entities/fielddecl.js');
-const MethodDeclaration = require('./entities/methoddecl.js');
-const Suite = require('./entities/suite.js');
-const IntegerLiteral = require('./entities/intliteral.js');
-const FloatLiteral = require('./entities/floatliteral.js');
-const RangeExpression = require('./entities/rangeexpression.js');
-const FunctionCall = require('./entities/funcall.js');
 const ClassInstantiation = require('./entities/classinstantiation.js');
 const ClassSuite = require('./entities/classsuite.js');
-const ClassBody = require('./entities/classbody.js');
-const FunctionLiteral = require('./entities/functionliteral.js');
-const IdLiteral = require('./entities/idliteral.js');
+const ConditionalStatement = require('./entities/conditionalstatement.js');
+const ConstructorDeclaration = require('./entities/constructordecl.js');
+const error = require('./error');
 const ExpList = require('./entities/explist.js');
+const FieldAssignment = require('./entities/fieldassign.js');
+const FieldDeclaration = require('./entities/fielddecl.js');
+const FieldExpression = require('./entities/fieldexp.js');
+const FieldParameters = require('./entities/fieldparams.js');
+const FloatLiteral = require('./entities/floatliteral.js');
+const ForStatement = require('./entities/forstatement.js');
+const fs = require('fs');
+const FunctionCall = require('./entities/funcall.js');
+const FunctionDeclaration = require('./entities/fundecl.js');
+const FunctionLiteral = require('./entities/functionliteral.js');
+const FunctionParameters = require('./entities/funparams.js');
+const IdLiteral = require('./entities/idliteral.js');
+const IntegerLiteral = require('./entities/intliteral.js');
 const ListExpression = require('./entities/listexp.js');
+const ListLiteral = require('./entities/listliteral.js');
+const MethodDeclaration = require('./entities/methoddecl.js');
+const ObjectDeclaration = require('./entities/objdecl.js');
+const ObjectLiteral = require('./entities/objectliteral.js');
+const ohm = require('ohm-js');
+const OpAssignment = require('./entities/opassign.js');
+const ParameterDeclaration = require('./entities/paramdecl.js');
 const Parameters = require('./entities/params.js');
+const Preparser = require('./preparser.js');
+const Program = require('./entities/program.js');
 const PropertyDeclaration = require('./entities/propertydeclaration.js');
-const VariableDeclaration = require('./entities/variabledeclaration.js');
-const VariableAssignment = require('./entities/varassignment.js');
-const VariableExpression = require('./entities/varexp.js');
+const RangeExpression = require('./entities/rangeexpression.js');
+const ReturnStatement = require('./entities/returnstatement.js');
 const SimpleIf = require('./entities/simpleif.js');
 const Statement = require('./entities/stmt.js');
+const StringLiteral = require('./entities/stringliteral.js');
+const Suite = require('./entities/suite.js');
 const Type = require('./entities/type.js');
-const ParameterDeclaration = require('./entities/paramdecl.js');
-const FunctionParameters = require('./entities/funparams.js');
-const Preparser = require('./preparser.js');
-const OpAssignment = require('./entities/opassign.js');
-const Break = require('./entities/break.js');
+const UnaryExpression = require('./entities/unaryexpression.js');
+const VariableAssignment = require('./entities/varassignment.js');
+const VariableDeclaration = require('./entities/variabledeclaration.js');
+const VariableExpression = require('./entities/varexp.js');
+const WhileStatement = require('./entities/whilestatement.js');
 
 const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
 
@@ -89,8 +93,8 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   ClassSuite(nl, ind, cb, ded) {
     return new ClassSuite(cb.ast());
   },
-  ClassBody(fields, _, builder, methods) {
-    return new ClassBody(fields.ast(), methods.ast());
+  ClassBody(maker, nl, methods, _) {
+    return new ClassBody(maker.ast(), methods.ast());
   },
   VarDecl(l, id, type, _, exp) {
     return new VariableDeclaration(id.sourceString, type.ast(), exp.ast());
@@ -110,11 +114,23 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   VarExp(name) {
     return new VariableExpression(name.sourceString);
   },
-  fielddecl(open, id) {
-    return new FieldDeclaration(id.ast());
+  FieldAssign(id, _, val) {
+    return new FieldAssignment(id.ast(), val.ast());
   },
-  ConstructorDecl(id, params, col, s) {
-    return new MethodDeclaration(id.ast(), params.ast(), s.ast());
+  fieldexp(id) {
+    return new FieldExpression(id.sourceString);
+  },
+  FieldDecl(id, type) {
+    return new FieldDeclaration(id.sourceString, type.ast());
+  },
+  FieldParams(open, ids, close) {
+    return new FieldParameters(ids.ast());
+  },
+  ConstructorDecl_bodied(build, params, _, body) {
+    return new ConstructorDeclaration(params.ast(), body.ast());
+  },
+  ConstructorDecl_noBody(build, params, _) {
+    return new ConstructorDeclaration(params.ast());
   },
   MethodDecl(id, params, col, s) {
     return new MethodDeclaration(id.ast(), params.ast(), s.ast());

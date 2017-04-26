@@ -9,6 +9,7 @@ Bool {
     FullStmt
       = IndentStmt           --indent
       | NormalStmt? newline  --normal
+
     NormalStmt
       = VarDecl
       | OpAssign
@@ -16,6 +17,8 @@ Bool {
       | Exp
       | Return
       | breakstmt
+      | FieldDecl
+      | FieldAssign
     IndentStmt
       = ClassDecl
       | FunDecl
@@ -42,19 +45,29 @@ Bool {
         = newline indent ClassBody dedent
 
     ClassBody
-        = (fielddecl newline)* ConstructorDecl MethodDecl+
+        = ConstructorDecl newline* (MethodDecl newline*)*
 
-    fielddecl
+    FieldDecl
+      = fieldid (Type)?
+    FieldAssign
+      = fieldexp "=" Exp
+    fieldexp
+      = fieldid
+
+    fieldid
       = "_" id
 
     ConstructorDecl
-      = "build" Params (":" Suite)?
+      = "build" methodparams ":" Suite --bodied
+      | "build" FieldParams newline --noBody
 
     MethodDecl
-        = id methodparams ":" Suite
-    methodparams
-        = "(" ((id | fielddecl) (" " (id | fielddecl))*)? ")"
+      = id methodparams ":" Suite
 
+    methodparams
+      = "(" ((id | fieldid) (" " (id | fieldid))*)? ")"
+    FieldParams
+      = "(" FieldDecl+ ")"
     // need to make this work where second newline not necessary before closing dedent
     ObjDecl
         = id ":=" newline indent (PropertyDecl newline*)+ dedent
@@ -70,7 +83,7 @@ Bool {
       = "let" VarExp (Type)? ("=" Exp)?
 
     OpAssign
-      = id (assignop) Exp
+      = (id | fieldid) (assignop) Exp
 
     assignop
       = "+=" | "*=" | "/=" | "%="
@@ -81,7 +94,7 @@ Bool {
     Return = "ret" Exp?
 
     Funcall
-      = id Funparams+
+      = (id | fieldid) Funparams+
 
     Funparams
       = "(" SimpleLit* ")"
@@ -141,7 +154,6 @@ Bool {
       | SimpleLit
       | Objlit
       | Listlit
-      | fielddecl
       | ClassInst
 
     // need to add support for single line objects
@@ -152,6 +164,7 @@ Bool {
       | intlit
       | Funcall
       | VarExp
+      | fieldexp
       | stringlit
 
     VarExp = id
@@ -161,7 +174,7 @@ Bool {
     expop = "**" | "//"
     relop =  ">=" | "<=" | ">" | "<" | "!==" | "===" | "==" | "!="
     Explist = Exp8 ("," Exp8)*
-    ListExp = Exp "for" id "in" (VarExp | Listlit) SimpleIf? // TODO: add in rangeexp
+    ListExp = Exp "for" id "in" (VarExp | Listlit | fieldexp) SimpleIf? // TODO: add in rangeexp
     SimpleIf = "if" Exp
     Listlit = "[" (ListExp | Explist)? "]"
     Range = "range(" RangeExp ")"

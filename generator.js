@@ -8,9 +8,11 @@ const ClassDeclaration = require('./entities/classdecl.js');
 const ClassInstantiation = require('./entities/classinstantiation.js');
 const ClassSuite = require('./entities/classsuite.js');
 const ConditionalStatement = require('./entities/conditionalstatement.js');
+const ConstructorDeclaration = require('./entities/constructordecl.js');
 const Context = require('./analyzer.js');
 const ExpList = require('./entities/explist.js');
 const FieldDeclaration = require('./entities/fielddecl.js');
+const FieldParameters = require('./entities/fieldparams.js');
 const FloatLiteral = require('./entities/floatliteral.js');
 const ForStatement = require('./entities/forstatement.js');
 const FunctionCall = require('./entities/funcall.js');
@@ -160,9 +162,84 @@ Object.assign(VariableDeclaration.prototype, {
   },
 });
 
-/** *************
- * EXPRESSIONS *
- ***************/
+/* *************
+   *  CLASSES  *
+   *************/
+Object.assign(ClassBody.prototype, {
+  gen() {
+    this.builder.gen();
+    this.methods.forEach((m) => {
+      m.gen();
+    });
+  },
+});
+
+Object.assign(ClassSuite.prototype, {
+  gen() {
+    this.body.gen();
+  },
+});
+
+Object.assign(ClassDeclaration.prototype, {
+  gen() {
+    let prefix = `class ${this.id} `;
+    prefix += this.isa ? `extends ${this.isa} {` : '{';
+    emit(prefix);
+    indentLevel += 1;
+    this.body.gen();
+    indentLevel -= 1;
+    emit('}');
+  },
+});
+
+Object.assign(ClassInstantiation.prototype, {
+  gen() {
+
+  },
+});
+
+Object.assign(ConstructorDeclaration.prototype, {
+  gen() {
+    if (this.body) {
+      emit(`constructor (${this.params.gen()}) {`); // TODO: Differentiate between fields and other vars as params
+      this.params.forEach((param) => {
+        if (param instanceof FieldExpression) { // TODO: Define fieldexpression entity
+          emit(` this.${param.id} = ${param.id};`); // assign instance fields
+        }
+      });
+      genStatementList(this.body);
+    } else {
+      emit('constructor () {');
+      this.params.gen().forEach((param) => {
+        emit(`  this.${param} = ${param};`);
+      });
+      emit('}');
+    }
+  },
+});
+
+Object.assign(FieldDeclaration.prototype, {
+  gen() {
+    return `${this.id}`;
+  },
+});
+
+Object.assign(FieldParameters.prototype, {
+  gen() {
+    return this.params.map(p => p.gen());
+  },
+});
+
+Object.assign(MethodDeclaration.prototype, {
+  gen() {
+
+  },
+});
+
+
+/* ***************
+   * EXPRESSIONS *
+   ***************/
 
 Object.assign(VariableExpression.prototype, {
   gen() {
