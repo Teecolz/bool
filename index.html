@@ -508,22 +508,67 @@ Bool can do that too. ##
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
           <h5>Binary Expression</h5>
-          <code>Operator '${this.op}' requires left operand to be object</code>
-          <code>Operator '${this.op}' requires numerical operands</code>
-          <code>Operator '${this.op}' requires integer operands</code>
-          <code>Operator '${this.op}' requires left operand to be object</code>
-          <code>Operator '${this.op}' requires compatible operands</code>
-          <code>Cannot access non-integer index of list</code>
+          <code>Operator '${this.op}' requires left operand to be object.</code>
+          <code>Operator '${this.op}' requires numerical operands.</code>
+          <code>Operator '${this.op}' requires integer operands.</code>
+          <code>Operator '${this.op}' requires left operand to be object.</code>
+          <code>Operator '${this.op}' requires compatible operands.</code>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-12">
+          <h5>Op Assignment</h5>
+          <code>Operand is of wrong type. Expected a number.</code>
+          <code>Target of assignment must be integer.</code>
+          <code>Source of assignment must be integer.</code>
+          <code>Target of assignment must be number.</code>
+          <code>Source of assignment must be number.</code>
+        </div>
+        <div class="col-lg-12">
           <h5>Case</h5>
-          <code>Condition must be of type 'bool'. Found type ${this.condition.type}</code>
+          <code>Condition must be of type 'bool'. Found type ${this.condition.type}.</code>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-12">
           <h5>Explist</h5>
-          <code>Lists must be composed of compatible types</code>
+          <code>Lists must be composed of compatible types.</code>
+        </div>
+        <div class="col-lg-12">
+          <h5>ListExp</h5>
+          <code>Cannot use for-in on non list.</code>
+        </div>
+        <div class="col-lg-12">
+          <h5>For Statement</h5>
+          <code>Cannot use for-in on non list.</code>
+        </div>
+        <div class="col-lg-12">
+          <h5>FunDecl</h5>
+          <code>Incompatible return type. Expected ${this.returnType}, got ${this.body.type}.</code>
+        </div>
+        <div class="col-lg-12">
+          <h5>FunCall</h5>
+          <code>Cannot call non-function as function.</code>
+          <code>Function requires ${curFun.params.length} parameters. Given ${paramGroup.params.length}.</code>
+          <code>Incompatible types: Expected ${curFun.params.params[j].type}, saw ${paramGroup.params[j].type}.</code>
+        </div>
+        <div class="col-lg-12">
+          <h5>Variable Assignment</h5>
+          <code>Incompatible types: Expected ${this.target.type.name}, got ${this.source.type.name}.</code>
+        </div>
+        <div class="col-lg-12">
+          <h5>Variable Declaration</h5>
+          <code>Incompatible Types: Declared ${this.type.name}, Assigned ${this.value.type.name}.</code>
+        </div>
+        <div class="col-lg-12">
+          <h5>Unary Expression</h5>
+          <code>Cannot negate non-number.</code>
+        </div>
+        <div class="col-lg-12">
+          <h5>Simple If</h5>
+          <code>Conditional expression must evaluate to boolean.</code>
+        </div>
+        <div class="col-lg-12">
+          <h5>While Statement</h5>
+          <code>Conditional expression must evaluate to boolean. Found ${this.condition.type}.</code>
         </div>
       </div>
   </section>

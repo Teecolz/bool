@@ -37,7 +37,7 @@ html {
   margin: 25px;
 }
 
-.about-section h1, .examples-section h1, .diagrams-section h1 {
+.about-section h1, .examples-section h1, .diagrams-section h1, .errors-section h1 {
   font-size: 40px;
   margin-bottom: 40px;
 }
@@ -53,7 +53,7 @@ html {
 
 .errors-section code {
   display: block;
-  width: 80%;
+  width: 50%;
   margin: 0 auto;
   margin-bottom: 10px;
   font-size: 12px;
@@ -70,6 +70,7 @@ footer {
   text-align: center;
   background-color: #222;
   color: #9d9d9d;
+  border-top: 1px solid black;
 }
 
 footer small {
