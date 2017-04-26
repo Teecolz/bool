@@ -135,8 +135,8 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   MethodDecl(id, params, col, s) {
     return new MethodDeclaration(id.ast(), params.ast(), s.ast());
   },
-  methodparams(open, id1, sp, ids, close) {
-    return new Parameters([id1.ast()].concat(ids.ast()));
+  MethodParams(open, ids, close) {
+    return new FieldParameters(ids.ast());
   },
   ObjDecl(id, col, nl, ind, props, nl2, ded) {
     return new ObjectDeclaration(id.ast(), props.ast());

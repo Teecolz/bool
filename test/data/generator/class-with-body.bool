@@ -1,0 +1,3 @@
+class Person:
+  build(_nameFirst _nameLast nameLastSuffix) :
+    _nameLast = _nameLast + nameLastSuffix

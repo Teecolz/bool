@@ -11,6 +11,7 @@ const ConditionalStatement = require('./entities/conditionalstatement.js');
 const ConstructorDeclaration = require('./entities/constructordecl.js');
 const Context = require('./analyzer.js');
 const ExpList = require('./entities/explist.js');
+const FieldAssignment = require('./entities/fieldassign.js');
 const FieldDeclaration = require('./entities/fielddecl.js');
 const FieldParameters = require('./entities/fieldparams.js');
 const FloatLiteral = require('./entities/floatliteral.js');
@@ -200,21 +201,27 @@ Object.assign(ClassInstantiation.prototype, {
 
 Object.assign(ConstructorDeclaration.prototype, {
   gen() {
+    const generatedParams = this.params.gen();
+    emit(`constructor (${generatedParams.join(', ')}) {`);
     if (this.body) {
-      emit(`constructor (${this.params.gen()}) {`); // TODO: Differentiate between fields and other vars as params
-      this.params.forEach((param) => {
-        if (param instanceof FieldExpression) { // TODO: Define fieldexpression entity
+      generatedParams.forEach((param) => {
+        if (param instanceof FieldDeclaration) { // TODO: Define fieldexpression entity
           emit(` this.${param.id} = ${param.id};`); // assign instance fields
         }
       });
       genStatementList(this.body);
     } else {
-      emit('constructor () {');
-      this.params.gen().forEach((param) => {
+      generatedParams.forEach((param) => {
         emit(`  this.${param} = ${param};`);
       });
       emit('}');
     }
+  },
+});
+
+Object.assign(FieldAssignment.prototype, {
+  gen() {
+    emit(`this.${this.target} = ${this.source.gen()}`);
   },
 });
 

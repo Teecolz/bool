@@ -17,8 +17,9 @@ Bool {
       | Exp
       | Return
       | breakstmt
-      | FieldDecl
       | FieldAssign
+      | FieldDecl
+
     IndentStmt
       = ClassDecl
       | FunDecl
@@ -58,14 +59,14 @@ Bool {
       = "_" id
 
     ConstructorDecl
-      = "build" methodparams ":" Suite --bodied
+      = "build" MethodParams ":" Suite --bodied
       | "build" FieldParams newline --noBody
 
     MethodDecl
-      = id methodparams ":" Suite
+      = id MethodParams ":" Suite
 
-    methodparams
-      = "(" ((id | fieldid) (" " (id | fieldid))*)? ")"
+    MethodParams
+      = "(" (ParamDecl | FieldDecl)* ")"
     FieldParams
       = "(" FieldDecl+ ")"
     // need to make this work where second newline not necessary before closing dedent
