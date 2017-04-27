@@ -1,6 +1,4 @@
 const Type = require('./type.js');
-const VariableExpression = require('./varexp.js');
-const IdLiteral = require('./idliteral.js');
 
 class BinaryExpression {
   constructor(left, op, right) {
