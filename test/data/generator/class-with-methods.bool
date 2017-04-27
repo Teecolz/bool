@@ -1,0 +1,8 @@
+class Person:
+  build (_nameFirst _nameLast _age)
+
+class PoliceMan isa Person:
+  build (_nameFirst _nameLast _age):
+    _occupation = "twelvy"
+  woopwoop ():
+    ret "Time to narc"

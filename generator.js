@@ -190,14 +190,14 @@ Object.assign(ClassDeclaration.prototype, {
 
 Object.assign(ClassInstantiation.prototype, {
   gen() {
-
+    // TODO
   },
 });
 
 Object.assign(ConstructorDeclaration.prototype, {
   gen() {
     const generatedParams = this.params.gen();
-    emit(`constructor (${generatedParams.join(', ')}) {`);
+    emit(`constructor(${generatedParams.join(', ')}) {`);
     if (this.body) {
       this.params.params.forEach((param) => {
         if (param instanceof FieldDeclaration) { // TODO: Define fieldexpression entity
@@ -240,7 +240,9 @@ Object.assign(FieldParameters.prototype, {
 
 Object.assign(MethodDeclaration.prototype, {
   gen() {
-
+    emit(`${this.id}(${this.params.gen()}) {`);
+    genStatementList(this.block);
+    emit('}');
   },
 });
 

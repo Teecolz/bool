@@ -1,3 +1,5 @@
+const Type = require('./type.js');
+
 class OpAssignment {
   constructor(id, op, val) {
     this.id = id;
@@ -12,7 +14,7 @@ class OpAssignment {
       if (this.target.type.isInt() || this.target.type.isFloat()) {
         this.source.type.mustBeNumber('Operand is of wrong type. expected a number', this.source);
       } else if (this.target.type.isString()) {
-        // TODO: finish this
+        this.source.type = Type.STRING;
       }
     } else if (this.op === '%=') {
       this.target.mustBeInteger('Target of assignment must be integer.', this.target);

@@ -537,7 +537,7 @@ describe('Parser Tests', () => {
     describe('Declarations', () => {
       tests = [
         {
-          arg: 'class Hello:\n ⇨ build():\n ⇨ ret "Hello, world!"\n ⇦ ⇦\n',
+          arg: 'class Hello:\n ⇨build():\n⇨ret "Hello, world!"\n⇦⇦\n',
           expected: 'hello  : (ClassSuite (ClassBody  (Method main (Params ) : (Suite (Return "Hello, world!")))))',
         },
         {
