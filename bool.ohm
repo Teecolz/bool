@@ -14,11 +14,11 @@ Bool {
       = VarDecl
       | OpAssign
       | VarAssignment
+      | FieldAssign
+      | FieldDecl
       | Exp
       | Return
       | breakstmt
-      | FieldAssign
-      | FieldDecl
 
     IndentStmt
       = ClassDecl
@@ -59,8 +59,8 @@ Bool {
       = "_" id
 
     ConstructorDecl
-      = "build" MethodParams ":" Suite --bodied
-      | "build" FieldParams newline --noBody
+      = "build" FieldParams newline --noBody
+      | "build" MethodParams ":" Suite --bodied
 
     MethodDecl
       = id MethodParams ":" Suite
@@ -84,7 +84,7 @@ Bool {
       = "let" VarExp (Type)? ("=" Exp)?
 
     OpAssign
-      = (id | fieldid) (assignop) Exp
+      = (VarExp | fieldexp) (assignop) Exp
 
     assignop
       = "+=" | "*=" | "/=" | "%="
@@ -225,7 +225,7 @@ Bool {
 
     indent = "⇨" // placeholder
     dedent = "⇦" // placeholder
-    id = ~("_"? reserved ~(idChar+)) idName
+    id = ~"_" idName |  ~(reserved ~(idChar+)) idName
     idName = idStart (idChar)*
     idStart = letter | "$"
     idChar = alnum | "-" | "_"

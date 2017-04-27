@@ -13,6 +13,7 @@ const Context = require('./analyzer.js');
 const ExpList = require('./entities/explist.js');
 const FieldAssignment = require('./entities/fieldassign.js');
 const FieldDeclaration = require('./entities/fielddecl.js');
+const FieldExpression = require('./entities/fieldexp.js');
 const FieldParameters = require('./entities/fieldparams.js');
 const FloatLiteral = require('./entities/floatliteral.js');
 const ForStatement = require('./entities/forstatement.js');
@@ -25,6 +26,7 @@ const IntegerLiteral = require('./entities/intliteral.js');
 const ListExpression = require('./entities/listexp.js');
 const ListLiteral = require('./entities/listliteral.js');
 const MethodDeclaration = require('./entities/methoddecl.js');
+const MethodParameters = require('./entities/methodparams.js');
 const ObjectDeclaration = require('./entities/objdecl.js');
 const ObjectLiteral = require('./entities/objectliteral.js');
 const OpAssignment = require('./entities/opassign.js');
@@ -204,9 +206,9 @@ Object.assign(ConstructorDeclaration.prototype, {
     const generatedParams = this.params.gen();
     emit(`constructor (${generatedParams.join(', ')}) {`);
     if (this.body) {
-      generatedParams.forEach((param) => {
+      this.params.params.forEach((param) => {
         if (param instanceof FieldDeclaration) { // TODO: Define fieldexpression entity
-          emit(` this.${param.id} = ${param.id};`); // assign instance fields
+          emit(`  this.${jsName(param)} = ${jsName(param)};`); // assign instance fields
         }
       });
       genStatementList(this.body);
@@ -214,8 +216,8 @@ Object.assign(ConstructorDeclaration.prototype, {
       generatedParams.forEach((param) => {
         emit(`  this.${param} = ${param};`);
       });
-      emit('}');
     }
+    emit('}');
   },
 });
 
@@ -227,7 +229,13 @@ Object.assign(FieldAssignment.prototype, {
 
 Object.assign(FieldDeclaration.prototype, {
   gen() {
-    return `${this.id}`;
+    return `${jsName(this)}`;
+  },
+});
+
+Object.assign(FieldExpression.prototype, {
+  gen() {
+    return `this.${jsName(this.referent)}`;
   },
 });
 
@@ -240,6 +248,12 @@ Object.assign(FieldParameters.prototype, {
 Object.assign(MethodDeclaration.prototype, {
   gen() {
 
+  },
+});
+
+Object.assign(MethodParameters.prototype, {
+  gen() {
+    return this.params.map(p => p.gen());
   },
 });
 
@@ -267,7 +281,11 @@ Object.assign(UnaryExpression.prototype, {
 
 Object.assign(OpAssignment.prototype, {
   gen() {
-    return `${jsName(this.target)} ${this.op} ${this.source}`;
+    let targetString = `${this.target.gen()}`;
+    if (this.target instanceof FieldDeclaration) {
+      targetString = `this.${targetString}`;
+    }
+    return `${targetString} ${this.op} ${this.source.gen()}`;
   },
 });
 

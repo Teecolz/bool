@@ -2,14 +2,14 @@ class ConstructorDeclaration {
   constructor(params, body) {
     this.id = 'build';
     this.params = params;
-    this.body = body ? body[0] : undefined;
+    this.body = body || undefined;
   }
 
   analyze(context) {
-    const builder = context.createFunctionContext();
-    this.params.analyze(context);
+    const builderContext = context.createFunctionContext();
+    this.params.analyze(builderContext);
     if (this.body) {
-      this.body.analyze(builder);
+      this.body.analyze(builderContext);
     }
   } // TODO: HOW TO HANDLE INSTANTIATION
 

@@ -34,6 +34,7 @@ const IntegerLiteral = require('./entities/intliteral.js');
 const ListExpression = require('./entities/listexp.js');
 const ListLiteral = require('./entities/listliteral.js');
 const MethodDeclaration = require('./entities/methoddecl.js');
+const MethodParameters = require('./entities/methodparams.js');
 const ObjectDeclaration = require('./entities/objdecl.js');
 const ObjectLiteral = require('./entities/objectliteral.js');
 const ohm = require('ohm-js');
@@ -136,7 +137,7 @@ const semantics = grammar.createSemantics().addOperation('ast', {
     return new MethodDeclaration(id.ast(), params.ast(), s.ast());
   },
   MethodParams(open, ids, close) {
-    return new FieldParameters(ids.ast());
+    return new MethodParameters(ids.ast());
   },
   ObjDecl(id, col, nl, ind, props, nl2, ded) {
     return new ObjectDeclaration(id.ast(), props.ast());
@@ -233,6 +234,7 @@ const semantics = grammar.createSemantics().addOperation('ast', {
 });
 
 module.exports = (text) => {
+  console.log(Preparser(text));
   const match = grammar.match(Preparser(text));
   if (match.succeeded()) {
     return semantics(match).ast();
