@@ -84,7 +84,7 @@ function getLinesAsArray(statements) {
   return lineArray;
 }
 
-const jsName = (() => {
+let jsName = (() => {
   let lastId = 0;
   const map = new Map();
   return (v) => {
@@ -95,6 +95,20 @@ const jsName = (() => {
   };
 })();
 
+const resetJsName = (() => {
+  jsName = (() => {
+    let lastId = 0;
+    const map = new Map();
+    return (v) => {
+      if (!(map.has(v))) {
+        map.set(v, ++lastId); // eslint-disable-line no-plusplus
+      }
+      return `${v.id}_${map.get(v)}`;
+    };
+  })();
+});
+
+exports.resetJsName = resetJsName;
 
 function makeBoolean(bool) {
   return { tru: 'true', fal: 'false' }[bool];
@@ -430,7 +444,13 @@ Object.assign(BooleanLiteral.prototype, {
 });
 
 Object.assign(ExpList.prototype, {
-  gen() { return `${this.exps}`; },
+  gen() {
+    const listElements = [];
+    this.exps.forEach((el) => {
+      listElements.push(el.gen());
+    });
+    return `${listElements.join(', ')}`;
+  },
 });
 
 Object.assign(FloatLiteral.prototype, {
@@ -462,8 +482,10 @@ Object.assign(ListExpression.prototype, {
 
 Object.assign(ListLiteral.prototype, {
   gen() {
-    const list = this.exp;
-    return `[${list}]`;
+    if (this.exp[0]) {
+      return `[${this.exp[0].gen()}]`;
+    }
+    return '[]';
   },
 });
 

@@ -5,6 +5,7 @@ const assert = require('assert');
 const parse = require('../parser.js');
 const sinon = require('sinon');
 require('../generator.js');
+const resetJsName = require('../generator.js').resetJsName;
 
 const LIBRARY_FUNCTIONS = [
   'function print_1(s) {console.log(s);}',
@@ -30,13 +31,14 @@ let test;
 
 describe('Generator Tests', () => {
   beforeEach((done) => {
-    sinon.stub(console, 'log').returns(void 0);
-    sinon.stub(console, 'error').returns(void 0);
+    this.logger = sinon.stub(console, 'log');
+    this.error = sinon.stub(console, 'error');
     done();
   });
   afterEach((done) => {
-    console.log.restore();
-    console.error.restore();
+    this.logger.restore();
+    this.error.restore();
+    resetJsName();
     done();
   });
 
@@ -71,7 +73,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'funparams',
         expected: {
-          output: ['let test_3 = (param_4) => {', '  return param_4;', '};'],
+          output: ['let test_2 = (param_3) => {', '  return param_3;', '};'],
           numLogs: 1,
         },
       };
@@ -85,7 +87,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'var',
         expected: {
-          output: ['let var_5 = () => {', '  let x_6 = 0;', '  return x_6;', '};'],
+          output: ['let var_2 = () => {', '  let x_3 = 0;', '  return x_3;', '};'],
           numLogs: 1,
         },
       };
@@ -99,7 +101,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'if',
         expected: {
-          output: ['let test2_7 = () => {', '  if (true) {', '    return true;', '  }', '};'],
+          output: ['let test2_2 = () => {', '  if (true) {', '    return true;', '  }', '};'],
           numLogs: 1,
         },
       };
@@ -113,7 +115,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'stmt',
         expected: {
-          output: ['let x_8 = \'test\';'],
+          output: ['let x_2 = \'test\';'],
           numLogs: 1,
         },
       };
@@ -141,7 +143,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'op',
         expected: {
-          output: ['let op_9 = () => {', '  let x_10 = 5;', '  return (x_10 + 5);', '};'],
+          output: ['let op_2 = () => {', '  let x_3 = 5;', '  return (x_3 + 5);', '};'],
           numLogs: 1,
         },
       };
@@ -153,7 +155,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'op2',
         expected: {
-          output: ['let bar_11 = (x_12, y_13, z_14, a_15, b_16, c_17) => {', '  return ((x_12 + y_13) > (z_14 ** b_16));', '};'],
+          output: ['let bar_2 = (x_3, y_4, z_5, a_6, b_7, c_8) => {', '  return ((x_2 + y_4) > (z_5 ** b_7));', '};'],
           numLogs: 1,
         },
       };
@@ -167,7 +169,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'range',
         expected: {
-          output: ['for (let x_18 = 0; x_18 < 1; x_18 += 1) {', '  print_1(x_18);', '}'],
+          output: ['for (let x_2 = 0; x_2 < 1; x_2 += 1) {', '  print_1(x_2);', '}'],
           numLogs: 1,
         },
       };
@@ -195,7 +197,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'float',
         expected: {
-          output: ['let x_19 = 3.14;'],
+          output: ['let x_2 = 3.14;'],
           numLogs: 1,
         },
       };
@@ -209,7 +211,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'bool',
         expected: {
-          output: ['let x_20 = true;'],
+          output: ['let x_2 = true;'],
           numLogs: 1,
         },
       };
@@ -223,7 +225,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'for',
         expected: {
-          output: ['for (let x_21 = 0; x_21 < 25; x_21 += 1) {', '  print_1(x_21);', '}'],
+          output: ['for (let x_2 = 0; x_2 < 25; x_2 += 1) {', '  print_1(x_2);', '}'],
           numLogs: 1,
         },
       };
@@ -237,7 +239,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'conditional',
         expected: {
-          output: ['let test3_22 = () => {', '  if (true) {', '    return true;', '  } else {', '      return false;', '  }', '};'],
+          output: ['let test3_2 = () => {', '  if (true) {', '    return true;', '  } else {', '      return false;', '  }', '};'],
           numLogs: 1,
         },
       };
@@ -267,11 +269,11 @@ describe('Generator Tests', () => {
         argFile: 'list',
         expected: {
           output: [
-            'let a_23 = [];',
-            'let b_24 = [1, 2, 3, 4, 5];',
-            'b_24.forEach((x_25) => {',
-            '  if ((x_25 > 1)) {',
-            '    print_1(x_25);',
+            'let a_2 = [];',
+            'let b_3 = [1, 2, 3, 4, 5];',
+            'b_3.forEach((x_4) => {',
+            '  if ((x_4 > 1)) {',
+            '    print_1(x_4);',
             '  }',
             '});',
           ],
@@ -288,7 +290,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'listexp',
         expected: {
-          output: ['let a_26 = [(BinExp x + 2) for x in [1, 2, 3]];'],
+          output: ['let a_2 = [(x + 2) for x in [1, 2, 3]];'],
           numLogs: 1,
         },
       };
