@@ -27,7 +27,7 @@ const ListExpression = require('./entities/listexp.js');
 const ListLiteral = require('./entities/listliteral.js');
 const MethodDeclaration = require('./entities/methoddecl.js');
 const MethodParameters = require('./entities/methodparams.js');
-const ObjectDeclaration = require('./entities/objdecl.js');
+// const ObjectDeclaration = require('./entities/objdecl.js');
 const ObjectLiteral = require('./entities/objectliteral.js');
 const OpAssignment = require('./entities/opassign.js');
 const ParameterDeclaration = require('./entities/paramdecl.js');
@@ -81,13 +81,6 @@ function getLinesAsArray(statements) {
   const lineArray = statements.map(s => preEmit(s.gen()));
   indentLevel -= 1;
   return lineArray;
-}
-
-function bracketIfNecessary(a) {
-  if (a.length === 1) {
-    return `${a}`;
-  }
-  return `[${a.join(', ')}]`;
 }
 
 const jsName = (() => {
