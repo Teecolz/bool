@@ -195,7 +195,7 @@ Bool {
 
     // should also allow for one line statement here
     Funlit
-      = "lambda" Params ":" Exp
+      = "lambda" Params ":" (Exp | Suite)
 
     reserved
       = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"
