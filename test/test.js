@@ -125,9 +125,9 @@ describe('Grammar tests (all have trailing newline)', () => {
   });
 
   describe('Classes', () => {
-    describe('class Person: \n ⇨ _name \n maker(_name): \n ⇨ ret _name \n ⇦ ⇦ \n', () => {
+    describe('class Person: \n ⇨build(_name)\n⇦\n', () => {
       it('should succeed on class dec with one field', () => {
-        const match = gram.match('class Person: \n ⇨ _name \n maker(_name): \n ⇨ ret _name \n ⇦ ⇦ \n');
+        const match = gram.match('class Person: \n ⇨build(_name)\n⇦\n');
         assert.ok(match.succeeded());
       });
     });
@@ -537,7 +537,7 @@ describe('Parser Tests', () => {
     describe('Declarations', () => {
       tests = [
         {
-          arg: 'class hello:\n ⇨ main():\n ⇨ ret "Hello, world!"\n ⇦ ⇦\n',
+          arg: 'class Hello:\n ⇨ build():\n ⇨ ret "Hello, world!"\n ⇦ ⇦\n',
           expected: 'hello  : (ClassSuite (ClassBody  (Method main (Params ) : (Suite (Return "Hello, world!")))))',
         },
         {

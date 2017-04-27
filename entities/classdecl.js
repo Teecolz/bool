@@ -8,9 +8,8 @@ class ClassDeclaration {
   analyze(context) {
     context.mustNotBeLocal(this.id);
     const classContext = context.createClassContext();
-
     if (this.isa[0]) {
-      this.isa.analyze(context);
+      this.superClass = context.lookupVariable(this.isa[0].id);
     }
     this.body.analyze(classContext);
     context.addVariable(this.id, this);

@@ -186,7 +186,7 @@ Object.assign(ClassSuite.prototype, {
 Object.assign(ClassDeclaration.prototype, {
   gen() {
     let prefix = `class ${this.id} `;
-    prefix += this.isa ? `extends ${this.isa} {` : '{';
+    prefix += this.superClass ? `extends ${this.superClass.id} {` : '{';
     emit(prefix);
     indentLevel += 1;
     this.body.gen();
@@ -208,7 +208,7 @@ Object.assign(ConstructorDeclaration.prototype, {
     if (this.body) {
       this.params.params.forEach((param) => {
         if (param instanceof FieldDeclaration) { // TODO: Define fieldexpression entity
-          emit(`  this.${jsName(param)} = ${jsName(param)};`); // assign instance fields
+          emit(`  this.${param.id} = ${param.id};`); // assign instance fields
         }
       });
       genStatementList(this.body);
@@ -223,19 +223,19 @@ Object.assign(ConstructorDeclaration.prototype, {
 
 Object.assign(FieldAssignment.prototype, {
   gen() {
-    emit(`this.${this.target} = ${this.source.gen()}`);
+    emit(`this.${this.target} = ${this.source.gen()};`);
   },
 });
 
 Object.assign(FieldDeclaration.prototype, {
   gen() {
-    return `${jsName(this)}`;
+    return `${this.id}`;
   },
 });
 
 Object.assign(FieldExpression.prototype, {
   gen() {
-    return `this.${jsName(this.referent)}`;
+    return `this.${this.referent.id}`;
   },
 });
 

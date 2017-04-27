@@ -225,7 +225,9 @@ Bool {
 
     indent = "⇨" // placeholder
     dedent = "⇦" // placeholder
-    id = ~"_" idName |  ~(reserved ~(idChar+)) idName
+    id
+      = ~"_" id --notfield
+      | ~(reserved ~(idChar+)) idName --noreserved
     idName = idStart (idChar)*
     idStart = letter | "$"
     idChar = alnum | "-" | "_"

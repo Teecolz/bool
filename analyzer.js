@@ -77,6 +77,17 @@ class AnalysisContext {
     return false;
   }
 
+  lookupField(name) {
+    const variable = this.symTable[name];
+    if (variable) {
+      return variable;
+    } else if (!this.parent) {
+      return null;
+    }
+
+    return this.parent.lookupField(name);
+  }
+
   lookupVariable(name) {
     const variable = this.symTable[name];
     if (variable) {

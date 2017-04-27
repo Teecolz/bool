@@ -10,11 +10,12 @@ class FieldExpression {
   }
   analyze(context) {
     context.mustBeClassContext('Cannot access field from outside of class');
-    this.referent = context.lookupVariable(this.id);
+    this.referent = context.lookupField(this.id);
     if (this.referent) {
       this.type = this.referent.type;
     } else {
       this.type = Type.ARBITRARY;
+      this.referent = this;
     }
   }
   toString() {

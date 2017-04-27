@@ -89,7 +89,7 @@ const semantics = grammar.createSemantics().addOperation('ast', {
     return new FunctionParameters(params.ast());
   },
   ClassDecl(cl, id, isa, superId, col, cs) {
-    return new ClassDeclaration(id.ast(), superId.sourceString, cs.ast());
+    return new ClassDeclaration(id.ast(), superId.ast(), cs.ast());
   },
   ClassSuite(nl, ind, cb, ded) {
     return new ClassSuite(cb.ast());
@@ -234,7 +234,6 @@ const semantics = grammar.createSemantics().addOperation('ast', {
 });
 
 module.exports = (text) => {
-  console.log(Preparser(text));
   const match = grammar.match(Preparser(text));
   if (match.succeeded()) {
     return semantics(match).ast();
