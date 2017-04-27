@@ -1,3 +1,5 @@
+const Type = require('./type.js');
+
 class ClassDeclaration {
   constructor(id, isa, body) {
     this.id = id;
@@ -13,6 +15,7 @@ class ClassDeclaration {
     }
     this.body.analyze(classContext);
     context.addVariable(this.id, this);
+    this.type = Type.Construct(this.id);
   }
 
   toString() {

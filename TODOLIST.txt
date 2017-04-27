@@ -1,0 +1,20 @@
+!!! CHECK CONTEXTS FOR WHETHER IN CLASS OR NOT
+// fieldexp
+// FieldDecl
+// classdecl
+- constructordecl !!!
+// OpAssign
+// fieldassignments
+// add fieldexp
+- funcall
+- funparams
+  - simplelit or fieldexp
+- expressions
+- parameterize range
+- listexp
+- Objlit / propertydecl
+- call function literals
+- allow returns from methods but not from constructors
+- inheritance
+- fix binary expressions
+- allow access of member functions

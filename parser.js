@@ -176,6 +176,9 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   Funlit(lambda, params, _, s) {
     return new FunctionLiteral(params.ast(), s.ast());
   },
+  FunSuite(nl, ind, stmts) {
+    return new Suite(stmts.ast());
+  },
   Range(_, exp, close) {
     return exp.ast();
   },

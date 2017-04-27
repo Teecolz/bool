@@ -10,6 +10,13 @@ Bool {
       = IndentStmt           --indent
       | NormalStmt? newline  --normal
 
+      IndentStmt
+        = ClassDecl
+        | FunDecl
+        | ObjDecl
+        | Conditional
+        | Loop
+        // TODO: need to split loops into indent and no indent
     NormalStmt
       = VarDecl
       | OpAssign
@@ -20,13 +27,6 @@ Bool {
       | Return
       | breakstmt
 
-    IndentStmt
-      = ClassDecl
-      | FunDecl
-      | ObjDecl
-      | Conditional
-      | Loop
-      // need to split loops into indent and no indent
     Stmt
       = ClassDecl
       | FunDecl
@@ -115,6 +115,9 @@ Bool {
     Suite
       = newline indent (FullStmt)+ dedent
 
+    FunSuite
+      = newline indent (FullStmt)
+
     SimpleSuite
       = (newline indent)? Exp newline dedent
 
@@ -179,7 +182,7 @@ Bool {
     SimpleIf = "if" Exp
     Listlit = "[" (ListExp | Explist)? "]"
     Range = "range(" RangeExp ")"
-    RangeExp = intlit ("," intlit("," "-"? intlit)?)?
+    RangeExp = (id | intlit) ("," (id | intlit) ("," "-"? (id | intlit))?)?
     boollit = "tru" | "fal"
     intlit = ~(digit* ".") digit+
     floatlit = digit+ "." (digit+)? | (digit+)? "." digit+
@@ -191,7 +194,8 @@ Bool {
       | "{" newline indent (PropertyDecl newline)* dedent "}" --multiprop
 
     // should also allow for one line statement here
-    Funlit = "lambda" Params ":" (Suite | Exp)
+    Funlit
+      = "lambda" Params ":" Exp
 
     reserved
       = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"

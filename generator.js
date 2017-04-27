@@ -241,7 +241,7 @@ Object.assign(FieldParameters.prototype, {
 Object.assign(MethodDeclaration.prototype, {
   gen() {
     emit(`${this.id}(${this.params.gen()}) {`);
-    genStatementList(this.block);
+    this.block.gen();
     emit('}');
   },
 });

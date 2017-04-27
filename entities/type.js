@@ -25,33 +25,33 @@ class Type {
     return this.name === otherType.name;
   }
   mustBeInteger(message, location) {
-    if (this.name !== 'int') {
+    if (this.name !== 'int' && this.name !== '<arbitrary_type>') {
       error(message, location);
     }
   }
   isArbitrary() {
-    return this.name === '<arbitrary_type';
+    return this.name === '<arbitrary_type>';
   }
   isBool() {
-    return this.name === 'bool';
+    return this.name === 'bool' || this.name !== '<arbitrary_type>';
   }
   isFloat() {
-    return this.name === 'float';
+    return this.name === 'float' || this.name !== '<arbitrary_type>';
   }
   isInt() {
-    return this.name === 'int';
+    return this.name === 'int' || this.name !== '<arbitrary_type>';
   }
   isFunction() {
-    return this.name === 'function';
+    return this.name === 'function' || this.name !== '<arbitrary_type>';
   }
   isList() {
     return this.name.match(/\[.*\]/);
   }
   isObject() {
-    return this.name === 'object';
+    return this.name === 'object' || this.name !== '<arbitrary_type>';
   }
   isString() {
-    return this.name === 'string';
+    return this.name === 'string' || this.name !== '<arbitrary_type>';
   }
   mustBeFunction(message, location) {
     if (!this.isFunction()) {
