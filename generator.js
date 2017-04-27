@@ -27,6 +27,7 @@ const ListExpression = require('./entities/listexp.js');
 const ListLiteral = require('./entities/listliteral.js');
 const MethodDeclaration = require('./entities/methoddecl.js');
 const MethodParameters = require('./entities/methodparams.js');
+const ObjectAccess = require('./entities/objectaccess.js');
 // const ObjectDeclaration = require('./entities/objdecl.js');
 const ObjectLiteral = require('./entities/objectliteral.js');
 const OpAssignment = require('./entities/opassign.js');
@@ -143,7 +144,9 @@ Object.assign(Parameters.prototype, {
 });
 
 Object.assign(ParameterDeclaration.prototype, {
-  gen() { return jsName(this); },
+  gen() {
+    return jsName(this);
+  },
 });
 
 Object.assign(VariableAssignment.prototype, {
@@ -190,7 +193,7 @@ Object.assign(ClassDeclaration.prototype, {
 
 Object.assign(ClassInstantiation.prototype, {
   gen() {
-    // TODO
+    return `new ${this.id}(${this.params.gen()})`;
   },
 });
 
@@ -201,7 +204,7 @@ Object.assign(ConstructorDeclaration.prototype, {
     if (this.body) {
       this.params.params.forEach((param) => {
         if (param instanceof FieldDeclaration) { // TODO: Define fieldexpression entity
-          emit(`  this.${param.id} = ${param.id};`); // assign instance fields
+          emit(`  this.${param.gen()} = ${param.gen()};`); // assign instance fields
         }
       });
       genStatementList(this.body);
@@ -216,19 +219,20 @@ Object.assign(ConstructorDeclaration.prototype, {
 
 Object.assign(FieldAssignment.prototype, {
   gen() {
-    emit(`this.${this.target} = ${this.source.gen()};`);
+    const fieldNoPrefix = `${this.target}`.replace(/^_/, '');
+    emit(`this.${fieldNoPrefix} = ${this.source.gen()};`);
   },
 });
 
 Object.assign(FieldDeclaration.prototype, {
   gen() {
-    return `${this.id}`;
+    return `${this.id.replace(/^_/, '')}`;
   },
 });
 
 Object.assign(FieldExpression.prototype, {
   gen() {
-    return `this.${this.referent.id}`;
+    return `this.${this.referent.id.replace(/^_/, '')}`;
   },
 });
 
@@ -274,6 +278,14 @@ Object.assign(UnaryExpression.prototype, {
   gen() { return `${this.op}${this.operand}`; },
 });
 
+Object.assign(ObjectAccess.prototype, {
+  gen() {
+    if (this.prop instanceof FunctionCall) {
+      return `${this.container.gen()}.${this.prop.gen(true)}`;
+    }
+    return `${this.container.gen()}.${this.prop.gen()}`;
+  },
+});
 Object.assign(OpAssignment.prototype, {
   gen() {
     let targetString = `${this.target.gen()}`;
@@ -370,7 +382,10 @@ Object.assign(FunctionDeclaration.prototype, {
 });
 
 Object.assign(FunctionCall.prototype, {
-  gen() {
+  gen(isProp) {
+    if (isProp) {
+      return `${this.id}${this.params.map(p => `(${p.gen()})`).join('')}`;
+    }
     return `${jsName(this.callee)}${this.params.map(p => `(${p.gen()})`).join('')}`;
   },
 });

@@ -33,25 +33,25 @@ class Type {
     return this.name === '<arbitrary_type>';
   }
   isBool() {
-    return this.name === 'bool' || this.name !== '<arbitrary_type>';
+    return this.name === 'bool' || this.isArbitrary();
   }
   isFloat() {
-    return this.name === 'float' || this.name !== '<arbitrary_type>';
+    return this.name === 'float' || this.isArbitrary();
   }
   isInt() {
-    return this.name === 'int' || this.name !== '<arbitrary_type>';
+    return this.name === 'int' || this.isArbitrary();
   }
   isFunction() {
-    return this.name === 'function' || this.name !== '<arbitrary_type>';
+    return this.name === '<function>' || this.isArbitrary();
   }
   isList() {
     return this.name.match(/\[.*\]/);
   }
   isObject() {
-    return this.name === 'object' || this.name !== '<arbitrary_type>';
+    return this.name === 'object' || this.isArbitrary();
   }
   isString() {
-    return this.name === 'string' || this.name !== '<arbitrary_type>';
+    return this.name === 'string' || this.isArbitrary();
   }
   mustBeFunction(message, location) {
     if (!this.isFunction()) {
@@ -79,7 +79,7 @@ class Type {
     }
   }
   mustBeObject(message, location) {
-    if (this.isInt() || this.isFloat() || this.isFunction() || this.isString() || this.isBool()) {
+    if (this.name === 'int' || this.name === 'float' || this.name === '<function>' || this.name === 'bool') {
       error(message, location);
     }
   }

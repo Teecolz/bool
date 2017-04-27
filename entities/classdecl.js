@@ -14,10 +14,10 @@ class ClassDeclaration {
       this.superClass = context.lookupVariable(this.isa[0].id);
     }
     this.body.analyze(classContext);
+    this.classContext = classContext;
     context.addVariable(this.id, this);
     this.type = Type.Construct(this.id);
   }
-
   toString() {
     return `(ClassDecl ${this.id} ${this.isa} : ${this.body})`.replace(/, \)$/, '');
   }

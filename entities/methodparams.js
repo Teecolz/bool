@@ -3,6 +3,7 @@ const FieldDeclaration = require('./fielddecl.js');
 class MethodParameters {
   constructor(params) {
     this.params = params;
+    this.length = params.length;
   }
   analyze(context) {
     context.mustBeClassContext('Cannot use field parameters outside of class context');
@@ -10,8 +11,9 @@ class MethodParameters {
       param.analyze(context);
       if (param instanceof FieldDeclaration) {
         context.parent.addVariable(param.id, param); // add field to parent context
+      } else {
+        context.addVariable(param.id, param);
       }
-      context.addVariable(param.id, param);
     });
   }
   toString() {

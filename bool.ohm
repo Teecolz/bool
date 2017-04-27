@@ -22,8 +22,8 @@ Bool {
       | OpAssign
       | VarAssignment
       | FieldAssign
-      | FieldDecl
       | Exp
+      | FieldDecl
       | Return
       | breakstmt
 
@@ -68,7 +68,7 @@ Bool {
     MethodParams
       = "(" (ParamDecl | FieldDecl)* ")"
     FieldParams
-      = "(" FieldDecl+ ")"
+      = "(" FieldDecl* ")"
     // need to make this work where second newline not necessary before closing dedent
     ObjDecl
         = id ":=" newline indent (PropertyDecl newline*)+ dedent
@@ -98,7 +98,7 @@ Bool {
       = (id | fieldid) Funparams+
 
     Funparams
-      = "(" SimpleLit* ")"
+      = "(" Exp* ")"
 
     Params
       = "(" ParamDecl* ")"
@@ -148,17 +148,17 @@ Bool {
       | Exp7
     // may need to make this lexical
     Exp7
-      = Exp8 "." (id | stringlit)                --access
+      = Exp8 "." (Funcall | id | stringlit)      --access
       | Exp8 "[" (id | intlit | stringlit) "]"   --listAccess
       | Exp8
     Exp8
       =
       | Funlit
-      | "(" Exp ")"   --parens
       | SimpleLit
       | Objlit
       | Listlit
       | ClassInst
+      | "(" Exp ")"   --parens
 
     // need to add support for single line objects
     // May also want support for lists
@@ -167,6 +167,7 @@ Bool {
       | floatlit
       | intlit
       | Funcall
+      | fieldexp
       | VarExp
       | fieldexp
       | stringlit
@@ -207,7 +208,7 @@ Bool {
       = ":" ("string" | "float" | "int" | "bool" | "obj" | id) --single
       | ":" "[" ("string" | "float" | "int" | "bool" | "obj" | id) "]" --list
     char
-         = alnum | punctuation | escape | stringSpace
+         = stringSpace | alnum | punctuation | escape
 
     doublequotechar = "'"
     singlequotechar = "\""

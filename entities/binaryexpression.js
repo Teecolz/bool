@@ -1,4 +1,6 @@
 const Type = require('./type.js');
+const VariableExpression = require('./varexp.js');
+const IdLiteral = require('./idliteral.js');
 
 class BinaryExpression {
   constructor(left, op, right) {
@@ -56,13 +58,9 @@ class BinaryExpression {
         this.mustHaveCompatibleOperands();
         this.type = Type.BOOL;
         break;
-      case '.':
-        this.mustBeObject();
-        this.type = this.left.referent.objectContext.lookupProperty(this.right);
-        break;
       case '[]':
         this.mustBeObject();
-        if (this.left.type.isObject()) { // object
+        if (this.left.referent.objectContext) { // object
           this.type = this.left.referent.objectContext.lookupProperty(this.right);
         } else { // list
           this.right.type.mustBeInteger('Cannot access non-integer index of list', this.op);

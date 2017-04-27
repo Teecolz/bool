@@ -17,4 +17,7 @@
 - allow returns from methods but not from constructors
 - inheritance
 - fix binary expressions
-- allow access of member functions
+  // separate access expressions
+  - allow for JS implementations of operators like **
+  - make sure that comparison operators function correctly
+// allow access of member functions

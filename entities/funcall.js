@@ -1,6 +1,7 @@
 const error = require('../error.js');
 const Type = require('./type.js');
 const Undefined = require('./undefined.js');
+const VariableExpression = require('./varexp.js');
 
 class FunctionCall {
   constructor(id, params) {
@@ -23,13 +24,14 @@ class FunctionCall {
 
     for (let i = 0; i < this.params.length; i += 1) {
       isPhantomFunction = false;
-
       // Cannot call non function
       if (!curFun.type.isFunction()) {
         errorMessage = 'Cannot call non-function as function';
         curFun.type.mustBeFunction(errorMessage, this.id);
         curFun.type = Type.FUNCTION; // make type compatible
         isPhantomFunction = true;
+      } else if (curFun instanceof VariableExpression) {
+        curFun = curFun.referent;
       }
 
       paramGroup = this.params[i];
@@ -68,7 +70,7 @@ class FunctionCall {
       }
 
       // Chain function calls if necessary
-      if (this.type.name === 'function') {
+      if (this.type.name === '<function>') {
         curFun = this.val;
       }
     }

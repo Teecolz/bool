@@ -35,6 +35,7 @@ const ListExpression = require('./entities/listexp.js');
 const ListLiteral = require('./entities/listliteral.js');
 const MethodDeclaration = require('./entities/methoddecl.js');
 const MethodParameters = require('./entities/methodparams.js');
+const ObjectAccess = require('./entities/objectaccess.js');
 const ObjectDeclaration = require('./entities/objdecl.js');
 const ObjectLiteral = require('./entities/objectliteral.js');
 const ohm = require('ohm-js');
@@ -216,7 +217,7 @@ const semantics = grammar.createSemantics().addOperation('ast', {
     return new BinaryExpression(e1.ast(), '[]', e2.ast());
   },
   Exp7_access(e1, _, e2) {
-    return new BinaryExpression(e1.ast(), '.', e2.ast());
+    return new ObjectAccess(e1.ast(), e2.ast());
   },
   Exp8_parens(_, e, close) {
     return e.ast();

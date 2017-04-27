@@ -537,16 +537,12 @@ describe('Parser Tests', () => {
     describe('Declarations', () => {
       tests = [
         {
-          arg: 'class Hello:\n ⇨build():\n⇨ret "Hello, world!"\n⇦⇦\n',
-          expected: 'hello  : (ClassSuite (ClassBody  (Method main (Params ) : (Suite (Return "Hello, world!")))))',
+          arg: 'class Hello:\n⇨build(_message)\n⇦\n',
+          expected: 'Hello  : (ClassSuite (ClassBody (Build (Params (Field _message))) ))',
         },
         {
-          arg: 'class hello:\n ⇨ _hi\n main():\n ⇨ ret "Hello, world!"\n ⇦ ⇦\n',
-          expected: 'hello  : (ClassSuite (ClassBody (Field _hi) (Method main (Params ) : (Suite (Return "Hello, world!")))))',
-        },
-        {
-          arg: 'class hello:\n ⇨ _hi\n _hi2\n main():\n ⇨ ret "Hello, world!"\n ⇦ ⇦\n',
-          expected: 'hello  : (ClassSuite (ClassBody (Field _hi),(Field _hi2) (Method main (Params ) : (Suite (Return "Hello, world!")))))',
+          arg: 'class Hello:\n⇨build()\nsayHi():\n⇨ret "Hello, world!"\n⇦⇦\n',
+          expected: 'Hello  : (ClassSuite (ClassBody (Build (Params )) (Method sayHi (Params ) : (Suite (Return "Hello, world!")))))',
         },
       ];
 
@@ -600,25 +596,25 @@ describe('Parser Tests', () => {
       tests = [
         {
           arg: 'x.y\n',
-          expected: 'x . y',
+          expected: '(Access x . y)',
         },
         {
           arg: 'x[0]\n',
-          expected: 'x [] 0',
+          expected: '(BinExp x [] 0)',
         },
         {
           arg: '(x.y)[0]\n',
-          expected: '(BinExp x . y) [] 0',
+          expected: '(BinExp (Access x . y) [] 0)',
         },
         {
           arg: '[1,2,3][1]\n',
-          expected: '[1, 2, 3] [] 1',
+          expected: '(BinExp [1, 2, 3] [] 1)',
         },
       ];
 
       tests.forEach((test) => {
         it(`correctly parses \n ${test.arg.trim()}`, () => {
-          parseTest(test.arg, `(Program (Block (BinExp ${test.expected})))`);
+          parseTest(test.arg, `(Program (Block ${test.expected}))`);
         });
       });
     });

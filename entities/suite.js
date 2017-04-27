@@ -3,13 +3,13 @@ class Suite {
     this.stmts = statements;
   }
   analyze(context) {
-    const localContext = context.createChildContext();
+    // const localContext = context.createChildContext();
     this.stmts.forEach((stmt) => {
       if (stmt) {
-        stmt.analyze(localContext);
+        stmt.analyze(context);
         if (stmt.isReturn) {
           this.type = stmt.type;
-          this.returnValue = stmt.returnValue;
+          this.returnValue = stmt.stmt.returnValue;
         }
       }
     });
