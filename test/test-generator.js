@@ -27,6 +27,25 @@ const jsGenTest = (testDatum) => {
   });
 };
 
+// Setup output files
+const jsGenTestWithOutFile = (testDatum) => {
+  const jsCode = parse(fs.readFileSync(`test/data/generator/${testDatum}.bool`, {
+    encoding: 'UTF-8',
+  }));
+  let expectedOut = fs.readFileSync(`test/data/generator/output/${testDatum}-out.js`, {
+    encoding: 'UTF-8',
+  }).toString().split('\n');
+  expectedOut = expectedOut.slice(1, expectedOut.length - 1);
+  jsCode.analyze();
+  jsCode.gen();
+  expectedOut = LIBRARY_FUNCTIONS.concat(expectedOut);
+  expectedOut.forEach(o => console.info(o));
+  assert.ok(console.log.called, 'log should have been called.');
+  assert.equal(console.log.args.length, expectedOut.length);
+  console.log.args.forEach((arg, index) => {
+    assert.deepEqual(arg[0], expectedOut[index]);
+  });
+};
 let test;
 
 describe('Generator Tests', () => {
@@ -350,6 +369,14 @@ describe('Generator Tests', () => {
         },
       };
       jsGenTest(test);
+      done();
+    });
+  });
+
+  describe('Complex HOF Test', () => {
+    it('Should properly generate HOFS', (done) => {
+      test = 'higher-order';
+      jsGenTestWithOutFile(test);
       done();
     });
   });
