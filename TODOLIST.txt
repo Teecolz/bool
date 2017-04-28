@@ -2,13 +2,13 @@
 // fieldexp
 // FieldDecl
 // classdecl
-- constructordecl !!!
+// constructordecl !!!
 // OpAssign
 // fieldassignments
 // add fieldexp
 // funcall
-- funparams
-  - simplelit or fieldexp
+// funparams
+  // simplelit or fieldexp
 - expressions
 - parameterize range
 // listexp
@@ -16,7 +16,7 @@
 - Objlit / propertydecl
 - call function literals
 - allow returns from methods but not from constructors
-- inheritance
+// inheritance
 - fix binary expressions
   // separate access expressions
   - allow for JS implementations of operators like **
