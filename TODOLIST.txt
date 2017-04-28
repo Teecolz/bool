@@ -6,12 +6,13 @@
 // OpAssign
 // fieldassignments
 // add fieldexp
-- funcall
+// funcall
 - funparams
   - simplelit or fieldexp
 - expressions
 - parameterize range
-- listexp
+// listexp
+- list literals
 - Objlit / propertydecl
 - call function literals
 - allow returns from methods but not from constructors
