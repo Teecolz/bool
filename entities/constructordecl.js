@@ -11,7 +11,7 @@ class ConstructorDeclaration {
     if (this.body) {
       this.body.analyze(builderContext);
     }
-  } // TODO: HOW TO HANDLE INSTANTIATION
+  }
 
   toString() {
     return `(Build ${this.params}${this.body ? this.body : ''})`;

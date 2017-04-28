@@ -217,7 +217,7 @@ Object.assign(ConstructorDeclaration.prototype, {
     emit(`constructor(${generatedParams.join(', ')}) {`);
     if (this.body) {
       this.params.params.forEach((param) => {
-        if (param instanceof FieldDeclaration) { // TODO: Define fieldexpression entity
+        if (param instanceof FieldDeclaration) {
           emit(`  this.${param.gen()} = ${param.gen()};`); // assign instance fields
         }
       });
