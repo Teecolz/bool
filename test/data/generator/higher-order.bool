@@ -1,0 +1,7 @@
+fun tricky (a b c):
+  ret c(a)(b)
+fun add2 (a):
+  fun add1(b):
+    ret a + b
+  ret add1
+let sum:int = tricky(1 2 add2)
