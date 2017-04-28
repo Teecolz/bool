@@ -290,7 +290,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'listexp',
         expected: {
-          output: ['let a_2 = [(x + 2) for x in [1, 2, 3]];'],
+          output: ['let a_2 = [for (x of [1, 2, 3]) (x + 2)];'],
           numLogs: 1,
         },
       };
@@ -304,7 +304,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'explist',
         expected: {
-          output: ['let a_27 = [(BinExp 1 + 4), (BinExp 8 - 2), (BinExp 5 * 5), (BinExp 9 / 3)];'],
+          output: ['let a_2 = [(1 + 4), (8 - 2), (5 * 5), (9 / 3)];'],
           numLogs: 1,
         },
       };
