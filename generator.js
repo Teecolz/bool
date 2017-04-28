@@ -345,7 +345,7 @@ Object.assign(ConditionalStatement.prototype, {
  *********/
 Object.assign(WhileStatement.prototype, {
   gen() {
-    emit(`while (${this.condition.gen()}) {`);
+    emit(`while ${this.condition.gen()} {`);
     this.body.gen();
     emit('}');
   },
