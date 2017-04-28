@@ -111,7 +111,7 @@ const resetJsName = (() => {
 exports.resetJsName = resetJsName;
 
 function makeBoolean(bool) {
-  return { tru: 'true', fal: 'false' }[bool];
+  return { tru: 'true', fal: 'false', true: 'true', false: 'false' }[bool];
 }
 
 function generateLibraryFunctions() {
@@ -440,7 +440,9 @@ Object.assign(Suite.prototype, {
  *  LITERALS  *
  **************/
 Object.assign(BooleanLiteral.prototype, {
-  gen() { return `${makeBoolean(this.val)}`; },
+  gen() {
+    return `${makeBoolean(this.val)}`;
+  },
 });
 
 Object.assign(ExpList.prototype, {

@@ -1,4 +1,45 @@
 const Type = require('./type.js');
+const IntegerLiteral = require('./intliteral.js');
+const FloatLiteral = require('./floatliteral.js');
+const BooleanLiteral = require('./booleanliteral.js');
+
+/* eslint eqeqeq: 1*/
+const foldNumericalConstants = (op, x, y, NumberClass) => {
+  switch (op) {
+    case '+':
+      return new NumberClass(x + y);
+    case '-':
+      return new NumberClass(x - y);
+    case '*':
+      return new NumberClass(x * y);
+    case '/':
+      return new NumberClass(x / y);
+    case '%':
+      return new IntegerLiteral(x % y);
+    case '<':
+      return new BooleanLiteral(x < y);
+    case '>':
+      return new BooleanLiteral(x > y);
+    case '>=':
+      return new BooleanLiteral(x >= y);
+    case '<=':
+      return new BooleanLiteral(x <= y);
+    case '==':
+      return new BooleanLiteral(x == y);
+    case '!==':
+      return new BooleanLiteral(x != y);
+    case '===':
+      return new BooleanLiteral(x === y);
+    case '!===':
+      return new BooleanLiteral(x !== y);
+    case '**':
+      return new NumberClass(x ** y);
+    default:
+      break;
+    // need '//' operator
+  }
+  return null;
+};
 
 class BinaryExpression {
   constructor(left, op, right) {
@@ -68,6 +109,18 @@ class BinaryExpression {
       default:
         break;
     }
+  }
+  optimize() {
+    this.left = this.left.optimize();
+    this.right = this.right.optimize();
+    if (this.left instanceof IntegerLiteral && this.right instanceof IntegerLiteral) {
+      return foldNumericalConstants(this.op, +this.left.val, +this.right.val, IntegerLiteral);
+    } else if ((this.left instanceof FloatLiteral || this.left instanceof IntegerLiteral) &&
+      (this.right instanceof FloatLiteral || this.right instanceof IntegerLiteral)) {
+      return foldNumericalConstants(this.op, +this.left.val, +this.right.val, FloatLiteral);
+    }
+    // string optimizations?
+    return this;
   }
   mustBeObject() {
     const errorMessage = `Operator '${this.op}' requires left operand to be object`;

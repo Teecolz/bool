@@ -14,7 +14,15 @@ class Block {
       }
     });
   }
-
+  optimize() {
+    this.body = this.body.map((stmt) => {
+      if (stmt) {
+        return stmt.optimize();
+      }
+      return null;
+    });
+    return this;
+  }
   toString() {
     return `(Block ${this.body.join(', ').replace(/, $/, '')})`;
   }

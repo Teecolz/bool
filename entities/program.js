@@ -9,6 +9,9 @@ class Program {
   analyze() {
     this.block.analyze(initialContext);
   }
+  optimize() {
+    this.block = this.block.optimize();
+  }
   toString() {
     return `(Program ${this.block})`;
   }

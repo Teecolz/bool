@@ -9,6 +9,10 @@ class Statement {
       this.type = this.stmt.type;
     }
   }
+  optimize() {
+    this.stmt = this.stmt.optimize();
+    return this;
+  }
   toString() {
     return `${this.stmt}`;
   }

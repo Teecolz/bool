@@ -12,7 +12,10 @@ class VariableAssignment {
     this.target.type.mustBeCompatibleWith(this.source.type, errorMessage, this.target);
     context.addVariable(this.target.name, this.source);
   }
-
+  optimize() {
+    this.source = this.source.optimize();
+    return this;
+  }
   toString() {
     return `(= ${this.target} ${this.source})`;
   }

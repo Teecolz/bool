@@ -7,6 +7,9 @@ class IntegerLiteral {
   analyze() {
     this.type = Type.INT;
   }
+  optimize() {
+    return this;
+  }
   toString() {
     return `${this.val}`;
   }
