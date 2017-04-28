@@ -205,7 +205,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'while',
         expected: {
-          output: ['while (true) {', '  break;', '}'],
+          output: ['while true {', '  break;', '}'],
           numLogs: 1,
         },
       };
