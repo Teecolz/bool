@@ -248,19 +248,57 @@ describe('Generator Tests', () => {
     });
   });
 
-  // describe('Class Test', () => {
-  //   it('Should properly generate a class', (done) => {
-  //     test = {
-  //       argFile: 'class',
-  //       expected: {
-  //         output: [''],
-  //         numLogs: 1,
-  //       },
-  //     };
-  //     jsGenTest(test);
-  //     done();
-  //   });
-  // });
+  describe('Class Test', () => {
+    it('Should properly generate a complex class', (done) => {
+      test = {
+        argFile: 'complex-class',
+        expected: {
+          output: [
+            'class Person {',
+            '  constructor(nameFirst, nameLast, age) {',
+            '    this.nameFirst = nameFirst;',
+            '    this.nameLast = nameLast;',
+            '    this.age = age;',
+            '  }',
+            '}',
+            'class Fam extends Person {',
+            '  constructor(nameFirst, nameLast, age) {',
+            '    this.nameFirst = nameFirst;',
+            '    this.nameLast = nameLast;',
+            '    this.age = age;',
+            '    this.affiliation = "blood";',
+            '  }',
+            '  cap(foo_2) {',
+            '    let bopim_3 = (numBops_4) => {',
+            '      for (let bop_5 = 0; bop_5 < numBops; bop_5 += 1) {',
+            '        print_1((this.nameFirst + (" bopped " + (foo_2.nameFirst + (" " + (foo_2.nameLast + (" " + (bop_5 + " times"))))))));',
+            '      }',
+            '    };',
+            '    return bopim_3;',
+            '  }',
+            '}',
+            'class PoliceMan extends Person {',
+            '  constructor(nameFirst, nameLast, age) {',
+            '    this.nameFirst = nameFirst;',
+            '    this.nameLast = nameLast;',
+            '    this.age = age;',
+            '    this.affiliation = "twelvy";',
+            '  }',
+            '  woopwoop() {',
+            '    return "Time to narc";',
+            '  }',
+            '}',
+            'let fiveO_6 = new PoliceMan("john", "doe", 24);',
+            'let yg_7 = new Fam("yg", "hootie", 23);',
+            'yg_7.cap(fiveO_6)(5);',
+          ],
+          numLogs: 1,
+        },
+      };
+      jsGenTest(test);
+      done();
+    });
+  });
 
 
   describe('List Literal Test', () => {

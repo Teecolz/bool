@@ -297,7 +297,7 @@ Object.assign(ObjectAccess.prototype, {
     if (this.prop instanceof FunctionCall) {
       return `${this.container.gen()}.${this.prop.gen(true)}`;
     }
-    return `${this.container.gen()}.${this.prop.gen()}`;
+    return `${this.container.gen()}.${this.prop.gen(true)}`;
   },
 });
 Object.assign(OpAssignment.prototype, {
@@ -460,7 +460,12 @@ Object.assign(FloatLiteral.prototype, {
 });
 
 Object.assign(IdLiteral.prototype, {
-  gen() { return `${jsName(this)}`; },
+  gen(isAccess) {
+    if (!isAccess) {
+      return `${jsName(this)}`;
+    }
+    return `${this}`;
+  },
 });
 
 Object.assign(IntegerLiteral.prototype, {

@@ -12,7 +12,7 @@ class BinaryExpression {
     this.right.analyze(context);
     switch (this.op) {
       case '+':
-        if (this.left.type.isString()) {
+        if (this.left.type.isString() || this.right.type.isString()) {
           this.type = Type.STRING;
         } else {
           this.mustHaveNumericalOperands();
