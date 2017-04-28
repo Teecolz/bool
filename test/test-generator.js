@@ -155,7 +155,10 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'op2',
         expected: {
-          output: ['let bar_2 = (x_3, y_4, z_5, a_6, b_7, c_8) => {', '  return ((x_2 + y_4) > (z_5 ** b_7));', '};'],
+          output: [
+            'let bar_2 = (x_3, y_4, z_5, a_6, b_7, c_8) => {',
+            '  return ((x_3 + y_4) > (z_5 ** b_7));',
+            '};'],
           numLogs: 1,
         },
       };
@@ -328,7 +331,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'listexp',
         expected: {
-          output: ['let a_2 = [for (x of [1, 2, 3]) (x + 2)];'],
+          output: ['let a_2 = [for (x_3 of [1, 2, 3]) (x_3 + 2)];'],
           numLogs: 1,
         },
       };

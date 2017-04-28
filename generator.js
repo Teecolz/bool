@@ -476,7 +476,7 @@ Object.assign(IntegerLiteral.prototype, {
 
 Object.assign(ListExpression.prototype, {
   gen() {
-    let expression = `for (${this.iterator} of ${this.lst}) `;
+    let expression = `for (${jsName(this.iterator)} of ${this.lst}) `;
     if (this.cond[0]) {
       expression += `if (${this.cond[0].gen()}) `;
     }
