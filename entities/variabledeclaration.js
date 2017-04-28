@@ -21,7 +21,12 @@ class VariableDeclaration {
     }
     context.addVariable(this.id, this);
   }
-
+  optimize() {
+    if (this.value) {
+      this.value = this.value.optimize();
+    }
+    return this;
+  }
   mustHaveCompatibleTypes() {
     const errorMessage = `Incompatible Types: Declared ${this.type.name}, Assigned ${this.value.type.name}`;
     this.type.mustBeCompatibleWith(this.value.type, errorMessage, this.id);

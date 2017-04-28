@@ -47,10 +47,19 @@ class Type {
   isList() {
     return this.name.match(/\[.*\]/);
   }
+  isNumber(forceNumber) {
+    if (forceNumber) {
+      return this.name === 'float' || this.name === 'int';
+    }
+    return this.name === 'float' || this.name === 'int' || this.isArbitrary();
+  }
   isObject() {
     return this.name === 'object' || this.isArbitrary();
   }
-  isString() {
+  isString(forceString) {
+    if (forceString) {
+      return this.name === 'string';
+    }
     return this.name === 'string' || this.isArbitrary();
   }
   mustBeFunction(message, location) {
