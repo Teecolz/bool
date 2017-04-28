@@ -11,9 +11,6 @@ class ListExpression {
     const localContext = context.createChildContext();
     this.lst.analyze(localContext);
     this.lst.type.mustBeList('Cannot use for-in on non list.', this.lst);
-    // assign element type to incrementing variable
-    // const incrementer = new VariableExpression(this.iterator);
-    // incrementer.type = this.lst.type.getElementType();
     this.iterator.type = this.lst.type.getElementType();
     localContext.addVariable(this.iterator.id, this.iterator);
 

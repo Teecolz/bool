@@ -22,6 +22,11 @@ class FunctionCall {
     let isPhantomFunction; // avoid trying to access properties of fake function
     let paramLength;
 
+    if (this.callee.type.isArbitrary()) {
+      this.params.forEach(p => p.analyze(context));
+      this.type = Type.ARBITRARY;
+      return;
+    }
     for (let i = 0; i < this.params.length; i += 1) {
       isPhantomFunction = false;
       // Cannot call non function
