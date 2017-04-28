@@ -1,4 +1,3 @@
-const VariableExpression = require('./varexp.js');
 const Type = require('./type.js');
 
 class ListExpression {
