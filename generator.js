@@ -63,6 +63,15 @@ function genStatementList(statements) {
   indentLevel -= 1;
 }
 
+function getOp(op) {
+  if (op === 'and') {
+    return '&&';
+  }
+  if (op === 'or') {
+    return '||';
+  }
+  return op;
+}
 function preEmit(line) {
   return `${' '.repeat(indentPadding * indentLevel)}${line}`;
 }
@@ -284,7 +293,7 @@ Object.assign(VariableExpression.prototype, {
 
 Object.assign(BinaryExpression.prototype, {
   gen() {
-    return `(${this.left.gen()} ${this.op} ${this.right.gen()})`;
+    return `(${this.left.gen()} ${getOp(this.op)} ${this.right.gen()})`;
   },
 });
 

@@ -35,6 +35,7 @@ const jsGenTestWithOutFile = (testDatum) => {
   let expectedOut = fs.readFileSync(`test/data/generator/output/${testDatum}-out.js`, {
     encoding: 'UTF-8',
   }).toString().split('\n');
+  // have to get rid of trailing newline and eslint comment
   expectedOut = expectedOut.slice(1, expectedOut.length - 1);
   jsCode.analyze();
   jsCode.gen();

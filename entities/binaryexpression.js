@@ -14,6 +14,9 @@ const foldNumericalConstants = (op, x, y, NumberClass) => {
     case '*':
       return new NumberClass(x * y);
     case '/':
+      if (NumberClass === IntegerLiteral) {
+        return new NumberClass(Math.floor(x / y));
+      }
       return new NumberClass(x / y);
     case '%':
       return new IntegerLiteral(x % y);
@@ -164,9 +167,6 @@ class BinaryExpression {
     const isNumericLiteral = (operand, val) => {
       if (!(operand instanceof IntegerLiteral) && !(operand instanceof FloatLiteral)) {
         return false;
-      }
-      if (!val) {
-        return true;
       }
       return +operand.val === val;
     };
