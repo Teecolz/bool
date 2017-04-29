@@ -59,7 +59,6 @@ class FunctionCall {
         for (let j = 0; j < paramLength; j += 1) {
           errorMessage =
             `Incompatible types: Expected ${curFun.params.params[j].type}, saw ${paramGroup.params[j].type}`;
-
           paramGroup.params[j].type.mustBeCompatibleWith(
             curFun.params.params[j].type,
             errorMessage,
@@ -80,7 +79,10 @@ class FunctionCall {
       }
     }
   }
-
+  optimize() {
+    this.params = this.params.map(paramGroup => paramGroup.optimize());
+    return this;
+  }
   mustHaveCorrectNumArguments(fun, message, location) {
     if (this.params.length !== fun.params.length) {
       if (error(message, location)) {

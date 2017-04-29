@@ -5,6 +5,9 @@ class BooleanLiteral extends LiteralExpression {
   toString() {
     return `${this.val}`;
   }
+  optimize() {
+    return this;
+  }
   analyze() {
     this.type = Type.BOOL;
   }

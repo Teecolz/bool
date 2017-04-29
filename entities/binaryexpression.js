@@ -140,6 +140,10 @@ class BinaryExpression {
           this.type = this.left.elementType; // what if out of index?
         }
         break;
+      case 'and':
+      case 'or':
+        this.type = Type.BOOL;
+        break;
       default:
         break;
     }

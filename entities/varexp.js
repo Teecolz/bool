@@ -16,6 +16,9 @@ class VariableExpression {
       this.type = Type.ARBITRARY;
     }
   }
+  optimize() {
+    return this;
+  }
   toString() {
     return `${this.id}`;
   }
