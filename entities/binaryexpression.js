@@ -1,7 +1,8 @@
-const Type = require('./type.js');
-const IntegerLiteral = require('./intliteral.js');
-const FloatLiteral = require('./floatliteral.js');
 const BooleanLiteral = require('./booleanliteral.js');
+const FloatLiteral = require('./floatliteral.js');
+const IntegerLiteral = require('./intliteral.js');
+const Type = require('./type.js');
+const VariableExpression = require('./varexp.js');
 
 /* eslint eqeqeq: 1*/
 const foldNumericalConstants = (op, x, y, NumberClass) => {
@@ -13,6 +14,9 @@ const foldNumericalConstants = (op, x, y, NumberClass) => {
     case '*':
       return new NumberClass(x * y);
     case '/':
+      if (NumberClass === IntegerLiteral) {
+        return new NumberClass(Math.floor(x / y));
+      }
       return new NumberClass(x / y);
     case '%':
       return new IntegerLiteral(x % y);
@@ -159,6 +163,61 @@ class BinaryExpression {
     } else if (this.left instanceof BooleanLiteral && this.right instanceof BooleanLiteral) {
       return foldBooleanConstants(this.op, this.left.val, this.right.val);
     }
+
+    const isNumericLiteral = (operand, val) => {
+      if (!(operand instanceof IntegerLiteral) && !(operand instanceof FloatLiteral)) {
+        return false;
+      }
+      return +operand.val === val;
+    };
+
+    switch (this.op) {
+      case '+':
+        if (isNumericLiteral(this.left, 0)) {
+          return this.right;
+        }
+        if (isNumericLiteral(this.right, 0)) {
+          return this.left;
+        }
+        break;
+      case '-':
+        if (isNumericLiteral(this.right, 0)) {
+          return this.left;
+        }
+        if (this.left instanceof VariableExpression && this.right instanceof VariableExpression) {
+          if (this.left.referent === this.right.referent) {
+            return new IntegerLiteral('0');
+          }
+        }
+        break;
+      case '*':
+        if (isNumericLiteral(this.right, 0) || isNumericLiteral(this.left, 0)) {
+          return new IntegerLiteral('0');
+        }
+        if (isNumericLiteral(this.right, 1)) {
+          return this.left;
+        }
+        if (isNumericLiteral(this.left, 1)) {
+          return this.right;
+        }
+        break;
+      case '/':
+        if (isNumericLiteral(this.right, 1)) {
+          return this.left;
+        }
+        if (isNumericLiteral(this.left, 0)) {
+          return this.left;
+        }
+        if (this.left instanceof VariableExpression && this.right instanceof VariableExpression) {
+          if (this.left.referent === this.right.referent) {
+            return new IntegerLiteral(1);
+          }
+        }
+        break;
+      default:
+        break;
+    }
+
     // string optimizations?
     return this;
   }
