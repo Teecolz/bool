@@ -32,7 +32,10 @@ class FunctionDeclaration {
     }
     context.addVariable(this.id, this);
   }
-
+  optimize() {
+    this.body = this.body.optimize();
+    return this;
+  }
   toString() {
     return `(Function ${this.id} ${this.params} : ${this.body})`;
   }

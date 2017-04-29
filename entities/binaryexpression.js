@@ -41,6 +41,40 @@ const foldNumericalConstants = (op, x, y, NumberClass) => {
   return null;
 };
 
+const getBoolFromBoolean = (boolean) => {
+  if (boolean) {
+    return 'tru';
+  }
+  return 'fal';
+};
+
+const getBooleanFromBool = (bool) => {
+  if (bool === 'tru') {
+    return true;
+  }
+  return false;
+};
+
+const foldBooleanConstants = (op, left, right) => {
+  switch (op) {
+    case '==':
+      return new BooleanLiteral(getBoolFromBoolean(left === right));
+    case '===':
+      return new BooleanLiteral(getBoolFromBoolean(left === right));
+    case '!=':
+      return new BooleanLiteral(getBoolFromBoolean(left !== right));
+    case '!==':
+      return new BooleanLiteral(getBoolFromBoolean(left != right));
+    case 'and':
+      return new BooleanLiteral(getBooleanFromBool(left) && getBooleanFromBool(right));
+    case 'or':
+      return new BooleanLiteral(getBooleanFromBool(left) || getBooleanFromBool(right));
+    default:
+      break;
+  }
+  return null;
+};
+
 class BinaryExpression {
   constructor(left, op, right) {
     this.left = left;
@@ -106,6 +140,10 @@ class BinaryExpression {
           this.type = this.left.elementType; // what if out of index?
         }
         break;
+      case 'and':
+      case 'or':
+        this.type = Type.BOOL;
+        break;
       default:
         break;
     }
@@ -118,6 +156,8 @@ class BinaryExpression {
     } else if ((this.left instanceof FloatLiteral || this.left instanceof IntegerLiteral) &&
       (this.right instanceof FloatLiteral || this.right instanceof IntegerLiteral)) {
       return foldNumericalConstants(this.op, +this.left.val, +this.right.val, FloatLiteral);
+    } else if (this.left instanceof BooleanLiteral && this.right instanceof BooleanLiteral) {
+      return foldBooleanConstants(this.op, this.left.val, this.right.val);
     }
     // string optimizations?
     return this;

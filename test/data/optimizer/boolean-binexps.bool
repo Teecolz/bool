@@ -1,0 +1,10 @@
+let x = tru
+let y = fal
+print(x and y)
+print(x or y)
+print(x !== y)
+print(x === y)
+print(tru and fal)
+print(tru or fal)
+print(tru === fal)
+print(tru !== fal)
