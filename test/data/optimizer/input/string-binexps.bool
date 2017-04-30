@@ -1,0 +1,7 @@
+let x:string = "Hello, "
+x = x + "world"
+x = "Hello, " + "world"
+x = "Hello, " + 1
+x = "Hello, " + 1.1
+x = "Hello, " + tru
+x = "Hey, " * 3
