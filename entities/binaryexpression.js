@@ -1,6 +1,7 @@
 const BooleanLiteral = require('./booleanliteral.js');
 const FloatLiteral = require('./floatliteral.js');
 const IntegerLiteral = require('./intliteral.js');
+const UnaryExpression = require('./unaryexpression.js');
 const Type = require('./type.js');
 const VariableExpression = require('./varexp.js');
 
@@ -227,6 +228,8 @@ class BinaryExpression {
       return new BooleanLiteral('fal');
     } else if ((this.op === 'or') && (this.left.val === 'tru' || this.right.val === 'tru')) {
       return new BooleanLiteral('tru');
+    } else if (this.left.val === '0' && this.op === '-') {
+      return new UnaryExpression('-', this.right);
     }
 
     // string optimizations?

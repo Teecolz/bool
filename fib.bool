@@ -1,3 +1,7 @@
 let x:int = 3
-if (x > x):
+let y:int = 0 - x
+let z:int = 0 - 3
+if (tru):
   fal
+
+let q:int = x * 1

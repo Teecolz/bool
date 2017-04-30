@@ -180,7 +180,7 @@ Object.assign(VariableAssignment.prototype, {
 
 Object.assign(VariableDeclaration.prototype, {
   gen() {
-    return (this.value) ? emit(`let ${jsName(this)} = ${this.value.gen()}`) : emit(`let ${jsName(this)}`);
+    return (this.value) ? emit(`let ${jsName(this)} = ${this.value.gen()};`) : emit(`let ${jsName(this)};`);
   },
 });
 
@@ -298,7 +298,7 @@ Object.assign(BinaryExpression.prototype, {
 });
 
 Object.assign(UnaryExpression.prototype, {
-  gen() { return `${this.op}${this.operand}`; },
+  gen() { return `${this.op}${this.operand instanceof VariableExpression ? jsName(this.operand.referent) : this.operand}`; },
 });
 
 Object.assign(ObjectAccess.prototype, {
