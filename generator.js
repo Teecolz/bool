@@ -180,7 +180,7 @@ Object.assign(VariableAssignment.prototype, {
 
 Object.assign(VariableDeclaration.prototype, {
   gen() {
-    return (this.value) ? `let ${jsName(this)} = ${this.value.gen()}` : `let ${jsName(this)}`;
+    return (this.value) ? emit(`let ${jsName(this)} = ${this.value.gen()}`) : emit(`let ${jsName(this)}`);
   },
 });
 

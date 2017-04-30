@@ -13,6 +13,14 @@ class ConditionalStatement {
       stmt.analyze(context);
     });
   }
+
+  optimize() {
+    this.block = this.block.map(blocks => blocks.optimize());
+    this.cases = this.cases.map(cases => cases.optimize());
+
+    return this;
+  }
+
   toString() {
     const out = `(Conditional ${this.cases.join(', ').replace(/, $/, '')}, ${this.block})`;
     return out.replace(/, \)$/, ')');

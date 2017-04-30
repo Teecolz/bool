@@ -10,8 +10,7 @@ class Statement {
     }
   }
   optimize() {
-    this.stmt = this.stmt.optimize();
-    return this;
+    return this.stmt.optimize();
   }
   toString() {
     return `${this.stmt}`;
