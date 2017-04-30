@@ -2,7 +2,8 @@ const Type = require('./type.js');
 
 class StringLiteral {
   constructor(val) {
-    this.val = val;
+    this.enclosing = val.charAt(0);
+    this.val = val.slice(1, val.length - 1);
   }
   analyze() {
     this.type = Type.STRING;
@@ -11,7 +12,7 @@ class StringLiteral {
     return this;
   }
   toString() {
-    return `${this.val}`;
+    return `${this.enclosing}${this.val}${this.enclosing}`;
   }
 }
 

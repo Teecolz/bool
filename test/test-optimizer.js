@@ -24,7 +24,6 @@ const optimizeTest = (fNamePrefix) => {
   jsCode.optimize();
   jsCode.gen();
   expectedOut = LIBRARY_FUNCTIONS.concat(expectedOut);
-  expectedOut.forEach(o => console.info(o));
   assert.ok(console.log.called, 'log should have been called.');
   assert.equal(console.log.args.length, expectedOut.length);
   console.log.args.forEach((arg, index) => {
@@ -52,6 +51,14 @@ describe('Optimizer Tests', () => {
     });
     it('Should fold booleans', (done) => {
       optimizeTest('boolean-binexps');
+      done();
+    });
+    it('Should fold floats', (done) => {
+      optimizeTest('float-binexps');
+      done();
+    });
+    it('Should fold strings', (done) => {
+      optimizeTest('string-binexps');
       done();
     });
   });

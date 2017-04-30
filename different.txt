@@ -298,7 +298,7 @@ Object.assign(BinaryExpression.prototype, {
 });
 
 Object.assign(UnaryExpression.prototype, {
-  gen() { return `${this.op}${this.operand instanceof VariableExpression ? jsName(this.operand.referent) : this.operand}`; },
+  gen() { return `${this.op}${this.operand}`; },
 });
 
 Object.assign(ObjectAccess.prototype, {

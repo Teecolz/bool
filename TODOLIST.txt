@@ -23,4 +23,5 @@
   - make sure that comparison operators function correctly
 // allow access of member functions
 - update examples
+- opassign optimization and string concatenation
 - remove <== epressions from binaryexpression

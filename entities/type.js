@@ -32,13 +32,19 @@ class Type {
   isArbitrary() {
     return this.name === '<arbitrary_type>';
   }
-  isBool() {
+  isBool(forceBool) {
+    if (forceBool) {
+      return this.name === 'bool';
+    }
     return this.name === 'bool' || this.isArbitrary();
   }
   isFloat() {
     return this.name === 'float' || this.isArbitrary();
   }
-  isInt() {
+  isInt(forceInt) {
+    if (forceInt) {
+      return this.name === 'int';
+    }
     return this.name === 'int' || this.isArbitrary();
   }
   isFunction() {
