@@ -40,7 +40,6 @@ const jsGenTestWithOutFile = (testDatum) => {
   jsCode.analyze();
   jsCode.gen();
   expectedOut = LIBRARY_FUNCTIONS.concat(expectedOut);
-  expectedOut.forEach(o => console.info(o));
   assert.ok(console.log.called, 'log should have been called.');
   assert.equal(console.log.args.length, expectedOut.length);
   console.log.args.forEach((arg, index) => {
