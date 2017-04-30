@@ -14,6 +14,11 @@ class Suite {
       }
     });
   }
+
+  optimize() {
+    return this;
+  }
+
   toString() {
     return `(Suite ${this.stmts.join(', ').replace(/, $/, '')})`;
   }

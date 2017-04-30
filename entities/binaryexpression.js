@@ -218,6 +218,17 @@ class BinaryExpression {
         break;
     }
 
+    if (this.left.referent === this.right.referent) {
+      if (this.op === '<' || this.op === '>') {
+        return new BooleanLiteral('fal');
+      }
+      return new BooleanLiteral('tru');
+    } else if ((this.op === 'and') && (this.left.val === 'fal' || this.right.val === 'fal')) {
+      return new BooleanLiteral('fal');
+    } else if ((this.op === 'or') && (this.left.val === 'tru' || this.right.val === 'tru')) {
+      return new BooleanLiteral('tru');
+    }
+
     // string optimizations?
     return this;
   }
