@@ -523,5 +523,5 @@ Object.assign(ObjectLiteral.prototype, {
 });
 
 Object.assign(StringLiteral.prototype, {
-  gen() { return `${this.val}`; },
+  gen() { return `${this}`; },
 });

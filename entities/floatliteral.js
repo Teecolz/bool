@@ -8,6 +8,9 @@ class FloatLiteral extends LiteralExpression {
   analyze() {
     this.type = Type.FLOAT;
   }
+  optimize() {
+    return this;
+  }
 }
 
 module.exports = FloatLiteral;

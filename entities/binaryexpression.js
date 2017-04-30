@@ -1,10 +1,13 @@
 const BooleanLiteral = require('./booleanliteral.js');
+const error = require('../error.js');
 const FloatLiteral = require('./floatliteral.js');
 const IntegerLiteral = require('./intliteral.js');
+const StringLiteral = require('./stringliteral.js');
 const Type = require('./type.js');
 const VariableExpression = require('./varexp.js');
 
-/* eslint eqeqeq: 1*/
+/* eslint eqeqeq: 1, no-bitwise: 1*/
+
 const foldNumericalConstants = (op, x, y, NumberClass) => {
   switch (op) {
     case '+':
@@ -79,6 +82,30 @@ const foldBooleanConstants = (op, left, right) => {
   return null;
 };
 
+function foldStrings(op, left, right) {
+  return op === '+' ? new StringLiteral(`\`${left + right}\``) : null;
+}
+
+function foldStringAndInt(op, left, right) {
+  let outString = '';
+  switch (op) {
+    case '+':
+      return new StringLiteral(`\`${left + right}\``);
+    case '*':
+      for (let i = 0; i < right; i += 1) {
+        outString += left;
+      }
+      return new StringLiteral(`\`${outString}\``);
+    default:
+      break;
+  }
+  return null;
+}
+
+function foldStringAndBool(op, left, right) {
+  return op === '+' ? new StringLiteral(`\`${left + right}\``) : null;
+}
+
 class BinaryExpression {
   constructor(left, op, right) {
     this.left = left;
@@ -91,8 +118,15 @@ class BinaryExpression {
     this.right.analyze(context);
     switch (this.op) {
       case '+':
-        if (this.left.type.isString() || this.right.type.isString()) {
-          this.type = Type.ARBITRARY;
+        if (this.left.type.isString(true) || this.right.type.isString(true)) {
+          this.type = Type.STRING;
+        } else if (this.left.type.isArbitrary()) {
+          if (this.right.type.isArbitrary()) {
+            this.type = Type.ARBITRARY;
+          } else if (!this.right.type.isString(true) && !this.right.type.isNumber(true) &&
+            !this.right.type.isBool(true)) { // need to allow string concat with booleans
+            error('+ requires compatible operands', this.right);
+          }
         } else {
           this.mustHaveNumericalOperands();
           if (this.left.type.isInt() && this.right.type.isInt()) {
@@ -104,9 +138,31 @@ class BinaryExpression {
         break;
       case '-':
       case '*':
+        if (this.left.type.isString()) {
+          this.type = Type.STRING;
+          this.right.type.mustBeInteger('Cannot do a float multiple of a string');
+        } else {
+          this.mustHaveNumericalOperands();
+          // how to handle operations that take int and float?
+          if (this.left.type.isInt() && this.right.type.isInt()) {
+            this.type = Type.INT;
+          } else {
+            this.type = Type.FLOAT;
+          }
+        }
+        break;
       case '/':
       case '//':
       case '**':
+        if (this.left.type.isArbitrary()) {
+          if (this.right.type.isArbitrary()) {
+            this.type = Type.ARBITRARY;
+          } else {
+            this.right.type.mustBeNumber('** requires numerical or variable args', this.right);
+            this.type = Type.ARBITRARY;
+          }
+          break;
+        }
         this.mustHaveNumericalOperands();
         // how to handle operations that take int and float?
         if (this.left.type.isInt() && this.right.type.isInt()) {
@@ -121,10 +177,15 @@ class BinaryExpression {
         break;
       case '>':
       case '>=':
-      case '>==':
       case '<':
       case '<=':
-      case '<==':
+        if (this.left.type.isArbitrary()) {
+          if (!this.right.type.isArbitrary()) {
+            this.right.type.mustBeNumber(`${this.op} requires numerical or variable args`, this.right);
+          }
+          this.type = Type.BOOL;
+          break;
+        }
         this.mustHaveNumericalOperands();
         this.type = Type.BOOL;
         break;
@@ -155,13 +216,21 @@ class BinaryExpression {
   optimize() {
     this.left = this.left.optimize();
     this.right = this.right.optimize();
-    if (this.left instanceof IntegerLiteral && this.right instanceof IntegerLiteral) {
+    if (this.operandsAreInstanceOf(IntegerLiteral)) {
       return foldNumericalConstants(this.op, +this.left.val, +this.right.val, IntegerLiteral);
     } else if ((this.left instanceof FloatLiteral || this.left instanceof IntegerLiteral) &&
       (this.right instanceof FloatLiteral || this.right instanceof IntegerLiteral)) {
       return foldNumericalConstants(this.op, +this.left.val, +this.right.val, FloatLiteral);
-    } else if (this.left instanceof BooleanLiteral && this.right instanceof BooleanLiteral) {
+    } else if (this.operandsAreInstanceOf(BooleanLiteral)) {
       return foldBooleanConstants(this.op, this.left.val, this.right.val);
+    } else if (this.left instanceof StringLiteral) {
+      if (this.right instanceof StringLiteral || this.right instanceof FloatLiteral) {
+        return foldStrings(this.op, this.left.val, this.right.val);
+      } else if (this.right instanceof IntegerLiteral) {
+        return foldStringAndInt(this.op, this.left.val, +this.right.val);
+      } else if (this.right instanceof BooleanLiteral) {
+        return foldStringAndBool(this.op, this.left.val, this.right.val);
+      }
     }
 
     const isNumericLiteral = (operand, val) => {
@@ -220,6 +289,10 @@ class BinaryExpression {
 
     // string optimizations?
     return this;
+  }
+
+  operandsAreInstanceOf(instanceClass) {
+    return this.left instanceof instanceClass && this.right instanceof instanceClass;
   }
   mustBeObject() {
     const errorMessage = `Operator '${this.op}' requires left operand to be object`;
