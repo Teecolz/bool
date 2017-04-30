@@ -22,8 +22,8 @@ Feel free to check out [Bool's homepage](https://teecolz.github.io/bool/)to view
 #### Variable Declarations
 ````
 # Variable Declarations
-foo:int = 101                                   var foo = 101;
-bar:string = 101                                var bar = "101";
+let foo:int = 101                               var foo = 101;
+let bar:string = 101                            var bar = "101";
 ````
 #### Arithmetic Expressions
 ````
@@ -54,7 +54,7 @@ a != b
 #### Loops & Conditional Statements
 ````
 fun foo (bar):                                  var foo = function(bar) {
-  result:string                                 var result;
+  let result:string                             var result;
   for i in range(bar):                          for (var i = 0; i < bar; i += 1) {
     if i < 5:                                       if (i < 5) {
       result = "foobar"                                 result = "foobar";
@@ -97,9 +97,9 @@ fun fruits = foods.filter((food):               var fruits = foods.filter(functi
 #### Classes
 ````
 class Point:                                     class Point {
-  constructor(x, y):                               constructor(x, y) {
-    x = x                                            this.x = x;
-    y = y                                            this.y = y;
+  build (_x _y) :                                  constructor(x, y) {
+    _x = _x                                           this.x = x;
+    _y = _y                                           this.y = y;
                                                    }
                                                 }
 ````
@@ -124,11 +124,11 @@ fun gcd (a b):                                  var gcd = function(a, b) {
 #### Fibonacci Function Example
 ````
 fun fibonacci (x):                              var fibonacci = function(x) {
-    a:int = 0                                       var a = 0, b = 1, c;
-    b:int = 1                                       if (x < 3) return 1;
-    c:int                                           while (--x > 0) {
-    if (x < 3):                                        c = a + b, a = b, b = c;
-       ret 1                                        }
+    let a:int = 0                                  var a = 0, b = 1, c;
+    let b:int = 1                                  if (x < 3) return 1;
+    let c:int                                      while (--x > 0) {
+    if (x < 3):                                       c = a + b, a = b, b = c;
+       ret 1                                       }
     while x > 0:                                    return c;
        c = a + b                                };
        a = b
