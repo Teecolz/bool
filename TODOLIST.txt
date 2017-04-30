@@ -25,3 +25,4 @@
 - update examples
 - opassign optimization and string concatenation
 - remove <== epressions from binaryexpression
+- types in objects

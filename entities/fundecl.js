@@ -30,6 +30,7 @@ class FunctionDeclaration {
     } else {
       this.returnType = Type.ARBITRARY; // may want to switch to void
     }
+    this.localContext = localContext;
     context.addVariable(this.id, this);
   }
   optimize() {

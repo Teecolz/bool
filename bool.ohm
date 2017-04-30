@@ -75,7 +75,7 @@ Bool {
 
     // may need to expand this
     PropertyDecl
-      = VarExp ":" Exp
+      = VarExp Type? ":" Exp
 
     FunDecl
       = "fun" id Type? Params ":" Suite
@@ -148,9 +148,7 @@ Bool {
       | Exp7
     // may need to make this lexical
     Exp7
-      = Exp8 "." (Funcall | id | stringlit)      --access
-      | Exp8 "[" (id | intlit | stringlit) "]"   --listAccess
-      | Exp8
+      = Exp8
     Exp8
       =
       | Funlit
@@ -159,7 +157,6 @@ Bool {
       | Listlit
       | ClassInst
       | "(" Exp ")"   --parens
-
     // need to add support for single line objects
     // May also want support for lists
     SimpleLit
@@ -171,8 +168,11 @@ Bool {
       | VarExp
       | fieldexp
       | stringlit
+    VarExp
+      = VarExp "." (VarExp | Funcall) --dotAccess
+      | VarExp ("[" Exp "]")+ --bracketAccess
+      | id --simple
 
-    VarExp = id
     addop = "+" | "-"
     mulop = "*" | "/" | "%"
     prefixop = "!" | "-"

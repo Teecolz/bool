@@ -113,8 +113,14 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   VarAssignment(vexp, _, val) {
     return new VariableAssignment(vexp.ast(), val.ast());
   },
-  VarExp(name) {
+  VarExp_simple(name) {
     return new VariableExpression(name.sourceString);
+  },
+  VarExp_dotAccess(vexp, _, prop) {
+    return new ObjectAccess(vexp.ast(), prop.ast());
+  },
+  VarExp_bracketAccess(vexp, open, exp, end) {
+    //TODO
   },
   FieldAssign(id, _, val) {
     return new FieldAssignment(id.ast(), val.ast());
@@ -143,8 +149,8 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   ObjDecl(id, col, nl, ind, props, nl2, ded) {
     return new ObjectDeclaration(id.ast(), props.ast());
   },
-  PropertyDecl(id, col, e) {
-    return new PropertyDeclaration(id.ast(), e.ast());
+  PropertyDecl(id, type, col, e) {
+    return new PropertyDeclaration(id.ast(), type.ast(), e.ast());
   },
   FunDecl(f, id, type, params, col, s) {
     return new FunctionDeclaration(id.sourceString, type.ast(), params.ast(), s.ast());
@@ -213,12 +219,12 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   Exp6_prefixOp(op, exp) {
     return new UnaryExpression(op.sourceString, exp.ast());
   },
-  Exp7_listAccess(e1, _, e2, close) {
-    return new BinaryExpression(e1.ast(), '[]', e2.ast());
-  },
-  Exp7_access(e1, _, e2) {
-    return new ObjectAccess(e1.ast(), e2.ast());
-  },
+  // Exp7_listAccess(e1, _, e2, close) {
+  //   return new BinaryExpression(e1.ast(), '[]', e2.ast());
+  // },
+  // Exp7_access(e1, _, e2) {
+  //   return new ObjectAccess(e1.ast(), e2.ast());
+  // },
   Exp8_parens(_, e, close) {
     return e.ast();
   },

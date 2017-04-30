@@ -12,7 +12,7 @@ class OpAssignment {
 
     if (this.op === '+=') {
       if (this.target.type.isInt() || this.target.type.isFloat()) {
-        this.source.type.mustBeNumber('Operand is of wrong type. expected a number', this.source);
+        this.source.type.mustBeNumber('Source is of wrong type. expected a number', this.source);
       } else if (this.target.type.isString()) {
         this.source.type = Type.STRING;
       }

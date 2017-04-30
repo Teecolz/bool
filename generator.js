@@ -28,7 +28,7 @@ const ListLiteral = require('./entities/listliteral.js');
 const MethodDeclaration = require('./entities/methoddecl.js');
 const MethodParameters = require('./entities/methodparams.js');
 const ObjectAccess = require('./entities/objectaccess.js');
-// const ObjectDeclaration = require('./entities/objdecl.js');
+const ObjectDeclaration = require('./entities/objdecl.js');
 const ObjectLiteral = require('./entities/objectliteral.js');
 const OpAssignment = require('./entities/opassign.js');
 const ParameterDeclaration = require('./entities/paramdecl.js');
@@ -214,12 +214,6 @@ Object.assign(ClassDeclaration.prototype, {
   },
 });
 
-Object.assign(ClassInstantiation.prototype, {
-  gen() {
-    return `new ${this.id}(${this.params.gen()})`;
-  },
-});
-
 Object.assign(ConstructorDeclaration.prototype, {
   gen() {
     const generatedParams = this.params.gen();
@@ -285,7 +279,10 @@ Object.assign(MethodParameters.prototype, {
    ***************/
 
 Object.assign(VariableExpression.prototype, {
-  gen() {
+  gen(isProp) {
+    if (isProp) {
+      return `${this.id}`;
+    }
     return jsName(this.referent);  // will break before analysis
   },
 });
@@ -303,10 +300,7 @@ Object.assign(UnaryExpression.prototype, {
 
 Object.assign(ObjectAccess.prototype, {
   gen() {
-    if (this.prop instanceof FunctionCall) {
-      return `${this.container.gen()}.${this.prop.gen(true)}`;
-    }
-    return `${this.container.gen()}.${this.prop.gen(true)}`;
+    return `${this.container.gen()}.${this.prop.gen()}`;
   },
 });
 Object.assign(OpAssignment.prototype, {
@@ -448,19 +442,19 @@ Object.assign(Suite.prototype, {
 /* ************
  *  LITERALS  *
  **************/
+
+  /* **************
+   *  SIMPLELITS  *
+   ****************/
 Object.assign(BooleanLiteral.prototype, {
   gen() {
     return `${makeBoolean(this.val)}`;
   },
 });
 
-Object.assign(ExpList.prototype, {
+Object.assign(ClassInstantiation.prototype, {
   gen() {
-    const listElements = [];
-    this.exps.forEach((el) => {
-      listElements.push(el.gen());
-    });
-    return `${listElements.join(', ')}`;
+    return `new ${this.id}(${this.params.gen()})`;
   },
 });
 
@@ -485,6 +479,22 @@ Object.assign(IntegerLiteral.prototype, {
   },
 });
 
+Object.assign(StringLiteral.prototype, {
+  gen() { return `${this}`; },
+});
+  /* *********
+   *  LISTS  *
+   ***********/
+Object.assign(ExpList.prototype, {
+  gen() {
+    const listElements = [];
+    this.exps.forEach((el) => {
+      listElements.push(el.gen());
+    });
+    return `${listElements.join(', ')}`;
+  },
+});
+
 Object.assign(ListExpression.prototype, {
   gen() {
     let expression = `for (${jsName(this.iterator)} of ${this.lst}) `;
@@ -505,12 +515,24 @@ Object.assign(ListLiteral.prototype, {
   },
 });
 
+  /* ***********
+   *  OBJECTS  *
+   *************/
 Object.assign(PropertyDeclaration.prototype, {
   gen() {
-    return `${this.key}: ${this.val.gen()},`; // TODO: what to do about multiline values?
+    return `${jsName(this)}: ${this.val.gen()},`; // TODO: what to do about multiline values?
   },
 });
 
+Object.assign(ObjectDeclaration.prototype, {
+  gen() {
+    emit(`let ${jsName(this)} = {`);
+    indentLevel += 1;
+    this.propDecls.forEach(p => emit(p.gen()));
+    indentLevel -= 1;
+    emit('};');
+  },
+});
 Object.assign(ObjectLiteral.prototype, {
   gen() {
     let objectString = '{\n';
@@ -520,8 +542,4 @@ Object.assign(ObjectLiteral.prototype, {
     objectString += preEmit('}');
     return objectString;
   },
-});
-
-Object.assign(StringLiteral.prototype, {
-  gen() { return `${this}`; },
 });
