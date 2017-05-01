@@ -7,7 +7,7 @@ const StringLiteral = require('./stringliteral.js');
 const Type = require('./type.js');
 const VariableExpression = require('./varexp.js');
 
-/* eslint eqeqeq: 1, no-bitwise: 1*/
+/* eslint eqeqeq: 1, no-bitwise: 1, no-restricted-properties: 1*/
 
 const foldNumericalConstants = (op, x, y, NumberClass) => {
   switch (op) {
@@ -44,7 +44,7 @@ const foldNumericalConstants = (op, x, y, NumberClass) => {
       return new NumberClass(Math.pow(x, y));
     default:
       break;
-    // need '//' operator
+    // TODO: need '//' operator
   }
   return null;
 };
@@ -66,13 +66,13 @@ const getBooleanFromBool = (bool) => {
 const foldBooleanConstants = (op, left, right) => {
   switch (op) {
     case '==':
-      return new BooleanLiteral(getBoolFromBoolean(left === right));
+      return new BooleanLiteral(getBoolFromBoolean(left == right));
     case '===':
       return new BooleanLiteral(getBoolFromBoolean(left === right));
     case '!=':
-      return new BooleanLiteral(getBoolFromBoolean(left !== right));
-    case '!==':
       return new BooleanLiteral(getBoolFromBoolean(left != right));
+    case '!==':
+      return new BooleanLiteral(getBoolFromBoolean(left !== right));
     case 'and':
       return new BooleanLiteral(getBooleanFromBool(left) && getBooleanFromBool(right));
     case 'or':
@@ -126,7 +126,8 @@ class BinaryExpression {
             this.type = Type.ARBITRARY;
           } else if (!this.right.type.isString(true) && !this.right.type.isNumber(true) &&
             !this.right.type.isBool(true)) { // need to allow string concat with booleans
-            error('+ requires compatible operands', this.right);
+            const errorMessage = '+ requires compatible operands';
+            error(errorMessage, this.right);
           }
         } else {
           this.mustHaveNumericalOperands();
@@ -141,7 +142,8 @@ class BinaryExpression {
       case '*':
         if (this.left.type.isString()) {
           this.type = Type.STRING;
-          this.right.type.mustBeInteger('Cannot do a float multiple of a string');
+          const errorMessage = 'Cannot create a float multiple of a string';
+          this.right.type.mustBeInteger(errorMessage, this.right);
         } else {
           this.mustHaveNumericalOperands();
           // how to handle operations that take int and float?
@@ -159,7 +161,8 @@ class BinaryExpression {
           if (this.right.type.isArbitrary()) {
             this.type = Type.ARBITRARY;
           } else {
-            this.right.type.mustBeNumber('** requires numerical or variable args', this.right);
+            const errorMessage = '** requires numerical or variable args';
+            this.right.type.mustBeNumber(errorMessage, this.right);
             this.type = Type.ARBITRARY;
           }
           break;
@@ -182,7 +185,8 @@ class BinaryExpression {
       case '<=':
         if (this.left.type.isArbitrary()) {
           if (!this.right.type.isArbitrary()) {
-            this.right.type.mustBeNumber(`${this.op} requires numerical or variable args`, this.right);
+            const errorMessage = `${this.op} requires numerical or variable args`;
+            this.right.type.mustBeNumber(errorMessage, this.right);
           }
           this.type = Type.BOOL;
           break;
@@ -202,7 +206,8 @@ class BinaryExpression {
         if (this.left.referent.objectContext) { // object
           this.type = this.left.referent.objectContext.lookupProperty(this.right);
         } else { // list
-          this.right.type.mustBeInteger('Cannot access non-integer index of list', this.op);
+          const errorMessage = 'Cannot access non-integer index of list';
+          this.right.type.mustBeInteger(errorMessage, this.op);
           this.type = this.left.elementType; // what if out of index?
         }
         break;
@@ -289,7 +294,7 @@ class BinaryExpression {
     }
 
     if (this.left.referent === this.right.referent) {
-      if (this.op === '<' || this.op === '>') {
+      if (this.op === '<' || this.op === '>' || this.op === '!==' || this.op === '!=') {
         return new BooleanLiteral('fal');
       }
       return new BooleanLiteral('tru');
@@ -300,8 +305,6 @@ class BinaryExpression {
     } else if (this.left.val === '0' && this.op === '-') {
       return new UnaryExpression('-', this.right);
     }
-
-    // string optimizations?
     return this;
   }
 
