@@ -1,13 +1,11 @@
 const ClassInstantiation = require('./classinstantiation.js');
 const Type = require('./type.js');
-const FieldExpression = require('./fieldexp.js');
 const FunctionCall = require('./funcall.js');
 const IdLiteral = require('./idliteral.js');
 const ObjectDeclaration = require('./objdecl.js');
 const ObjectLiteral = require('./objectliteral.js');
 const PropertyDeclaration = require('./propertydeclaration.js');
 const Undefined = require('./undefined.js');
-const VariableExpression = require('./varexp.js');
 
 class ObjectAccess {
   constructor(container, prop) {
@@ -27,7 +25,7 @@ class ObjectAccess {
       if (!(this.container.referent.value instanceof Undefined)) {
         if (this.container.referent.value instanceof ObjectLiteral ||
               this.container.referent.value instanceof ObjectDeclaration) {
-          this.getValAndType(this.container.referent.value.objectContext);
+          this.getValAndType(this.container.referent.value.objectContext, true);
         } else if (this.container.referent.value instanceof ClassInstantiation) {
           this.getValAndType(this.container.referent.value.classContext);
         } else {
@@ -38,17 +36,30 @@ class ObjectAccess {
       }
     } else if (this.container.referent instanceof ObjectDeclaration ||
                this.container.referent instanceof ObjectLiteral) {
-      this.getValAndType(this.container.referent.objectContext);
+      this.getValAndType(this.container.referent.objectContext, true);
     } else if (this.container.referent instanceof PropertyDeclaration) {
-      this.getValAndType(this.container.referent.val.objectContext);
+      this.getValAndType(this.container.referent.val.objectContext, true);
+    } else if (this.container instanceof ObjectAccess) {
+      if (this.container.val) {
+        if (this.container.val instanceof PropertyDeclaration) {
+          this.getValAndType(this.container.val.val.objectContext, true);
+        } else if (this.container.val instanceof ObjectDeclaration ||
+                   this.container.val instanceof ObjectLiteral) {
+          this.getValAndType(this.container.val.val.objectContext, true);
+        }
+      } else {
+        this.type = Type.ARBITRARY;
+      }
     } else {
       this.type = Type.ARBITRARY;
     }
   }
-  getValAndType(context) {
+  getValAndType(context, isObjectContext) {
     if (this.prop instanceof IdLiteral) {
-      this.val = new VariableExpression(`${this.prop}`);
-      this.val.analyze(context);
+      this.val = context.lookupVariable(`${this.prop}`);
+      if (isObjectContext) {
+        this.isObjectContext = true;
+      }
       if (!this.val) {
         this.type = Type.ARBITRARY;
       } else {

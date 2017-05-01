@@ -9,13 +9,13 @@
 // funcall
 // funparams
   // simplelit or fieldexp
-- expressions
-- parameterize range
+// expressions
+// parameterize range
 // listexp
 - list literals
-- Objlit / propertydecl
+// Objlit / propertydecl
 - call function literals
-- allow returns from methods but not from constructors
+// allow returns from methods but not from constructors
 // inheritance
 - fix binary expressions
   // separate access expressions

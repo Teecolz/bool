@@ -298,6 +298,9 @@ Object.assign(UnaryExpression.prototype, {
 
 Object.assign(ObjectAccess.prototype, {
   gen() {
+    if (this.isObjectContext) {
+      return `${this.container.gen()}.${jsName(this.val)}`;
+    }
     return `${this.container.gen()}.${this.prop.gen(true)}`;
   },
 });
