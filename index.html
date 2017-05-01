@@ -130,13 +130,19 @@ a // b
               </code>
             </pre>
           </div>
-          <div class="col-lg-6 boolCode">
-            <h3>Booleans and Expressions</h3>
+          <div class="col-lg-3 boolCode">
+            <h3>Booleans</h3>
             <pre>
               <code>
 tru      # true
 fal      # false
-
+              </code>
+            </pre>
+          </div>
+          <div class="col-lg-3 boolCode">
+            <h3>Expressions</h3>
+            <pre>
+              <code>
 !a       # not a
 a > b    # a greater than b
 a < b    # a less than b
@@ -149,21 +155,7 @@ a != b   # a does not equal b
           </div>
         </div>
         <div class="row">
-          <div class="col-lg-6 boolCode">
-            <h3>Higher Order Functions</h3>
-            <pre>
-              <code>
-fun tricky (a b c):
-  ret c(a)(b)
-fun add2 (a):
-  fun add1(b):
-    ret a + b
-  ret add1
-let sum:int = tricky(1 2 add2)
-              </code>
-            </pre>
-          </div>
-        <div class="col-lg-6 boolCode">
+        <div class="col-lg-4 boolCode">
           <h3>For Loops & Conditional Statements</h3>
           <pre>
             <code>
@@ -177,6 +169,24 @@ fun foo (bar):
   ret result
             </code>
           </pre>
+        </div>
+        <div class="col-lg-4 boolCode">
+          <h3>While Loops</h3>
+            <pre>
+              <code>
+while a < 99:
+a += 5
+              </code>
+            </pre>
+        </div>
+        <div class="col-lg-4 boolCode">
+          <h3>Array Comprehension</h3>
+          <pre>
+          <code>
+fun doubleEvens (array):
+ret [for i in array if i % 2 === 0 i * 2]
+          </code>
+        </pre>
         </div>
       </div>
       <div class="row">
@@ -210,40 +220,63 @@ yg.cap(five0)(5)
                 </code>
             </pre>
         </div>
+        <div class="col-lg-6">
+          <h3>Higher Order Functions</h3>
+          <pre>
+            <code>
+fun tricky (a b c):
+ret c(a)(b)
+fun add2 (a):
+fun add1(b):
+  ret a + b
+ret add1
+let sum:int = tricky(1 2 add2)
+            </code>
+          </pre>
+        </div>
       </div>
       <div class="row">
-          <div class="col-lg-3 boolCode">
-            <h3>While Loops</h3>
-            <pre>
-            <code>
-while a < 99:
-a += 5
-            </code>
-          </pre>
-          </div>
-
-          <div class="col-lg-6 boolCode">
-            <h3>Array Comprehension</h3>
-            <pre>
-            <code>
-fun doubleEvens (array):
-  ret [for i in array if i % 2 === 0 i * 2]
-            </code>
-          </pre>
-          </div>
-
-          <div class="col-lg-3 boolCode">
-            <h3>Comments</h3>
-            <pre>
-            <code>
+        <div class="col-lg-4 boolCode">
+          <h3>Comments</h3>
+          <pre>
+          <code>
 # This is a comment in Bool
 
 ## If you need more lines,
 Bool can do that too. ##
-            </code>
-          </pre>
-          </div>
+          </code>
+        </pre>
         </div>
+        <div class="col-lg-4 boolCode">
+          <h3>GCD Function</h3>
+          <pre>
+          <code>
+fun gcd (a b):
+  if !b:
+    ret a
+    ret gcd(b a % b)
+          </code>
+        </pre>
+        </div>
+        <div class="col-lg-4 boolCode">
+        <h3>Fibonacci Function</h3>
+        <pre>
+        <code>
+fun fibonacci (x):
+  let a:int = 0
+  let b:int = 1
+  let c:int
+  if (x < 3):
+    ret 1
+  while x > 0:
+    c = a + b
+    a = b
+    b = c
+    x -= 1
+  ret c
+        </code>
+      </pre>
+      </div>
       </div>
   </section>
   <!-- Diagrams Section -->
