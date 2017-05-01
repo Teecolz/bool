@@ -61,15 +61,35 @@ html {
 }
 
 footer {
-  padding: 30px 0px 30px 0px;
+  padding: 30px 0px 0px 0px;
   text-align: center;
   background-color: #222;
   color: #9d9d9d;
   border-top: 1px solid black;
 }
 
+footer container {
+  margin-bottom: 0px;
+}
+
+footer h5 {
+  display: inline;
+  margin-right: 10px;
+}
+
+footer p {
+  margin-bottom: 5px;
+}
+
+footer .names {
+  margin-bottom: 25px;
+}
+
+
 footer small {
   display: block;
+  color: #555555;
+  padding-bottom: 20px;
 }
 
 /* BootStrap Custom */
