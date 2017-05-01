@@ -110,8 +110,9 @@
           <h3>Variable Declaration</h3>
           <pre>
             <code>
-foo:int = 101
-bar:string = 101
+let foo:int = 101
+let bar:string = 101
+let y = tru
             </code>
           </pre>
         </div>
@@ -123,9 +124,9 @@ a + b
 a - b
 a * b
 a / b
-a % b  --modulo
-a ** b --exponentiation
-a // b --root
+a % b
+a ** b
+a // b
               </code>
             </pre>
           </div>
@@ -133,16 +134,16 @@ a // b --root
             <h3>Booleans and Expressions</h3>
             <pre>
               <code>
-tru      => true
-fal      => false
+tru      # true
+fal      # false
 
-!a       => not a
-a > b    => a greater than b
-a < b    => a less than b
-a >= b   => a greater than/equal to b
-a <= b   => a less than/equal to b
-a == b   => a equals b
-a != b   => a does not equal b
+!a       # not a
+a > b    # a greater than b
+a < b    # a less than b
+a >= b   # a greater than/equal to b
+a <= b   # a less than/equal to b
+a == b   # a equals b
+a != b   # a does not equal b
               </code>
             </pre>
           </div>
@@ -167,7 +168,7 @@ let sum:int = tricky(1 2 add2)
           <pre>
             <code>
 fun foo (bar):
-  result:string
+  let result:string
   for i in range(bar):
     if i < 5:
       result = "foobar"
@@ -176,6 +177,38 @@ fun foo (bar):
   ret result
             </code>
           </pre>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+            <h3>Classes</h3>
+            <pre>
+                <code>
+class Person:
+  build (_nameFirst _nameLast _age)
+
+class Fam isa Person:
+  build (_nameFirst _nameLast _age):
+    _affiliation = "blood"
+  cap (foo:PoliceMan):
+    fun bopim (numBops):
+      for bop in range(numBops):
+        print(_nameFirst + (" bopped " + (foo.nameFirst
+          + (" " + (foo.nameLast + (" "
+          + (bop + (" times"))))))))
+    ret bopim
+
+class PoliceMan isa Person:
+  build (_nameFirst _nameLast _age):
+    _affiliation = "twelvy"
+  woopwoop ():
+    ret "Time to narc"
+
+let five0:PoliceMan = new PoliceMan("john" "doe" 24)
+let yg:Fam = new Fam("yg" "hootie" 23)
+yg.cap(five0)(5)
+                </code>
+            </pre>
         </div>
       </div>
       <div class="row">
@@ -195,7 +228,6 @@ a += 5
             <code>
 fun doubleEvens (array):
   ret [for i in array if i % 2 === 0 i * 2]
-  if (i % 2 === 0) i * 2];
             </code>
           </pre>
           </div>
