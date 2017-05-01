@@ -46,17 +46,12 @@ html {
 .errors-section {
   padding-top: 75px;
   padding-bottom: 50px;
-  text-align: center;
   background-color: #222;
   color: #9d9d9d;
 }
 
-.errors-section code {
-  display: block;
-  width: 50%;
-  margin: 0 auto;
-  margin-bottom: 10px;
-  font-size: 12px;
+.examples-section {
+  text-align: center;
 }
 
 .diagrams-section {
@@ -88,9 +83,17 @@ footer small {
   line-height: 25px;
 }
 
-pre {
-  text-align: left;
+.examples-section pre {
   height: 200px;
+}
+
+.errors-section h1,
+.errors-section h5 {
+  text-align: center;
+}
+
+.errors-section pre code {
+  text-align: left;
 }
 
 .diagram {
