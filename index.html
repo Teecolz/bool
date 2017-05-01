@@ -152,16 +152,13 @@ a != b   => a does not equal b
             <h3>Higher Order Functions</h3>
             <pre>
               <code>
-foods [
-  {name: 'apple', kind: 'fruit'}
-  {name: 'carrot', kind: 'veg'}
-  {name: 'banana', kind: 'fruit'}
-  {name: 'broccoli', kind: 'veg'}
-  {name: 'strawberry', kind: 'fruit'}
-]
-fun fruits = foods.filter((food):
-  ret food.kind === fruit
-)
+fun tricky (a b c):
+  ret c(a)(b)
+fun add2 (a):
+  fun add1(b):
+    ret a + b
+  ret add1
+let sum:int = tricky(1 2 add2)
               </code>
             </pre>
           </div>
