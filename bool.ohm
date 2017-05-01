@@ -15,7 +15,6 @@ Bool {
       | ObjDecl
       | Conditional
       | Loop
-      // TODO: need to split loops into indent and no indent
     SimpleStmt
       = VarDecl
       | OpAssign
@@ -25,103 +24,63 @@ Bool {
       | FieldDecl
       | Return
       | breakstmt
-
-    Stmt
-      = ClassDecl
-      | FunDecl
-      | ObjDecl
-      | VarDecl     -- vardecl
-      | OpAssign
-      | VarAssignment
-      | Conditional
-      | Loop        -- loop
-      | Exp         -- exp
-      | Return      -- ret
-
     ClassDecl
         = "class" id ("isa" id)? ":" ClassSuite
-
     ClassSuite
         = newline indent ClassBody dedent
-
     ClassBody
         = ConstructorDecl newline* (MethodDecl newline*)*
-
     FieldDecl
       = fieldid (Type)?
     FieldAssign
       = fieldexp "=" Exp
     fieldexp
       = fieldid
-
     fieldid
       = "_" id
-
     ConstructorDecl
       = "build" FieldParams newline --noBody
       | "build" MethodParams ":" Suite --bodied
-
     MethodDecl
       = id MethodParams ":" Suite
-
     MethodParams
       = "(" (ParamDecl | FieldDecl)* ")"
     FieldParams
       = "(" FieldDecl* ")"
-    // need to make this work where second newline not necessary before closing dedent
     ObjDecl
-        = id ":=" newline indent (PropertyDecl newline*)+ dedent
-
-    // may need to expand this
+      = id ":=" newline indent (PropertyDecl newline*)+ dedent
     PropertyDecl
       = VarExp ":" Exp --noType
       | VarExp Type? ":" Exp --typed
-
     FunDecl
       = "fun" id Type? Params ":" Suite
-
     VarDecl
       = "let" VarExp (Type)? ("=" Exp)?
-
     OpAssign
       = (VarExp | fieldexp) (assignop) Exp
-
     assignop
       = "+=" | "*=" | "/=" | "%="
-
     VarAssignment
       = VarExp "=" Exp
-
-    Return = "ret" Exp?
-
+    Return
+      = "ret" Exp?
     Funcall
       = (id | fieldid | Funlit) Funparams+
-
     Funparams
       = "(" Exp* ")"
-
     Params
       = "(" ParamDecl* ")"
-
     ParamDecl
       = id Type?
-
     Conditional
       = "if" Case ("elif" Case)* ("el" ":" Suite)?
-
     Case
       = Exp ":" Suite
-
     Suite
       = newline indent (FullStmt)+ dedent
-
-    SimpleSuite
-      = (newline indent)? Exp newline dedent
-
     Loop
         = "for" id "in" (Range | VarExp | Listlit ) ":" Suite     --forIn
-        | "while" Exp ":" Suite                               --while
-
+        | "while" Exp ":" Suite                                   --while
     Exp
       = Exp1 "or" Exp1      --binexp
       | Exp1
@@ -143,20 +102,16 @@ Bool {
     Exp6
       = prefixop Exp7       --prefixOp
       | Exp7
-    // may need to make this lexical
     Exp7
       = MemberExp
       | Exp8
     Exp8
-      =
-      | SimpleLit
+      = SimpleLit
       | Funlit
       | Objlit
       | Listlit
       | ClassInst
       | "(" Exp ")"   --parens
-    // need to add support for single line objects
-    // May also want support for lists
     SimpleLit
       = boollit
       | floatlit
@@ -164,7 +119,6 @@ Bool {
       | Funcall
       | fieldexp
       | VarExp
-      | fieldexp
       | stringlit
     VarExp
       = VarExp ("[" (VarExp | Funcall | stringlit | intlit) "]")+ --bracketAccess
@@ -180,7 +134,7 @@ Bool {
     expop = "**" | "//"
     relop =  ">=" | "<=" | ">" | "<" | "!==" | "===" | "==" | "!="
     Explist = Exp8 ("," Exp8)*
-    ListExp = Exp "for" VarExp "in" (VarExp | Listlit | fieldexp) SimpleIf? // TODO: add in rangeexp
+    ListExp = Exp "for" VarExp "in" (VarExp | Listlit | fieldexp) SimpleIf?
     SimpleIf = "if" Exp
     Listlit = "[" (ListExp | Explist)? "]"
     Range = "range(" RangeExp ")"
@@ -194,11 +148,8 @@ Bool {
     Objlit
       = "{" PropertyDecl? ("," PropertyDecl)* "}" --singleline
       | "{" newline indent (PropertyDecl newline)* dedent "}" --multiline
-
-    // should also allow for one line statement here
     Funlit
       = "~(" Params ":" (Exp | Suite) ")"
-
     reserved
       = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"
       | "while" | "until" | "build" | "class" | "isa" | "in" | "new" | "#" | "ret"

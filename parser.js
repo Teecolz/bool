@@ -78,9 +78,6 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   Suite(nl, indent, s, _) {
     return new Suite(s.ast());
   },
-  SimpleSuite(_, ind, exp, nl, ded) {
-    return exp.ast();
-  },
   Params(open, ids, _) {
     return new Parameters(ids.ast());
   },

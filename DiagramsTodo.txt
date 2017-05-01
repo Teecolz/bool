@@ -1,0 +1,46 @@
+Syntax Diagrams to Update:
+- Update
+  - classbody
+  - fielddecl
+  - constructordecl
+  - methoddecl
+  - FullStmt
+    - Now include Normal or indent statements
+  - Block
+    - remove single comments
+  - MethodParams
+  - ObjDecl
+  - PropertyDecl
+  - OpAssign
+  - Return
+    - return val optional
+  - Funcall
+    - fields, funlits now callable
+  - Funparams
+    - Now accept any expression
+  - Suite
+    - Now accepts fullstmt, not stmt
+  - Loop
+    - forIn now takes VarExp, not id
+    - remove doWhile and doUntil
+  - Exp7
+  - Exp8
+  - SimpleLit
+  - VarExp
+  - ListExp
+    - takes VarExp, not id
+  - stringlit
+  - ObjLit
+  - FunLit
+  - Added some to reserved
+  - space
+  - comment
+  -
+- Add
+  - NormalStmt
+  - IndentStmt
+  - FieldParams
+  - MemberExp
+- Remove
+  - Stmt
+  - SimpleSuite
