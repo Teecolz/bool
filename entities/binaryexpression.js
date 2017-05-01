@@ -41,7 +41,7 @@ const foldNumericalConstants = (op, x, y, NumberClass) => {
     case '!===':
       return new BooleanLiteral(x !== y);
     case '**':
-      return new NumberClass(x ** y);
+      return new NumberClass(Math.pow(x, y));
     default:
       break;
     // need '//' operator
