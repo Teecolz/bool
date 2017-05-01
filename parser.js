@@ -248,7 +248,7 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   id(i) { return new IdLiteral(i.sourceString); },
   intlit(i) { return new IntegerLiteral(this.sourceString); },
   floatlit(iPart, dec, fracPart) { return new FloatLiteral(this.sourceString); },
-  singlecomment(_, str, end) { return ''; },
+  singlecomment(_, str, end) { return ''; }, // str.source.sourceString.substring(0, str.source.sourceString.indexOf('\n'));
   multicomment(_, str, end) { return ''; },
 });
 
