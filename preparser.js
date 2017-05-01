@@ -24,7 +24,7 @@ module.exports = (source) => {
   for (let match = linePattern.exec(text); match !== null; match = linePattern.exec(text)) {
     const [indent, content] = [match[1].length, match[2]];
 
-    if (content === '\n') {
+    if (content === '\n' || content.includes('#')) {
       // Empty line
       result += content;
     } else if (/\s/.test(content[0])) {

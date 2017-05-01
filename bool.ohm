@@ -240,5 +240,5 @@ Bool {
     idChar = alnum | "-" | "_"
     newline = "\n" | "\r" | "\u2028" | "\u2029"
     // may need to amend this rule
-    space := " " | "\t" | multicomment
+    space := " " | "\t" | singlecomment | multicomment
 }
