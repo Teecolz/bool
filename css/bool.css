@@ -63,7 +63,7 @@ html {
 footer {
   padding: 30px 0px 0px 0px;
   text-align: center;
-  background-color: #222;
+  background-color: #333;
   color: #9d9d9d;
   border-top: 1px solid black;
 }
@@ -88,8 +88,8 @@ footer .names {
 
 footer small {
   display: block;
-  color: #555555;
-  padding-bottom: 20px;
+  color: #777777;
+  padding-bottom: 15px;
 }
 
 /* BootStrap Custom */
