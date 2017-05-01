@@ -577,11 +577,10 @@ fun fibonacci (x):
           <h1>Semantic Errors</h1>
         </div>
       </div>
-      <div class="row">
-        <div class="col-lg-6">
-          <h5>Binary Expression</h5>
-          <pre>
-            <code>
+      <div class="col-lg-4 col-md-6">
+        <h5>Binary Expression</h5>
+        <pre>
+          <code>
 + requires compatible operands
 Cannot create a float multiple of a string
 ** requires numerical or variable args
@@ -591,63 +590,176 @@ Operator '${this.op}' requires left operand to be object.
 Operator '${this.op}' requires numerical operands.
 Operator '${this.op}' requires integer operands.
 Operator '${this.op}' requires compatible operands.
-            </code>
-          </pre>
-        </div>
-        <div class="col-lg-12">
-          <h5>Op Assignment</h5>
-          <code>Operand is of wrong type. Expected a number.</code>
-          <code>Target of assignment must be integer.</code>
-          <code>Source of assignment must be integer.</code>
-          <code>Target of assignment must be number.</code>
-          <code>Source of assignment must be number.</code>
-        </div>
-        <div class="col-lg-12">
-          <h5>Case</h5>
-          <code>Condition must be of type 'bool'. Found type ${this.condition.type}.</code>
-        </div>
-        <div class="col-lg-12">
-          <h5>Explist</h5>
-          <code>Lists must be composed of compatible types.</code>
-        </div>
-        <div class="col-lg-12">
-          <h5>ListExp</h5>
-          <code>Cannot use for-in on non list.</code>
-        </div>
-        <div class="col-lg-12">
-          <h5>For Statement</h5>
-          <code>Cannot use for-in on non list.</code>
-        </div>
-        <div class="col-lg-12">
-          <h5>FunDecl</h5>
-          <code>Incompatible return type. Expected ${this.returnType}, got ${this.body.type}.</code>
-        </div>
-        <div class="col-lg-12">
-          <h5>FunCall</h5>
-          <code>Cannot call non-function as function.</code>
-          <code>Function requires ${curFun.params.length} parameters. Given ${paramGroup.params.length}.</code>
-          <code>Incompatible types: Expected ${curFun.params.params[j].type}, saw ${paramGroup.params[j].type}.</code>
-        </div>
-        <div class="col-lg-12">
-          <h5>Variable Assignment</h5>
-          <code>Incompatible types: Expected ${this.target.type.name}, got ${this.source.type.name}.</code>
-        </div>
-        <div class="col-lg-12">
-          <h5>Variable Declaration</h5>
-          <code>Incompatible Types: Declared ${this.type.name}, Assigned ${this.value.type.name}.</code>
-        </div>
-        <div class="col-lg-12">
-          <h5>Unary Expression</h5>
-          <code>Cannot negate non-number.</code>
-        </div>
-        <div class="col-lg-12">
-          <h5>Simple If</h5>
-          <code>Conditional expression must evaluate to boolean.</code>
-        </div>
-        <div class="col-lg-12">
-          <h5>While Statement</h5>
-          <code>Conditional expression must evaluate to boolean. Found ${this.condition.type}.</code>
-        </div>
+          </code>
+        </pre>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5>Bracket Access</h5>
+        <pre>
+          <code>
+Cannot access properties of non-object
+Cannot access non-integer index of list
+          </code>
+        </pre>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5>Case</h5>
+        <pre>
+          <code>
+Condition must be of type 'bool'. Found type ${this.condition.type}
+          </code>
+        </pre>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5>Expression List</h5>
+        <pre>
+          <code>
+Lists must be composed of compatible types
+          </code>
+        </pre>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5>Field Assignment</h5>
+        <pre>
+          <code>
+Cannot assign field outside of class context
+Incompatible types: Expected ${this.target.type.name}, got ${this.source.type.name}
+          </code>
+        </pre>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5>Field Declaration/Field Expression</h5>
+        <pre>
+          <code>
+Cannot declare field outside of class
+          </code>
+        </pre>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5>Field Parameters</h5>
+        <pre>
+          <code>
+Cannot declare field parameters outside of class context
+          </code>
+        </pre>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5>For Statement</h5>
+        <pre>
+          <code>
+Cannot use for-in on non list
+          </code>
+        </pre>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5>Function Call</h5>
+        <pre>
+          <code>
+Cannot call non-function as function
+Function requires ${curFun.params.length} parameters. Given ${paramGroup.params.length}
+Incompatible types: Expected ${curFun.params.params[j].type}, got ${paramGroup.params[j].type}
+          </code>
+        </pre>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5>Field Declaration</h5>
+        <pre>
+          <code>
+Incompatible return type. Expected ${this.returnType}, got ${this.body.type}.
+          </code>
+        </pre>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5>List Expression</h5>
+        <pre>
+          <code>
+Cannot use for-in on non list
+          </code>
+        </pre>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5>Method Declaration</h5>
+        <pre>
+          <code>
+Incompatible return type. Expected ${this.returnType}, got ${this.block.type}.
+          </code>
+        </pre>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5>Method Parameters</h5>
+        <pre>
+          <code>
+Cannot use field parameters outside of class context
+          </code>
+        </pre>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5>Object Access</h5>
+        <pre>
+          <code>
+Cannot access property of non-object
+          </code>
+        </pre>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5>Op Assignment</h5>
+        <pre>
+          <code>
+Source is of wrong type. expected a number
+Target of assignment operator ${this.op} must be integer.
+Source of assignment operator ${this.op} must be integer.
+Target of assignment ${this.op} must be number.
+Source of assignment ${this.op} must be number.
+          </code>
+        </pre>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5>Property Declaration</h5>
+        <pre>
+          <code>
+Incompatible types: Expected ${this.type}, Got ${this.val.type}
+          </code>
+        </pre>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5>Range Expression</h5>
+        <pre>
+          <code>
+Cannot create non-integral range.
+          </code>
+        </pre>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5>Simple If Statement/While Statement</h5>
+        <pre>
+          <code>
+Conditional expression must evaluate to boolean. Found ${this.condition.type}
+          </code>
+        </pre>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5>Unary Expression</h5>
+        <pre>
+          <code>
+Cannot negate non-number
+          </code>
+        </pre>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5>Variable Assignment</h5>
+        <pre>
+          <code>
+Incompatible types: Expected ${this.target.type.name}, got ${this.source.type.name}
+          </code>
+        </pre>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5>Variable Declaration</h5>
+        <pre>
+          <code>
+Incompatible Types: Declared ${this.type.name}, Assigned ${this.value.type.name}
+          </code>
+        </pre>
       </div>
   </section>
   <footer>

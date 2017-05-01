@@ -92,9 +92,14 @@ footer small {
   text-align: center;
 }
 
+.errors-section pre {
+  height: 100px;
+}
+
 .errors-section pre code {
   text-align: left;
   color: red;
+  font-size: 10px;
 }
 
 .diagram {
