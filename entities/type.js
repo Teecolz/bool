@@ -9,7 +9,6 @@ class Type {
     const str = this.name.substring(1, this.name.length - 1);
     return new Type(str);
   }
-  // need to handle arbitrary types
   mustBeCompatibleWith(otherType, message, location) {
     if (!this.isCompatibleWith(otherType)) {
       error(message, location);

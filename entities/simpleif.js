@@ -4,7 +4,8 @@ class SimpleIf {
   }
   analyze(context) {
     this.exp.analyze(context);
-    this.exp.type.mustBeBoolean('Conditional expression must evaluate to boolean', this.exp);
+    const errorMessage = 'Conditional expression must evaluate to boolean';
+    this.exp.type.mustBeBoolean(errorMessage, this.exp);
   }
   optimize() {
     this.exp = this.exp.optimize();

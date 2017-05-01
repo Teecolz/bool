@@ -9,23 +9,24 @@ class AnalysisContext {
     this.parent = parent;
     this.symTable = {};
   }
-
   createChildContext() {
     return new AnalysisContext(this);
   }
-
   createClassContext() {
     const classContext = new AnalysisContext(this);
     classContext.isClassContext = true;
     return classContext;
   }
-
+  createConstructorContext() {
+    const constructorContext = new AnalysisContext(this);
+    constructorContext.isConstructorContext = true;
+    return constructorContext;
+  }
   createFunctionContext() {
     const funContext = new AnalysisContext(this);
     funContext.isFunctionContext = true;
     return funContext;
   }
-
   createLoopContext() {
     const loopContext = new AnalysisContext(this);
     loopContext.isLoopContext = true;
@@ -37,13 +38,13 @@ class AnalysisContext {
       error(`Cannot redeclare variable ${name} in this scope`, name);
     }
   }
-
-  mustBeClassContext(location) {
+  mustBeClassContext(location, message) {
     if (!this.isClassContext) {
       if (this.parent) {
-        this.parent.mustBeClassContext();
+        this.parent.mustBeClassContext(location, message);
       } else {
-        error('Cannot use fields outside of class context', location);
+        const errorMessage = message || 'Cannot use fields outside of class context';
+        error(errorMessage, location);
       }
     }
   }
@@ -67,16 +68,13 @@ class AnalysisContext {
       }
     }
   }
-
   lookupFunction(name) {
     const func = this.symTable[name];
     if (func) {
       return func;
     }
-
     return false;
   }
-
   lookupField(name) {
     const variable = this.symTable[name];
     if (variable) {
@@ -84,10 +82,8 @@ class AnalysisContext {
     } else if (!this.parent) {
       return null;
     }
-
     return this.parent.lookupField(name);
   }
-
   lookupVariable(name) {
     const variable = this.symTable[name];
     if (variable) {
@@ -95,7 +91,6 @@ class AnalysisContext {
     } else if (!this.parent) {
       return error(`Variable ${name} not yet declared`, name);
     }
-
     return this.parent.lookupVariable(name);
   }
 
@@ -104,7 +99,6 @@ class AnalysisContext {
     if (variable) {
       return variable;
     }
-
     return new Undefined();
   }
   addVariable(name, entity) {

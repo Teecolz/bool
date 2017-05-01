@@ -8,7 +8,8 @@ class ForStatement {
   analyze(context) {
     const localContext = context.createLoopContext();
     this.list.analyze(localContext);
-    this.list.type.mustBeList('Cannot use for-in on non list.', this.list);
+    const errorMessage = 'Cannot use for-in on non list.';
+    this.list.type.mustBeList(errorMessage, this.list);
     this.type = this.list.type.getElementType();
     localContext.addVariable(this.iterator, this);
     this.block.analyze(localContext);

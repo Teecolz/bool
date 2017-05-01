@@ -6,7 +6,8 @@ class Case {
 
   analyze(context) {
     this.condition.analyze(context);
-    this.condition.type.mustBeBoolean(`Condition must be of type 'bool'. Found type ${this.condition.type}`, this.condition);
+    const errorMessage = `Condition must be of type 'bool'. Found type ${this.condition.type}`;
+    this.condition.type.mustBeBoolean(errorMessage, this.condition);
     this.body.analyze(context);
   }
 

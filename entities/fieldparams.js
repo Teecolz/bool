@@ -3,7 +3,8 @@ class FieldParameters {
     this.params = params;
   }
   analyze(context) {
-    context.mustBeClassContext('Cannot use field parameters outside of class context');
+    const errorMessage = 'Cannot declare field parameters outside of class context';
+    context.mustBeClassContext(this.params, errorMessage);
     this.params.forEach((fd) => {
       fd.analyze(context);
     });

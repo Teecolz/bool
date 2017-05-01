@@ -6,7 +6,8 @@ class MethodParameters {
     this.length = params.length;
   }
   analyze(context) {
-    context.mustBeClassContext('Cannot use field parameters outside of class context');
+    const errorMessage = 'Cannot use field parameters outside of class context';
+    context.mustBeClassContext(this.params, errorMessage);
     this.params.forEach((param) => {
       param.analyze(context);
       if (param instanceof FieldDeclaration) {

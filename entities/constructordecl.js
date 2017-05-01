@@ -4,9 +4,8 @@ class ConstructorDeclaration {
     this.params = params;
     this.body = body || undefined;
   }
-
   analyze(context) {
-    const builderContext = context.createFunctionContext();
+    const builderContext = context.createConstructorContext();
     this.params.analyze(builderContext);
     if (this.body) {
       this.body.analyze(builderContext);

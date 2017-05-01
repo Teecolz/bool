@@ -14,7 +14,8 @@ class MethodDeclaration {
     this.type = Type.FUNCTION;
     if (this.block && this.block.type) {
       if (this.returnType) {
-        this.returnType.mustBeCompatibleWith(this.block.type, `Incompatible return type. Expected ${this.returnType}, got ${this.block.type}.`, this.returnType);
+        const errorMessage = `Incompatible return type. Expected ${this.returnType}, got ${this.block.type}.`;
+        this.returnType.mustBeCompatibleWith(this.block.type, errorMessage, this.returnType);
       }
       this.returnType = this.block.type;
       this.returnValue = this.block.returnValue;

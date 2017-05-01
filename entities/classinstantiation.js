@@ -10,7 +10,7 @@ class ClassInstantiation {
     this.id.analyze(context);
     this.params.analyze(context);
     this.type = Type.Construct(`${this.id}`);
-    this.classContext = context.lookupVariable(this.id.id).classContext;
+    this.classContext = context.lookupVariable(`${this.id}`).classContext;
     context.addVariable(`${this.id}`, this);
   }
   optimize() {

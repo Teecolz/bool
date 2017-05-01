@@ -23,7 +23,8 @@ class UnaryExpression {
   }
   operandMustHaveCompatibleType() {
     if (this.op === '-') {
-      this.operand.type.mustBeNumber('Cannot negate non-number', this.op);
+      const errorMessage = 'Cannot negate non-number';
+      this.operand.type.mustBeNumber(errorMessage, this.op);
     }
   }
 }

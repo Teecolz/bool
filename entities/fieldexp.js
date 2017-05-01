@@ -9,7 +9,8 @@ class FieldExpression {
     this.type = type;
   }
   analyze(context) {
-    context.mustBeClassContext('Cannot access field from outside of class');
+    const errorMessage = 'Cannot access field from outside of class';
+    context.mustBeClassContext(this.id, errorMessage);
     this.referent = context.lookupField(this.id);
     if (this.referent) {
       this.type = this.referent.type;

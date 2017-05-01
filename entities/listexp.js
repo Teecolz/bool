@@ -10,7 +10,8 @@ class ListExpression {
   analyze(context) {
     const localContext = context.createChildContext();
     this.lst.analyze(localContext);
-    this.lst.type.mustBeList('Cannot use for-in on non list.', this.lst);
+    const errorMessage = 'Cannot use for-in on non list.';
+    this.lst.type.mustBeList(errorMessage, this.lst);
     this.iterator.type = this.lst.type.getElementType();
     localContext.addVariable(this.iterator.id, this.iterator);
 

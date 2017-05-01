@@ -4,10 +4,11 @@ class FieldAssignment {
     this.source = exp;
   }
   analyze(context) {
-    context.mustBeClassContext('Cannot assign field outside of class');
+    let errorMessage = 'Cannot assign field outside of class context';
+    context.mustBeClassContext(this.target, errorMessage);
     this.target.analyze(context);
     this.source.analyze(context);
-    const errorMessage = `Incompatible types: Expected ${this.target.type.name}, got ${this.source.type.name}`;
+    errorMessage = `Incompatible types: Expected ${this.target.type.name}, got ${this.source.type.name}`;
     this.target.type.mustBeCompatibleWith(this.source.type, errorMessage, this.target.type);
     context.addVariable(this.target.name, this.source);
   }

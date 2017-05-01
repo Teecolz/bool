@@ -64,7 +64,7 @@ class FunctionCall {
         // Check that types in call are compatible
         for (let j = 0; j < paramLength; j += 1) {
           errorMessage =
-            `Incompatible types: Expected ${curFun.params.params[j].type}, saw ${paramGroup.params[j].type}`;
+            `Incompatible types: Expected ${curFun.params.params[j].type}, got ${paramGroup.params[j].type}`;
           paramGroup.params[j].type.mustBeCompatibleWith(
             curFun.params.params[j].type,
             errorMessage,

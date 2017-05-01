@@ -6,7 +6,8 @@ class FieldDeclaration {
     this.type = type;
   }
   analyze(context) {
-    context.mustBeClassContext('Cannot declare field outside of class');
+    const errorMessage = 'Cannot declare field outside of class';
+    context.mustBeClassContext(this.id, errorMessage);
     context.mustNotBeLocal(this.id); // cannot redeclare fields
     if (this.type[0]) {
       this.type.analyze(context); // is this right?

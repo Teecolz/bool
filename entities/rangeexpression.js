@@ -20,20 +20,21 @@ class RangeExpression {
   }
 
   analyze(context) {
+    const errorMessage = 'Cannot create non-integral range.';
     if (this.start instanceof IdLiteral) {
       const startVal = context.lookupVariable(this.start.id);
       this.start = startVal;
-      startVal.type.mustBeInteger('Cannot create non-integral range.', this.start);
+      startVal.type.mustBeInteger(errorMessage, this.start);
     }
     if (this.end instanceof IdLiteral) {
       const endVal = context.lookupVariable(this.end.id);
       this.end = endVal;
-      endVal.type.mustBeInteger('Cannot create non-integral range.', this.start);
+      endVal.type.mustBeInteger(errorMessage, this.start);
     }
     if (this.step instanceof IdLiteral) {
       const stepVal = context.lookupVariable(this.step.id);
       this.step = stepVal;
-      stepVal.type.mustBeInteger('Cannot create non-integral range.', this.start);
+      stepVal.type.mustBeInteger(errorMessage, this.start);
     }
     this.type = Type.Construct('[int]');
     this.elementType = Type.INT;

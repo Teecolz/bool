@@ -12,16 +12,21 @@ class OpAssignment {
 
     if (this.op === '+=') {
       if (this.target.type.isInt() || this.target.type.isFloat()) {
-        this.source.type.mustBeNumber('Source is of wrong type. expected a number', this.source);
+        const errorMessage = 'Source is of wrong type. expected a number';
+        this.source.type.mustBeNumber(errorMessage, this.source);
       } else if (this.target.type.isString()) {
         this.source.type = Type.STRING;
       }
     } else if (this.op === '%=') {
-      this.target.mustBeInteger('Target of assignment must be integer.', this.target);
-      this.source.mustBeInteger('Source of assignment must be integer.', this.source);
+      let errorMessage = `Target of assignment operator ${this.op} must be integer.`;
+      this.target.mustBeInteger(errorMessage, this.target);
+      errorMessage = `Source of assignment operator ${this.op} must be integer.`;
+      this.source.mustBeInteger(errorMessage, this.source);
     } else {
-      this.target.type.mustBeNumber('Target of assignment must be number.', this.target);
-      this.source.type.mustBeNumber('Source of assignment must be number.', this.source);
+      let errorMessage = `Target of assignment ${this.op} must be number.`;
+      this.target.type.mustBeNumber(errorMessage, this.target);
+      errorMessage = `Source of assignment ${this.op} must be number.`;
+      this.source.type.mustBeNumber(errorMessage, this.source);
     }
   }
   optimize() {

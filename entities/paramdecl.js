@@ -9,7 +9,9 @@ class ParameterDeclaration {
       this.type = Type.ARBITRARY;
     }
   }
-
+  optimize() {
+    return this;
+  }
   analyze(context) {
     context.addVariable(this.id, this);
   }

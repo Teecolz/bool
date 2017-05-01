@@ -23,7 +23,8 @@ class FunctionDeclaration {
     // If function returns a value, assign that value's type to function name
     if (this.body && this.body.type) {
       if (this.returnType) {
-        this.returnType.mustBeCompatibleWith(this.body.type, `Incompatible return type. Expected ${this.returnType}, got ${this.body.type}.`, this.returnType);
+        const errorMessage = `Incompatible return type. Expected ${this.returnType}, got ${this.body.type}.`;
+        this.returnType.mustBeCompatibleWith(this.body.type, errorMessage, this.returnType);
       }
       this.returnType = this.body.type;
       this.returnValue = this.body.returnValue;

@@ -6,7 +6,6 @@ class ExpList {
   }
   analyze(context) {
     let first = true;
-
     this.exps.forEach((exp) => {
       exp.analyze(context);
       if (first) {
@@ -14,7 +13,8 @@ class ExpList {
         this.elementType = exp.type;
         first = false;
       } else {
-        exp.type.mustBeCompatibleWith(this.elementType, 'Lists must be composed of compatible types', exp);
+        const errorMessage = 'Lists must be composed of compatible types';
+        exp.type.mustBeCompatibleWith(this.elementType, errorMessage, exp);
         if (exp.type.name === 'float') {
           this.elementType = Type.FLOAT;
           this.type.name = '[float]';
