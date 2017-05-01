@@ -65,7 +65,7 @@ const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
 const semantics = grammar.createSemantics().addOperation('ast', {
   Program(b) { return new Program(b.ast()); },
   Block(s) { return new Block(s.ast()); },
-  FullStmt_normal(s, _) {
+  FullStmt_simple(s, _) {
     const ast = s.ast();
     if (ast.length > 0) {
       return ast[0];
@@ -74,7 +74,7 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   },
   FullStmt_indent(s) { return s.ast(); },
   IndentStmt(s) { return new Statement(s.ast()); },
-  NormalStmt(s) { return new Statement(s.ast()); },
+  SimpleStmt(s) { return new Statement(s.ast()); },
   Suite(nl, indent, s, _) {
     return new Suite(s.ast());
   },

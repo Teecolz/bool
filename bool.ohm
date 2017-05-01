@@ -8,8 +8,7 @@ Bool {
         = (FullStmt | singlecomment )*
     FullStmt
       = IndentStmt           --indent
-      | NormalStmt? newline  --normal
-
+      | SimpleStmt? newline  --simple
     IndentStmt
       = ClassDecl
       | FunDecl
@@ -17,7 +16,7 @@ Bool {
       | Conditional
       | Loop
       // TODO: need to split loops into indent and no indent
-    NormalStmt
+    SimpleStmt
       = VarDecl
       | OpAssign
       | VarAssignment
