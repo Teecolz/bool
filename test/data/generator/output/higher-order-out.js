@@ -1,11 +1,11 @@
 /* eslint-disable */
-let tricky_2 = (a_3, b_4, c_5) => {
-  return c_5(a_3)(b_4);
+let tricky_1 = (a_2, b_3, c_4) => {
+  return c_4(a_2)(b_3);
 };
-let add2_6 = (a_7) => {
-  let add1_8 = (b_9) => {
-    return (a_7 + b_9);
+let add2_5 = (a_6) => {
+  let add1_7 = (b_8) => {
+    return (a_6 + b_8);
   };
-  return add1_8;
+  return add1_7;
 };
-let sum_10 = tricky_2(1, 2, add2_6);
+let sum_9 = tricky_1(1, 2, add2_5);

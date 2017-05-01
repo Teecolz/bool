@@ -29,6 +29,20 @@ class Type {
       error(message, location);
     }
   }
+  mustBeOneOf(typeList, message, location) {
+    let isOneOf = false;
+    typeList.forEach((t) => {
+      if (t === '<list>') {
+        isOneOf = this.isList();
+      }
+      if (this.name === t) {
+        isOneOf = true;
+      }
+    });
+    if (!isOneOf) {
+      error(message, location);
+    }
+  }
   isArbitrary() {
     return this.name === '<arbitrary_type>';
   }

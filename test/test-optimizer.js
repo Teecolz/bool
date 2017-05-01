@@ -9,15 +9,25 @@ const resetJsName = require('../generator.js').resetJsName;
 
 const LIBRARY_FUNCTIONS = [
   'function print_1(s) {console.log(s);}',
+  'function map_2(f,arr) {return arr.map(f);}',
 ];
 
+const libraryPrefixes = { print: 1, map: 2 };
+const nameParser = (match, p1, p2) => {
+  if (p1) {
+    return `_${+p1.substr(1) + LIBRARY_FUNCTIONS.length}`;
+  } if (p2) {
+    return `${p2.substr(2)}_${libraryPrefixes[p2.substr(2)]}`;
+  }
+  return '';
+};
 const optimizeTest = (fNamePrefix) => {
   const jsCode = parse(fs.readFileSync(`test/data/optimizer/input/${fNamePrefix}.bool`, {
     encoding: 'UTF-8',
   }));
   let expectedOut = fs.readFileSync(`test/data/optimizer/output/${fNamePrefix}.js`, {
     encoding: 'UTF-8',
-  }).toString().split('\n');
+  }).toString().replace(/(_\d+)|(__\w+)/g, nameParser).split('\n');
   // have to get rid of trailing newline and eslint comment
   expectedOut = expectedOut.slice(1, expectedOut.length - 1);
   jsCode.analyze();

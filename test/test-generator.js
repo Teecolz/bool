@@ -9,7 +9,23 @@ const resetJsName = require('../generator.js').resetJsName;
 
 const LIBRARY_FUNCTIONS = [
   'function print_1(s) {console.log(s);}',
+  'function map_2(f,arr) {return arr.map(f);}',
 ];
+
+const libraryPrefixes = { print: 1, map: 2 };
+const nameParser = (match, p1, p2) => {
+  if (p1) {
+    return `_${+p1.substr(1) + LIBRARY_FUNCTIONS.length}`;
+  } if (p2) {
+    return `${p2.substr(2)}_${libraryPrefixes[p2.substr(2)]}`;
+  }
+  return '';
+};
+
+const getJSNameNum = (numLibFunctions) => {
+  const curNum = numLibFunctions;
+  return offSet => (curNum + offSet);
+};
 
 // Setup output files
 const jsGenTest = (testDatum) => {
@@ -34,7 +50,7 @@ const jsGenTestWithOutFile = (testDatum) => {
   }));
   let expectedOut = fs.readFileSync(`test/data/generator/output/${testDatum}-out.js`, {
     encoding: 'UTF-8',
-  }).toString().split('\n');
+  }).toString().replace(/(_\d+)|(__\w+)/g, nameParser).split('\n');
   // have to get rid of trailing newline and eslint comment
   expectedOut = expectedOut.slice(1, expectedOut.length - 1);
   jsCode.analyze();
@@ -47,11 +63,13 @@ const jsGenTestWithOutFile = (testDatum) => {
   });
 };
 let test;
+let getNum;
 
 describe('Generator Tests', () => {
   beforeEach((done) => {
     this.logger = sinon.stub(console, 'log');
     this.error = sinon.stub(console, 'error');
+    getNum = getJSNameNum(LIBRARY_FUNCTIONS.length);
     done();
   });
   afterEach((done) => {
@@ -80,7 +98,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'fun',
         expected: {
-          output: ['let test_2 = () => {', '  if (true) {', '    return false;', '  }', '};'],
+          output: [`let test_${getNum(1)} = () => {`, '  if (true) {', '    return false;', '  }', '};'],
           numLogs: 1,
         },
       };
@@ -92,7 +110,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'funparams',
         expected: {
-          output: ['let test_2 = (param_3) => {', '  return param_3;', '};'],
+          output: [`let test_${getNum(1)} = (param_${getNum(2)}) => {`, `  return param_${getNum(2)};`, '};'],
           numLogs: 1,
         },
       };
@@ -106,7 +124,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'var',
         expected: {
-          output: ['let var_2 = () => {', '  let x_3 = 0;', '  return x_3;', '};'],
+          output: [`let var_${getNum(1)} = () => {`, `  let x_${getNum(2)} = 0;`, `  return x_${getNum(2)};`, '};'],
           numLogs: 1,
         },
       };
@@ -120,7 +138,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'if',
         expected: {
-          output: ['let test2_2 = () => {', '  if (true) {', '    return true;', '  }', '};'],
+          output: [`let test2_${getNum(1)} = () => {`, '  if (true) {', '    return true;', '  }', '};'],
           numLogs: 1,
         },
       };
@@ -134,7 +152,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'stmt',
         expected: {
-          output: ['let x_2 = \'test\';'],
+          output: [`let x_${getNum(1)} = 'test';`],
           numLogs: 1,
         },
       };
@@ -162,7 +180,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'op',
         expected: {
-          output: ['let op_2 = () => {', '  let x_3 = 5;', '  return (x_3 + 5);', '};'],
+          output: [`let op_${getNum(1)} = () => {`, `  let x_${getNum(2)} = 5;`, `  return (x_${getNum(2)} + 5);`, '};'],
           numLogs: 1,
         },
       };
@@ -175,8 +193,8 @@ describe('Generator Tests', () => {
         argFile: 'op2',
         expected: {
           output: [
-            'let bar_2 = (x_3, y_4, z_5, a_6, b_7, c_8) => {',
-            '  return ((x_3 + y_4) > (z_5 ** b_7));',
+            `let bar_${getNum(1)} = (x_${getNum(2)}, y_${getNum(3)}, z_${getNum(4)}, a_${getNum(5)}, b_${getNum(6)}, c_${getNum(7)}) => {`,
+            `  return ((x_${getNum(2)} + y_${getNum(3)}) > (z_${getNum(4)} ** b_${getNum(6)}));`,
             '};'],
           numLogs: 1,
         },
@@ -191,7 +209,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'range',
         expected: {
-          output: ['for (let x_2 = 0; x_2 < 1; x_2 += 1) {', '  print_1(x_2);', '}'],
+          output: [`for (let x_${getNum(1)} = 0; x_${getNum(1)} < 1; x_${getNum(1)} += 1) {`, `  print_1(x_${getNum(1)});`, '}'],
           numLogs: 1,
         },
       };
@@ -219,7 +237,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'float',
         expected: {
-          output: ['let x_2 = 3.14;'],
+          output: [`let x_${getNum(1)} = 3.14;`],
           numLogs: 1,
         },
       };
@@ -233,7 +251,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'bool',
         expected: {
-          output: ['let x_2 = true;'],
+          output: [`let x_${getNum(1)} = true;`],
           numLogs: 1,
         },
       };
@@ -247,7 +265,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'for',
         expected: {
-          output: ['for (let x_2 = 0; x_2 < 25; x_2 += 1) {', '  print_1(x_2);', '}'],
+          output: [`for (let x_${getNum(1)} = 0; x_${getNum(1)} < 25; x_${getNum(1)} += 1) {`, `  print_1(x_${getNum(1)});`, '}'],
           numLogs: 1,
         },
       };
@@ -261,7 +279,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'conditional',
         expected: {
-          output: ['let test3_2 = () => {', '  if (true) {', '    return true;', '  } else {', '      return false;', '  }', '};'],
+          output: [`let test3_${getNum(1)} = () => {`, '  if (true) {', '    return true;', '  } else {', '      return false;', '  }', '};'],
           numLogs: 1,
         },
       };
@@ -290,13 +308,13 @@ describe('Generator Tests', () => {
             '    this.age = age;',
             '    this.affiliation = "blood";',
             '  }',
-            '  cap(foo_2) {',
-            '    let bopim_3 = (numBops_4) => {',
-            '      for (let bop_5 = 0; bop_5 < numBops; bop_5 += 1) {',
-            '        print_1((this.nameFirst + (" bopped " + (foo_2.nameFirst + (" " + (foo_2.nameLast + (" " + (bop_5 + " times"))))))));',
+            `  cap_${getNum(1)}(foo_${getNum(2)}) {`,
+            `    let bopim_${getNum(3)} = (numBops_${getNum(4)}) => {`,
+            `      for (let bop_${getNum(5)} = 0; bop_${getNum(5)} < numBops_${getNum(4)}; bop_${getNum(5)} += 1) {`,
+            `        print_1((this.nameFirst + (" bopped " + (foo_${getNum(2)}.nameFirst + (" " + (foo_${getNum(2)}.nameLast + (" " + (bop_${getNum(5)} + " times"))))))));`,
             '      }',
             '    };',
-            '    return bopim_3;',
+            `    return bopim_${getNum(3)};`,
             '  }',
             '}',
             'class PoliceMan extends Person {',
@@ -306,13 +324,13 @@ describe('Generator Tests', () => {
             '    this.age = age;',
             '    this.affiliation = "twelvy";',
             '  }',
-            '  woopwoop() {',
+            `  woopwoop_${getNum(6)}() {`,
             '    return "Time to narc";',
             '  }',
             '}',
-            'let fiveO_6 = new PoliceMan("john", "doe", 24);',
-            'let yg_7 = new Fam("yg", "hootie", 23);',
-            'yg_7.cap(fiveO_6)(5);',
+            `let fiveO_${getNum(7)} = new PoliceMan("john", "doe", 24);`,
+            `let yg_${getNum(8)} = new Fam("yg", "hootie", 23);`,
+            `yg_${getNum(8)}.cap_${getNum(1)}(fiveO_${getNum(7)})(5);`,
           ],
           numLogs: 1,
         },
@@ -329,11 +347,11 @@ describe('Generator Tests', () => {
         argFile: 'list',
         expected: {
           output: [
-            'let a_2 = [];',
-            'let b_3 = [1, 2, 3, 4, 5];',
-            'b_3.forEach((x_4) => {',
-            '  if ((x_4 > 1)) {',
-            '    print_1(x_4);',
+            `let a_${getNum(1)} = [];`,
+            `let b_${getNum(2)} = [1, 2, 3, 4, 5];`,
+            `b_${getNum(2)}.forEach((x_${getNum(3)}) => {`,
+            `  if ((x_${getNum(3)} > 1)) {`,
+            `    print_1(x_${getNum(3)});`,
             '  }',
             '});',
           ],
@@ -350,7 +368,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'listexp',
         expected: {
-          output: ['let a_2 = [for (x_3 of [1, 2, 3]) (x_3 + 2)];'],
+          output: [`let a_${getNum(1)} = [for (x_${getNum(2)} of [1, 2, 3]) (x_${getNum(2)} + 2)];`],
           numLogs: 1,
         },
       };
@@ -364,7 +382,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'explist',
         expected: {
-          output: ['let a_2 = [(1 + 4), (8 - 2), (5 * 5), (9 / 3)];'],
+          output: [`let a_${getNum(1)} = [(1 + 4), (8 - 2), (5 * 5), (9 / 3)];`],
           numLogs: 1,
         },
       };

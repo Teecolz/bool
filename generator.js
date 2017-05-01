@@ -130,6 +130,7 @@ function generateLibraryFunctions() {
   }
 
   generateLibraryStub('print', 's', 'console.log(s);');
+  generateLibraryStub('map', ['f', 'arr'], 'return arr.map(f);');
 }
 
 Object.assign(Program.prototype, {
@@ -243,13 +244,13 @@ Object.assign(FieldAssignment.prototype, {
 
 Object.assign(FieldDeclaration.prototype, {
   gen() {
-    return `${this.id.replace(/^_/, '')}`;
+    return `${this.id}`.replace(/^_/, '');
   },
 });
 
 Object.assign(FieldExpression.prototype, {
   gen() {
-    return `this.${this.referent.id.replace(/^_/, '')}`;
+    return `this.${this.id.replace(/^_/, '')}`;
   },
 });
 
@@ -261,7 +262,7 @@ Object.assign(FieldParameters.prototype, {
 
 Object.assign(MethodDeclaration.prototype, {
   gen() {
-    emit(`${this.id}(${this.params.gen()}) {`);
+    emit(`${jsName(this)}(${this.params.gen()}) {`);
     this.block.gen();
     emit('}');
   },
@@ -279,10 +280,7 @@ Object.assign(MethodParameters.prototype, {
    ***************/
 
 Object.assign(VariableExpression.prototype, {
-  gen(isProp) {
-    if (isProp) {
-      return `${this.id}`;
-    }
+  gen() {
     return jsName(this.referent);  // will break before analysis
   },
 });
@@ -300,7 +298,7 @@ Object.assign(UnaryExpression.prototype, {
 
 Object.assign(ObjectAccess.prototype, {
   gen() {
-    return `${this.container.gen()}.${this.prop.gen()}`;
+    return `${this.container.gen()}.${this.prop.gen(true)}`;
   },
 });
 Object.assign(OpAssignment.prototype, {
@@ -360,7 +358,10 @@ Object.assign(ForStatement.prototype, {
     const jsIterator = jsName(this);
     if (list instanceof RangeExpression) {
       const boundsCheck = list.step > 0 ? '<' : '>';
-      emit(`for (let ${jsIterator} = ${list.start}; ${jsIterator} ${boundsCheck} ${list.end}; ${jsIterator} += ${list.step}) {`);
+      const start = list.start instanceof IntegerLiteral ? list.start : jsName(list.start);
+      const end = list.end instanceof IntegerLiteral ? list.end : jsName(list.end);
+      const step = list.step instanceof IntegerLiteral ? list.step : jsName(list.step);
+      emit(`for (let ${jsIterator} = ${start}; ${jsIterator} ${boundsCheck} ${end}; ${jsIterator} += ${step}) {`);
       this.block.gen();
       emit('}');
     } else {
@@ -399,10 +400,7 @@ Object.assign(FunctionDeclaration.prototype, {
 });
 
 Object.assign(FunctionCall.prototype, {
-  gen(isProp) {
-    if (isProp) {
-      return `${this.id}${this.params.map(p => `(${p.gen()})`).join('')}`;
-    }
+  gen() {
     return `${jsName(this.callee)}${this.params.map(p => `(${p.gen()})`).join('')}`;
   },
 });

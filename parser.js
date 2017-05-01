@@ -8,6 +8,7 @@
 const BinaryExpression = require('./entities/binaryexpression.js');
 const Block = require('./entities/block.js');
 const BooleanLiteral = require('./entities/booleanliteral.js');
+const BracketAccess = require('./entities/bracketaccess.js');
 const Break = require('./entities/break.js');
 const Case = require('./entities/case.js');
 const ClassBody = require('./entities/classbody.js');
@@ -119,8 +120,8 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   VarExp_dotAccess(vexp, _, prop) {
     return new ObjectAccess(vexp.ast(), prop.ast());
   },
-  VarExp_bracketAccess(vexp, open, exp, end) {
-    //TODO
+  VarExp_bracketAccess(vexp, open, exps, end) {
+    return new BracketAccess(vexp.ast(), exps.ast());
   },
   FieldAssign(id, _, val) {
     return new FieldAssignment(id.ast(), val.ast());
@@ -149,8 +150,11 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   ObjDecl(id, col, nl, ind, props, nl2, ded) {
     return new ObjectDeclaration(id.ast(), props.ast());
   },
-  PropertyDecl(id, type, col, e) {
+  PropertyDecl_typed(id, type, col, e) {
     return new PropertyDeclaration(id.ast(), type.ast(), e.ast());
+  },
+  PropertyDecl_noType(id, col, e) {
+    return new PropertyDeclaration(id.ast(), [], e.ast());
   },
   FunDecl(f, id, type, params, col, s) {
     return new FunctionDeclaration(id.sourceString, type.ast(), params.ast(), s.ast());
@@ -227,6 +231,12 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   // },
   Exp8_parens(_, e, close) {
     return e.ast();
+  },
+  MemberExp_dotAccess(vexp, _, prop) {
+    return new ObjectAccess(vexp.ast(), prop.ast());
+  },
+  MemberExp_bracketAccess(vexp, open, exps, end) {
+    return new BracketAccess(vexp.ast(), exps.ast());
   },
   Loop_forIn(_, id, n, l, colon, s) {
     return new ForStatement(id.sourceString, l.ast(), s.ast());

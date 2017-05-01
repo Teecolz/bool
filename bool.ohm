@@ -75,7 +75,8 @@ Bool {
 
     // may need to expand this
     PropertyDecl
-      = VarExp Type? ":" Exp
+      = VarExp ":" Exp --noType
+      | VarExp Type? ":" Exp --typed
 
     FunDecl
       = "fun" id Type? Params ":" Suite
@@ -148,7 +149,8 @@ Bool {
       | Exp7
     // may need to make this lexical
     Exp7
-      = Exp8
+      = MemberExp
+      | Exp8
     Exp8
       =
       | Funlit
@@ -169,9 +171,12 @@ Bool {
       | fieldexp
       | stringlit
     VarExp
-      = VarExp "." (VarExp | Funcall) --dotAccess
-      | VarExp ("[" Exp "]")+ --bracketAccess
+      = VarExp ("[" (VarExp | Funcall | stringlit | intlit) "]")+ --bracketAccess
+      | VarExp "." (Funcall | id | VarExp) --dotAccess
       | id --simple
+    MemberExp
+      = Listlit ("[" (MemberExp | VarExp | Funcall | stringlit | intlit) "]")+ --bracketAccess
+      | Listlit "." (MemberExp | Funcall| id | VarExp) --dotAccess
 
     addop = "+" | "-"
     mulop = "*" | "/" | "%"

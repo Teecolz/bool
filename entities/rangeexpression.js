@@ -22,14 +22,17 @@ class RangeExpression {
   analyze(context) {
     if (this.start instanceof IdLiteral) {
       const startVal = context.lookupVariable(this.start.id);
+      this.start = startVal;
       startVal.type.mustBeInteger('Cannot create non-integral range.', this.start);
     }
     if (this.end instanceof IdLiteral) {
       const endVal = context.lookupVariable(this.end.id);
+      this.end = endVal;
       endVal.type.mustBeInteger('Cannot create non-integral range.', this.start);
     }
     if (this.step instanceof IdLiteral) {
       const stepVal = context.lookupVariable(this.step.id);
+      this.step = stepVal;
       stepVal.type.mustBeInteger('Cannot create non-integral range.', this.start);
     }
     this.type = Type.Construct('[int]');

@@ -600,15 +600,15 @@ describe('Parser Tests', () => {
         },
         {
           arg: 'x[0]\n',
-          expected: '(BinExp x [] 0)',
+          expected: '(x [] 0)',
         },
         {
-          arg: '(x.y)[0]\n',
-          expected: '(BinExp (Access x . y) [] 0)',
+          arg: 'x.y[0]\n',
+          expected: '((Access x . y) [] 0)',
         },
         {
           arg: '[1,2,3][1]\n',
-          expected: '(BinExp [1, 2, 3] [] 1)',
+          expected: '([1, 2, 3] [] 1)',
         },
       ];
 

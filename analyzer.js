@@ -114,4 +114,5 @@ class AnalysisContext {
 
 exports.LIBRARY = new AnalysisContext(null);
 new FunctionDeclaration('print', [], new Parameters([new ParamDecl('_', [])]), null).analyze(exports.LIBRARY);
+new FunctionDeclaration('map', [], new Parameters([new ParamDecl('f', []), new ParamDecl('arr', [])]), null).analyze(exports.LIBRARY);
 exports.initialContext = new AnalysisContext(exports.LIBRARY);

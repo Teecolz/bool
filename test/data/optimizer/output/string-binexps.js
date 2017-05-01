@@ -1,8 +1,8 @@
 /* eslint-disable */
-let x_2 = "Hello, ";
-x_2 = (x_2 + "world");
-x_2 = `Hello, world`;
-x_2 = `Hello, 1`;
-x_2 = `Hello, 1.1`;
-x_2 = `Hello, tru`;
-x_2 = `Hey, Hey, Hey, `;
+let x_1 = "Hello, ";
+x_1 = (x_1 + "world");
+x_1 = `Hello, world`;
+x_1 = `Hello, 1`;
+x_1 = `Hello, 1.1`;
+x_1 = `Hello, tru`;
+x_1 = `Hey, Hey, Hey, `;
