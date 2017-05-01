@@ -94,6 +94,7 @@ footer small {
 
 .errors-section pre code {
   text-align: left;
+  color: red;
 }
 
 .diagram {
