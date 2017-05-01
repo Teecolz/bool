@@ -79,21 +79,16 @@ fun doubleEvens (array):                        var doubleEvens = function(array
 ````
 #### Higher Order Functions
 ````
-foods [                                       foods [
-  {name: 'apple', kind: 'fruit'}                {name: 'apple', kind: 'fruit'},
-  {name: 'carrot', kind: 'veg'}                 {name: 'carrot', kind: 'veg'},
-  {name: 'banana', kind: 'fruit'}               {name: 'banana', kind: 'fruit'},
-  {name: 'broccoli', kind: 'veg'}               {name: 'broccoli', kind: 'veg'},
-  {name: 'strawberry', kind: 'fruit'}           {
-]                                                 name: 'strawberry',
-                                                  kind:'fruit'
-                                                },
-                                              ];                                         
-
-fun fruits = foods.filter((food):               var fruits = foods.filter(function(foods) {
-  ret food.kind === fruit                         return food.kind === 'fruit';    
-)                                               });                
-
+fun tricky (a b c):                     let tricky = (a, b, c) => {
+  ret c(a)(b)                             return c(a)(b);
+fun add2 (a):                           };
+  fun add1(b):                          let add2 = (a) => {
+    ret a + b                              let add1 = (b) => {
+  ret add1                                   return (a + b);
+let sum:int = tricky(1 2 add2)             };
+                                           return add1;
+                                        };
+                                        let sum = tricky(1, 2, add2);
 ````
 #### Classes
 ````
