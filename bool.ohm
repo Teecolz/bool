@@ -10,13 +10,13 @@ Bool {
       = IndentStmt           --indent
       | NormalStmt? newline  --normal
 
-      IndentStmt
-        = ClassDecl
-        | FunDecl
-        | ObjDecl
-        | Conditional
-        | Loop
-        // TODO: need to split loops into indent and no indent
+    IndentStmt
+      = ClassDecl
+      | FunDecl
+      | ObjDecl
+      | Conditional
+      | Loop
+      // TODO: need to split loops into indent and no indent
     NormalStmt
       = VarDecl
       | OpAssign
@@ -96,7 +96,7 @@ Bool {
     Return = "ret" Exp?
 
     Funcall
-      = (id | fieldid) Funparams+
+      = (id | fieldid | Funlit) Funparams+
 
     Funparams
       = "(" Exp* ")"
@@ -115,9 +115,6 @@ Bool {
 
     Suite
       = newline indent (FullStmt)+ dedent
-
-    FunSuite
-      = newline indent (FullStmt)
 
     SimpleSuite
       = (newline indent)? Exp newline dedent
@@ -153,8 +150,8 @@ Bool {
       | Exp8
     Exp8
       =
-      | Funlit
       | SimpleLit
+      | Funlit
       | Objlit
       | Listlit
       | ClassInst
@@ -201,7 +198,7 @@ Bool {
 
     // should also allow for one line statement here
     Funlit
-      = "lambda" Params ":" (Exp | Suite)
+      = "~(" Params ":" (Exp | Suite) ")"
 
     reserved
       = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"
