@@ -50,6 +50,11 @@ class BracketAcess {
       });
     }
   }
+  optimize() {
+    this.container = this.container.optimize();
+    this.exps = this.exps.map(e => e.optimize());
+    return this;
+  }
   toString() {
     return `(${this.container} [] ${this.exps})`;
   }

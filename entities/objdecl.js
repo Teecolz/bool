@@ -14,6 +14,10 @@ class ObjectDeclaration {
     this.type = Type.OBJECT;
     context.addVariable(this.id, this);
   }
+  optimize() {
+    this.propDecls = this.propDecls.map(p => p.optimize());
+    return this;
+  }
   toString() {
     return `(ObjDecl ${this.id} ${this.propDecls})`;
   }

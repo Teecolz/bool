@@ -13,7 +13,10 @@ class ClassInstantiation {
     this.classContext = context.lookupVariable(this.id.id).classContext;
     context.addVariable(`${this.id}`, this);
   }
-
+  optimize() {
+    this.params = this.params.optimize();
+    return this;
+  }
   toString() {
     return `(New ${this.id} ${this.params})`;
   }

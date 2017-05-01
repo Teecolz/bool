@@ -8,6 +8,9 @@ class Break {
   toString() {
     return `${this.stmt}`;
   }
+  optimize() {
+    return this;
+  }
 }
 
 module.exports = Break;

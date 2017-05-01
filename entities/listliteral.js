@@ -4,11 +4,15 @@ class ListLiteral {
   }
   analyze(context) {
     if (this.exp.length > 0) {
-      const elements = this.exp[0];
-      elements.analyze(context);
-      this.type = elements.type;
-      this.elementType = elements.elementType;
+      this.elements = this.exp[0];
+      this.elements.analyze(context);
+      this.type = this.elements.type;
+      this.elementType = this.elements.elementType;
     }
+  }
+  optimize() {
+    this.elements = this.elements.optimize();
+    return this;
   }
   toString() {
     return `[${this.exp}]`;

@@ -20,6 +20,10 @@ class PropertyDeclaration {
     }
     context.addVariable(this.name, this);
   }
+  optimize() {
+    this.val = this.val.optimize();
+    return this;
+  }
   toString() {
     return `(PropDecl ${this.id} : ${this.val})`;
   }

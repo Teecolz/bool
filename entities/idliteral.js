@@ -5,6 +5,9 @@ class IdLiteral {
   analyze() {
     this.name = this.id;
   }
+  optimize() {
+    return this;
+  }
   toString() {
     return `${this.id}`;
   }

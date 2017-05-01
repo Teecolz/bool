@@ -10,6 +10,10 @@ class RangeLiteral extends LiteralExpression {
     this.type = Type.Construct('[int]');
     this.elementType = Type.INT;
   }
+  optimize() {
+    this.val = this.val.optimize();
+    return this;
+  }
 }
 
 module.exports = RangeLiteral;

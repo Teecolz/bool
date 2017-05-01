@@ -18,6 +18,9 @@ class FieldExpression {
       this.referent = this;
     }
   }
+  optimize() {
+    return this;
+  }
   toString() {
     return `${this.id}`;
   }

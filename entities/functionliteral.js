@@ -20,6 +20,10 @@ class FunctionLiteral {
     }
     this.type = Type.FUNCTION;
   }
+  optimize() {
+    this.body = this.body.optimize();
+    return this;
+  }
   toString() {
     return `(Funlit ${this.params} : ${this.body})`;
   }

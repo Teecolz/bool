@@ -8,6 +8,9 @@ class FieldParameters {
       fd.analyze(context);
     });
   }
+  optimize() {
+    return this;
+  }
   toString() {
     return `(Params ${this.params})`;
   }

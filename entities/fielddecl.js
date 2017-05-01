@@ -14,6 +14,9 @@ class FieldDeclaration {
       this.type = Type.ARBITRARY;
     }
   }
+  optimize() {
+    return this;
+  }
   toString() {
     return (this.id ? `(Field ${this.id})` : '(Field )');
   }

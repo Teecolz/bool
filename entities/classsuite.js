@@ -6,7 +6,10 @@ class ClassSuite {
   analyze(context) {
     this.body.analyze(context);
   }
-
+  optimize() {
+    this.body = this.body.optimize();
+    return this;
+  }
   toString() {
     return `(ClassSuite ${this.body})`;
   }

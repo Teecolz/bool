@@ -39,6 +39,9 @@ class RangeExpression {
     this.elementType = Type.INT;
   }
 
+  optimize() {
+    return this;
+  }
   toString() {
     return `(Range ${this.start}, ${this.end}, ${this.step})`.replace(/(, )*\)$/, ')');
   }

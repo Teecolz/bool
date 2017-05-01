@@ -22,6 +22,10 @@ class ExpList {
       }
     });
   }
+  optimize() {
+    this.exps = this.exps.map(e => e.gen());
+    return this;
+  }
   toString() {
     return `${this.exps.join(', ')}`;
   }
