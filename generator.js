@@ -521,7 +521,7 @@ Object.assign(ListLiteral.prototype, {
    *************/
 Object.assign(PropertyDeclaration.prototype, {
   gen() {
-    return `${jsName(this)}: ${this.val.gen()},`; // TODO: what to do about multiline values?
+    return `${jsName(this)}: ${this.val.gen()}`; // TODO: what to do about multiline values?
   },
 });
 
@@ -529,18 +529,13 @@ Object.assign(ObjectDeclaration.prototype, {
   gen() {
     emit(`let ${jsName(this)} = {`);
     indentLevel += 1;
-    this.propDecls.forEach(p => emit(p.gen()));
+    this.propDecls.forEach(p => emit(`${p.gen()},`));
     indentLevel -= 1;
     emit('};');
   },
 });
 Object.assign(ObjectLiteral.prototype, {
   gen() {
-    let objectString = '{\n';
-    getLinesAsArray(this.props).forEach((p) => {
-      objectString += `${p}\n`;
-    });
-    objectString += preEmit('}');
-    return objectString;
+    return `{${this.props.map(p => p.gen()).join(', ')}}`;
   },
 });

@@ -398,4 +398,12 @@ describe('Generator Tests', () => {
       done();
     });
   });
+
+  describe('Object Declaration and Access', () => {
+    it('Should properly generate objects', (done) => {
+      test = 'objects';
+      jsGenTestWithOutFile(test);
+      done();
+    });
+  });
 });

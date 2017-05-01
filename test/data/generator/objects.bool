@@ -1,12 +1,11 @@
 foo :=
- bar: fal
- a: tru
- b: {}
- c: {
-  hi: "hello"
-  world: "world"
- }
-
+  bar: fal
+  a: tru
+  b: {}
+  c: {
+    hi: "hello"
+    world: "world"
+  }
 print(foo.bar)
 if foo.a:
   print(foo.c.hi + foo.c.world)
