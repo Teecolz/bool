@@ -6,9 +6,7 @@ class ObjectLiteral {
   }
   analyze(context) {
     this.objectContext = context.createChildContext();
-    for (let i = 0; i < this.props.length; i += 1) {
-      this.props[i].analyze(this.objectContext);
-    }
+    this.props.forEach(p => p.analyze(this.objectContext));
     this.type = Type.OBJECT;
   }
   toString() {

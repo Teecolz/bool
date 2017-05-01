@@ -6,6 +6,7 @@ foo :=
     hi: "hello"
     world: "world"
   }
+  d: {e: 1, f: 2}
 print(foo.bar)
 if foo.a:
   print(foo.c.hi + foo.c.world)

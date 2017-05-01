@@ -178,10 +178,10 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   Listlit(st, exps, end) {
     return new ListLiteral(exps.ast());
   },
-  Objlit_singleprop(_, prop, close) {
-    return new ObjectLiteral(prop.ast());
+  Objlit_singleline(_, prop1, comma, props, close) {
+    return new ObjectLiteral(prop1.ast().concat(props.ast()));
   },
-  Objlit_multiprop(_, nl, ind, props, nl2, ded, close) {
+  Objlit_multiline(_, nl, ind, props, nl2, ded, close) {
     return new ObjectLiteral(props.ast());
   },
   Funlit(lambda, params, _, s) {

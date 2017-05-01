@@ -196,8 +196,8 @@ Bool {
     ClassInst = "new" id Funparams
     breakstmt = "break"
     Objlit
-      = "{" PropertyDecl? "}" --singleprop
-      | "{" newline indent (PropertyDecl newline)* dedent "}" --multiprop
+      = "{" PropertyDecl? ("," PropertyDecl)* "}" --singleline
+      | "{" newline indent (PropertyDecl newline)* dedent "}" --multiline
 
     // should also allow for one line statement here
     Funlit
