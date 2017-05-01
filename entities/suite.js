@@ -16,6 +16,7 @@ class Suite {
   }
 
   optimize() {
+    this.stmts = this.stmts.map(s => s.optimize());
     return this;
   }
 

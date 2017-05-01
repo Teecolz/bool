@@ -12,7 +12,12 @@ class ConstructorDeclaration {
       this.body.analyze(builderContext);
     }
   }
-
+  optimize() {
+    if (this.body) {
+      this.body = this.body.optimize();
+    }
+    return this;
+  }
   toString() {
     return `(Build ${this.params}${this.body ? this.body : ''})`;
   }

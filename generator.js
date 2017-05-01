@@ -72,9 +72,6 @@ function getOp(op) {
   }
   return op;
 }
-function preEmit(line) {
-  return `${' '.repeat(indentPadding * indentLevel)}${line}`;
-}
 
 function getStatementList(statements) {
   indentLevel += 1;
@@ -84,13 +81,6 @@ function getStatementList(statements) {
     }
   });
   indentLevel -= 1;
-}
-
-function getLinesAsArray(statements) {
-  indentLevel += 1;
-  const lineArray = statements.map(s => preEmit(s.gen()));
-  indentLevel -= 1;
-  return lineArray;
 }
 
 let jsName = (() => {
@@ -381,14 +371,13 @@ Object.assign(ForStatement.prototype, {
 
 Object.assign(FunctionLiteral.prototype, {
   gen() {
-    let funText = `(${this.params.gen()}) => `;
+    let funText = `((${this.params.gen()}) => `;
     if (this.body instanceof Suite) {
-      funText += '{\n';
-      const bodyAr = getLinesAsArray(this.body.stmts);
-      bodyAr.forEach((line) => { funText += line; });
-      funText += '}';
+      funText += '{ ';
+      this.body.stmts.forEach((stmt) => { funText += `${stmt.stmt.gen()}; `; });
+      funText += '})';
     } else {
-      funText += `${this.body.gen()}`;
+      funText += `${this.body.gen()})`;
     }
     return funText;
   },
@@ -404,6 +393,9 @@ Object.assign(FunctionDeclaration.prototype, {
 
 Object.assign(FunctionCall.prototype, {
   gen() {
+    if (this.callee instanceof FunctionLiteral) {
+      return `${this.callee.gen()}${this.params.map(p => `(${p.gen()})`).join('')}`;
+    }
     return `${jsName(this.callee)}${this.params.map(p => `(${p.gen()})`).join('')}`;
   },
 });

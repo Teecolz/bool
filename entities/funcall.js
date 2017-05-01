@@ -1,4 +1,5 @@
 const error = require('../error.js');
+const FunctionLiteral = require('./functionliteral.js');
 const Type = require('./type.js');
 const Undefined = require('./undefined.js');
 const VariableExpression = require('./varexp.js');
@@ -15,7 +16,12 @@ class FunctionCall {
 
   // Still need to analyze chained calls... this is going to be an issue
   analyze(context) {
-    this.callee = context.lookupVariable(this.id);
+    if (this.id instanceof FunctionLiteral) {
+      this.id.analyze(context);
+      this.callee = this.id;
+    } else {
+      this.callee = context.lookupVariable(`${this.id}`);
+    }
     let curFun = this.callee; // ensure function defined within this scope
     let paramGroup;
     let errorMessage;
@@ -72,7 +78,6 @@ class FunctionCall {
         this.type = Type.ARBITRARY;
         this.val = new Undefined();
       }
-
       // Chain function calls if necessary
       if (this.type.name === '<function>') {
         curFun = this.val;

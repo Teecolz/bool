@@ -112,8 +112,9 @@ class Type {
       error(message, location);
     }
   }
-
-
+  optimize() {
+    return this;
+  }
   toString() {
     return `${this.name}`;
   }

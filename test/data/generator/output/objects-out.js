@@ -4,6 +4,7 @@ let foo_1 = {
   a_3: true,
   b_4: {},
   c_5: {hi_6: "hello", world_7: "world"},
+  d_8: {e_9: 1, f_10: 2},
 };
 __print(foo_1.bar_2);
 if (foo_1.a_3) {

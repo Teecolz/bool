@@ -10,7 +10,10 @@ class Parameters {
       param.analyze(context);
     });
   }
-
+  optimize() {
+    this.params = this.params.map(p => p.optimize());
+    return this;
+  }
   toString() {
     return `(Params ${this.params.join(',').replace(/,$/, '')})`;
   }

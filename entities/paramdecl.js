@@ -13,7 +13,6 @@ class ParameterDeclaration {
   analyze(context) {
     context.addVariable(this.id, this);
   }
-
   toString() {
     return `${this.id}`;
   }

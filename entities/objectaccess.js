@@ -70,6 +70,11 @@ class ObjectAccess {
       this.type = this.prop.type;
     }
   }
+  optimize() {
+    this.container = this.container.optimize();
+    this.prop = this.prop.optimize();
+    return this;
+  }
   toString() {
     return `(Access ${this.container} . ${this.prop})`;
   }

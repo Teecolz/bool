@@ -11,6 +11,11 @@ class WhileStatement {
     const localContext = context.createLoopContext();
     this.body.analyze(localContext);
   }
+  optimize() {
+    this.condition = this.condition.optimize();
+    this.body = this.body.optimize();
+    return this;
+  }
   toString() {
     return `(while ${this.condition} ${this.body})`;
   }

@@ -24,7 +24,11 @@ class OpAssignment {
       this.source.type.mustBeNumber('Source of assignment must be number.', this.source);
     }
   }
-
+  optimize() {
+    this.source = this.source.optimize();
+    this.target = this.target.optimize();
+    return this;
+  }
   toString() {
     return `${this.id} ${this.op} ${this.val}`;
   }

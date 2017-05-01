@@ -1,0 +1,17 @@
+fun slang (product:string):
+  ret ~((weight) : ('played with ' + (weight + (' keys of ' + product))))
+
+print(slang('pot')(5))
+
+fun whosBoolin (who what):
+  ret (who + (' ' + what('pot')(5)))
+
+print (whosBoolin('ur boi' slang))
+
+~((name) : print((name + (' is boolin'))))('Harris')
+
+let ay = ~((who what):
+  print(who)
+  print(what('brack')(10))
+  ret 'ay'
+)('Harris' slang)

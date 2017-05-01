@@ -21,6 +21,12 @@ class ListExpression {
     this.exp.analyze(localContext);
     this.type = Type.Construct(`[${this.exp.type}]`);
   }
+  optimize() {
+    this.exp = this.exp.optimize();
+    this.lst = this.lst.optimize();
+    this.cond = this.cond.optimize();
+    return this;
+  }
   toString() {
     return `${this.exp} for ${this.iterator} in ${this.lst} ${this.cond}`.replace(/ $/, '');
   }

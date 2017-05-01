@@ -86,16 +86,16 @@ describe('Grammar tests (all have trailing newline)', () => {
       });
     });
 
-    describe('lambda (x y): \n ⇨ ret 3 + x - y \n ⇦ \n', () => {
+    describe('~((x y):\n⇨ret 3 + x - y\n⇦)\n', () => {
       it('should succeed on function literal', () => {
-        const match = gram.match('lambda (x y): \n ⇨ ret 3 + x \n ⇦ \n');
+        const match = gram.match('~((x y):\n⇨ret (3 + (x - y))\n⇦)\n');
         assert.ok(match.succeeded());
       });
     });
 
-    describe('lambda (x y): \n ⇨ z = y \n ret 3 + x - y \n ⇦ \n', () => {
+    describe('~((x y):\n⇨z = y\nret 3 + x - y\n⇦)\n', () => {
       it('should succeed on function literal (multiple expressions)', () => {
-        const match = gram.match('lambda (x y): \n ⇨ z = y \n ret 3 + x \n ⇦ \n');
+        const match = gram.match('~((x y):\n⇨z = y\nret (3 + (x - y))\n⇦)\n');
         assert.ok(match.succeeded());
       });
     });
@@ -234,19 +234,19 @@ describe('Parser Tests', () => {
         expected: '(Program (Block (Objlit {(PropDecl a : b), (PropDecl c : d)})))',
       },
       {
-        arg: 'lambda ():\n  ret "Hello, world"\n',
-        expected: '(Program (Block (Funlit (Params ) : (Suite (Return "Hello, world")))))',
-      },
-      {
-        arg: 'lambda (): "Hello, world"\n',
+        arg: '~((): "Hello, world")\n',
         expected: '(Program (Block (Funlit (Params ) : "Hello, world")))',
       },
       {
-        arg: 'lambda (a):\n  ret (a + 2)\n',
-        expected: '(Program (Block (Funlit (Params a) : (Suite (Return (BinExp a + 2))))))',
+        arg: '~((): "Hello, world")\n',
+        expected: '(Program (Block (Funlit (Params ) : "Hello, world")))',
       },
       {
-        arg: 'lambda (a b):\n  let b = a + b\n  ret b\n',
+        arg: '~((a): (a + 2))\n',
+        expected: '(Program (Block (Funlit (Params a) : (BinExp a + 2))))',
+      },
+      {
+        arg: '~((a b):\n⇨let b = a + b\nret b\n⇦)\n',
         expected: '(Program (Block (Funlit (Params a,b) : (Suite (VarDecl b:<no type> = (BinExp a + b)), (Return b)))))',
       },
     ];

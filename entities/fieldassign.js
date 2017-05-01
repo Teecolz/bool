@@ -11,6 +11,10 @@ class FieldAssignment {
     this.target.type.mustBeCompatibleWith(this.source.type, errorMessage, this.target.type);
     context.addVariable(this.target.name, this.source);
   }
+  optimize() {
+    this.source = this.source.optimize();
+    return this;
+  }
   toString() {
     return (this.id ? `(= _${this.id}, ${this.source})` : '(Field )');
   }

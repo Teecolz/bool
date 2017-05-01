@@ -17,7 +17,6 @@ class ConditionalStatement {
   optimize() {
     this.block = this.block.map(blocks => blocks.optimize());
     this.cases = this.cases.map(cases => cases.optimize());
-
     return this;
   }
 

@@ -13,6 +13,11 @@ class ForStatement {
     localContext.addVariable(this.iterator, this);
     this.block.analyze(localContext);
   }
+  optimize() {
+    this.list = this.list.optimize();
+    this.block = this.block.optimize();
+    return this;
+  }
   toString() {
     return `(for ${this.iterator} in ${this.list} : ${this.block})`;
   }

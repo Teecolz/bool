@@ -18,6 +18,10 @@ class ClassDeclaration {
     context.addVariable(this.id, this);
     this.type = Type.Construct(this.id);
   }
+  optimize() {
+    this.body = this.body.optimize();
+    return this;
+  }
   toString() {
     return `(ClassDecl ${this.id} ${this.isa} : ${this.body})`.replace(/, \)$/, '');
   }

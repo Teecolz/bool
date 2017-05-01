@@ -23,6 +23,10 @@ class MethodDeclaration {
     }
     context.addVariable(this.id, this);
   }
+  optimize() {
+    this.block = this.block.optimize();
+    return this;
+  }
   toString() {
     return `(Method ${this.id} ${this.params} : ${this.block})`;
   }

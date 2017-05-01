@@ -178,17 +178,14 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   Listlit(st, exps, end) {
     return new ListLiteral(exps.ast());
   },
-  Objlit_singleprop(_, prop, close) {
-    return new ObjectLiteral(prop.ast());
+  Objlit_singleline(_, prop1, comma, props, close) {
+    return new ObjectLiteral(prop1.ast().concat(props.ast()));
   },
-  Objlit_multiprop(_, nl, ind, props, nl2, ded, close) {
+  Objlit_multiline(_, nl, ind, props, nl2, ded, close) {
     return new ObjectLiteral(props.ast());
   },
-  Funlit(lambda, params, _, s) {
+  Funlit(open, params, _, s, close) {
     return new FunctionLiteral(params.ast(), s.ast());
-  },
-  FunSuite(nl, ind, stmts) {
-    return new Suite(stmts.ast());
   },
   Range(_, exp, close) {
     return exp.ast();
@@ -200,7 +197,7 @@ const semantics = grammar.createSemantics().addOperation('ast', {
     return new ClassInstantiation(id.ast(), params.ast());
   },
   Funcall(id, params) {
-    return new FunctionCall(id.sourceString, params.ast());
+    return new FunctionCall(id.ast(), params.ast());
   },
   Exp_binexp(e1, _, e2) {
     return new BinaryExpression(e1.ast(), 'or', e2.ast());

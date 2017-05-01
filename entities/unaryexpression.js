@@ -14,6 +14,10 @@ class UnaryExpression {
       this.type = Type.BOOL;
     }
   }
+  optimize() {
+    this.operand = this.operand.optimize();
+    return this;
+  }
   toString() {
     return `(UnExp ${this.op} ${this.operand})`;
   }
