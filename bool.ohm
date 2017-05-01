@@ -5,91 +5,82 @@ Bool {
     // multi line comments must either exist on their own or at the terminus
     // of a line
     Block
-        = (FullStmt | singlecomment)*
-    FullStmt = Stmt? newline
-    Stmt
+        = (FullStmt | singlecomment )*
+    FullStmt
+      = IndentStmt           --indent
+      | SimpleStmt? newline  --simple
+    IndentStmt
       = ClassDecl
       | FunDecl
       | ObjDecl
-      | VarDecl     -- vardecl
+      | Conditional
+      | Loop
+    SimpleStmt
+      = VarDecl
       | OpAssign
       | VarAssignment
-      | Conditional
-      | Loop        -- loop
-      | Exp         -- exp
-      | Return      -- ret
-
+      | FieldAssign
+      | Exp
+      | FieldDecl
+      | Return
+      | breakstmt
     ClassDecl
         = "class" id ("isa" id)? ":" ClassSuite
-
     ClassSuite
         = newline indent ClassBody dedent
-
     ClassBody
-        = (fielddecl newline)* (MethodDecl)+
-
-    fielddecl
+        = ConstructorDecl newline* (MethodDecl newline*)*
+    FieldDecl
+      = fieldid (Type)?
+    FieldAssign
+      = fieldexp "=" Exp
+    fieldexp
+      = fieldid
+    fieldid
       = "_" id
-
+    ConstructorDecl
+      = "build" FieldParams newline --noBody
+      | "build" MethodParams ":" Suite --bodied
     MethodDecl
-        = id methodparams ":" Suite
-    methodparams
-        = "(" ((id | fielddecl) (" " (id | fielddecl))*)? ")"
-
-    // need to make this work where second newline not necessary before closing dedent
+      = id MethodParams ":" Suite
+    MethodParams
+      = "(" (ParamDecl | FieldDecl)* ")"
+    FieldParams
+      = "(" FieldDecl* ")"
     ObjDecl
-        = id ":=" newline indent (PropertyDecl newline)* dedent
-
-    // may need to expand this
+      = id ":=" newline indent (PropertyDecl newline*)+ dedent
     PropertyDecl
-      = id ":" Exp
-
+      = VarExp ":" Exp --noType
+      | VarExp Type? ":" Exp --typed
     FunDecl
-      = "fun" id params ":" Suite
-
+      = "fun" id Type? Params ":" Suite
     VarDecl
-      = "let" id Type? Assignment?
-
-    Assignment
-      = "=" Exp
-
+      = "let" VarExp (Type)? ("=" Exp)?
     OpAssign
-      = id (assignop) Exp
-
+      = (VarExp | fieldexp) (assignop) Exp
     assignop
       = "+=" | "*=" | "/=" | "%="
-
     VarAssignment
-      = id "=" Exp
-
-    Return = "ret" Exp
-
+      = VarExp "=" Exp
+    Return
+      = "ret" Exp?
     Funcall
-      = id Funparams+
-
+      = (id | fieldid | Funlit) Funparams+
     Funparams
-      = "(" (SimpleLit (SimpleLit)*)? ")"
-
-    params
-      = "(" (id (" " id)*)? ")"
-
+      = "(" Exp* ")"
+    Params
+      = "(" ParamDecl* ")"
+    ParamDecl
+      = id Type?
     Conditional
       = "if" Case ("elif" Case)* ("el" ":" Suite)?
-
     Case
       = Exp ":" Suite
-
     Suite
-      = newline indent (Stmt newline)+ dedent
-
-    SimpleSuite
-      = (newline indent)? Exp newline dedent
-
+      = newline indent (FullStmt)+ dedent
     Loop
-        = "for" id "in" (Range | id | Listlit ) ":" Suite     --forIn
-        | "while" Exp ":" Suite                               --while
-        | "do" ":" Suite "until" ":" SimpleSuite              --doUntil
-
+        = "for" id "in" (Range | VarExp | Listlit ) ":" Suite     --forIn
+        | "while" Exp ":" Suite                                   --while
     Exp
       = Exp1 "or" Exp1      --binexp
       | Exp1
@@ -111,66 +102,68 @@ Bool {
     Exp6
       = prefixop Exp7       --prefixOp
       | Exp7
-    // may need to make this lexical
     Exp7
-      = Exp8 "." Exp8       --access
-      | Exp8 "[" Exp8 "]"   --listAccess
+      = MemberExp
       | Exp8
     Exp8
-      =
-      | SimpleLit
+      = SimpleLit
       | Funlit
-      | "(" Exp ")"   --parens
       | Objlit
       | Listlit
-      | fielddecl
       | ClassInst
-
-    // need to add support for single line objects
+      | "(" Exp ")"   --parens
     SimpleLit
       = boollit
       | floatlit
       | intlit
       | Funcall
+      | fieldexp
       | VarExp
       | stringlit
+    VarExp
+      = VarExp ("[" (VarExp | Funcall | stringlit | intlit) "]")+ --bracketAccess
+      | VarExp "." (Funcall | id | VarExp) --dotAccess
+      | id --simple
+    MemberExp
+      = Listlit ("[" (MemberExp | VarExp | Funcall | stringlit | intlit) "]")+ --bracketAccess
+      | Listlit "." (MemberExp | Funcall| id | VarExp) --dotAccess
 
-    VarExp = id
     addop = "+" | "-"
     mulop = "*" | "/" | "%"
     prefixop = "!" | "-"
     expop = "**" | "//"
     relop =  ">=" | "<=" | ">" | "<" | "!==" | "===" | "==" | "!="
     Explist = Exp8 ("," Exp8)*
-    ListExp = Exp "for" id "in" (id | Listlit) SimpleIf?
+    ListExp = Exp "for" VarExp "in" (VarExp | Listlit | fieldexp) SimpleIf?
     SimpleIf = "if" Exp
     Listlit = "[" (ListExp | Explist)? "]"
     Range = "range(" RangeExp ")"
-    RangeExp = intlit ("," intlit("," "-"? intlit)?)?
+    RangeExp = (id | intlit) ("," (id | intlit) ("," "-"? (id | intlit))?)?
     boollit = "tru" | "fal"
     intlit = ~(digit* ".") digit+
     floatlit = digit+ "." (digit+)? | (digit+)? "." digit+
-    stringlit = "\"" char* "\"" | "\'" char* "\'"
-    ClassInst = "new" id params
-
+    stringlit = "\"" (char | doublequotechar)* "\"" | "'" (char | singlequotechar)* "'"
+    ClassInst = "new" id Funparams
+    breakstmt = "break"
     Objlit
-      = "{" PropertyDecl? "}" --singleprop
-      | "{" newline indent (PropertyDecl newline)* dedent "}" --multiprop
-
-    // should also allow for one line statement here
-    Funlit = params ":" Suite
-
+      = "{" PropertyDecl? ("," PropertyDecl)* "}" --singleline
+      | "{" newline indent (PropertyDecl newline)* dedent "}" --multiline
+    Funlit
+      = "~(" Params ":" (Exp | Suite) ")"
     reserved
       = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"
-      | "while" | "until" | "class" | "isa" | "in" | "new" | "#" | "ret"
+      | "while" | "until" | "build" | "class" | "isa" | "in" | "new" | "#" | "ret"
       | "indent" | "dedent" | "[" | "]" | "let" | "string" | "float" | "int"
-      | "bool" | "obj" | addop | mulop | expop
+      | "bool" | "obj" | "⇦" | "⇨" | "break" | addop | mulop | expop
       | relop
     Type
       = ":" ("string" | "float" | "int" | "bool" | "obj" | id) --single
       | ":" "[" ("string" | "float" | "int" | "bool" | "obj" | id) "]" --list
     char
-         = alnum | punctuation | escape | stringSpace
+         = stringSpace | alnum | punctuation | escape
+
+    doublequotechar = "'"
+    singlequotechar = "\""
 
     stringSpace
          = " " | "\t" | "\n"
@@ -182,17 +175,20 @@ Bool {
 
     escape = "\\" // still need to fully define these
     comment
-      = multicomment
-      | singlecomment
-    singlecomment =  "#" ~"#" (~"\n" any)* "\n"
+      = singlecomment
+      | multicomment
     multicomment = "##" (~"##" any)* "##"
-    indent = "indent" // placeholder
-    dedent = "dedent" // placeholder
-    id = ~("_"? reserved) idName
+    singlecomment =  "#" ~"#" (~"\n" any)* "\n"
+
+    indent = "⇨" // placeholder
+    dedent = "⇦" // placeholder
+    id
+      = ~"_" id --notfield
+      | ~(reserved ~(idChar+)) idName --noreserved
     idName = idStart (idChar)*
     idStart = letter | "$"
     idChar = alnum | "-" | "_"
     newline = "\n" | "\r" | "\u2028" | "\u2029"
     // may need to amend this rule
-    space := " " | "\t" | multicomment
+    space := " " | "\t" | singlecomment | multicomment
 }
