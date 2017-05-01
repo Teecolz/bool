@@ -368,7 +368,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'listexp',
         expected: {
-          output: [`let a_${getNum(1)} = [for (x_${getNum(2)} of [1, 2, 3]) (x_${getNum(2)} + 2)];`],
+          output: [`let a_${getNum(1)} = [1, 2, 3].map((x_${getNum(2)}) => (x_${getNum(2)} + 2));`],
           numLogs: 1,
         },
       };

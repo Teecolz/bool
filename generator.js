@@ -484,17 +484,18 @@ Object.assign(ExpList.prototype, {
     this.exps.forEach((el) => {
       listElements.push(el.gen());
     });
-    return `${listElements.join(', ')}`;
+    return `[${listElements.join(', ')}]`;
   },
 });
 
 Object.assign(ListExpression.prototype, {
   gen() {
-    let expression = `for (${jsName(this.iterator)} of ${this.lst}) `;
+    let expression = `.map((${jsName(this.iterator)}) => ${this.exp.gen()})`;
     if (this.cond[0]) {
-      expression += `if (${this.cond[0].gen()}) `;
+      expression = `${this.lst}.filter(${jsName(this.iterator)} => ${this.cond[0].gen()})${expression}`;
+    } else {
+      expression = `${this.lst}${expression}`;
     }
-    expression += `${this.exp.gen()}`;
     return expression;
   },
 });
@@ -502,7 +503,7 @@ Object.assign(ListExpression.prototype, {
 Object.assign(ListLiteral.prototype, {
   gen() {
     if (this.exp[0]) {
-      return `[${this.exp[0].gen()}]`;
+      return `${this.exp[0].gen()}`;
     }
     return '[]';
   },

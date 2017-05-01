@@ -12,9 +12,9 @@
 // expressions
 // parameterize range
 // listexp
-- list literals
+// list literals
 // Objlit / propertydecl
-- call function literals
+// call function literals
 // allow returns from methods but not from constructors
 // inheritance
 - fix binary expressions
@@ -22,7 +22,7 @@
   - allow for JS implementations of operators like **
   - make sure that comparison operators function correctly
 // allow access of member functions
-- update examples
+// update examples
 - opassign optimization and string concatenation
 - remove <== epressions from binaryexpression
 // types in objects
