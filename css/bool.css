@@ -50,8 +50,13 @@ html {
   color: #9d9d9d;
 }
 
-.examples-section {
+.examples-section h3,
+.examples-section h1 {
   text-align: center;
+}
+
+.examples-section pre code {
+  text-align: left;
 }
 
 .diagrams-section {
