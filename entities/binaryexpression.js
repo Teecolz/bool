@@ -33,15 +33,15 @@ const foldNumericalConstants = (op, x, y, NumberClass) => {
     case '<=':
       return new BooleanLiteral(x <= y);
     case '==':
-      return new BooleanLiteral(x == y);
+      return new BooleanLiteral(x == y); // eslint-disable-line eqeqeq
     case '!==':
-      return new BooleanLiteral(x != y);
+      return new BooleanLiteral(x != y); // eslint-disable-line eqeqeq
     case '===':
       return new BooleanLiteral(x === y);
     case '!===':
       return new BooleanLiteral(x !== y);
     case '**':
-      return new NumberClass(Math.pow(x, y));
+      return new NumberClass(Math.pow(x, y)); // eslint-disable-line
     default:
       break;
     // TODO: need '//' operator
@@ -66,11 +66,11 @@ const getBooleanFromBool = (bool) => {
 const foldBooleanConstants = (op, left, right) => {
   switch (op) {
     case '==':
-      return new BooleanLiteral(getBoolFromBoolean(left == right));
+      return new BooleanLiteral(getBoolFromBoolean(left == right));  // eslint-disable-line eqeqeq
     case '===':
       return new BooleanLiteral(getBoolFromBoolean(left === right));
     case '!=':
-      return new BooleanLiteral(getBoolFromBoolean(left != right));
+      return new BooleanLiteral(getBoolFromBoolean(left != right));  // eslint-disable-line eqeqeq
     case '!==':
       return new BooleanLiteral(getBoolFromBoolean(left !== right));
     case 'and':

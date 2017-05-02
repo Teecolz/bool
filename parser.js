@@ -61,7 +61,7 @@ const WhileStatement = require('./entities/whilestatement.js');
 
 const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
 
-/* eslint no-unused-vars: 1 */
+/* eslint no-unused-vars: off */
 const semantics = grammar.createSemantics().addOperation('ast', {
   Program(b) { return new Program(b.ast()); },
   Block(s) { return new Block(s.ast()); },
