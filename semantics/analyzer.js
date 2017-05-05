@@ -1,4 +1,4 @@
-const error = require('../error.js');
+const error = require('../error');
 const Undefined = require('../syntax/entities/undefined.js');
 const FunctionDeclaration = require('../syntax/entities/fundecl.js');
 const ParamDecl = require('../syntax/entities/paramdecl.js');

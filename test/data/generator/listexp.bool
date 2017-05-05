@@ -1,1 +1,7 @@
 let a = [x + 2 for x in [1, 2, 3]]
+let b:[float] = [1.2, 1, 4.6, 5]
+let c = [d / 2.0 for d in b]
+for y in [z for z in c if (z > 0.5)]:
+  print(y)
+for y in c:
+  print(y)

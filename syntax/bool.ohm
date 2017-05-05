@@ -79,8 +79,8 @@ Bool {
     Suite
       = newline indent (FullStmt)+ dedent
     Loop
-        = "for" id "in" (Range | VarExp | Listlit ) ":" Suite     --forIn
-        | "while" Exp ":" Suite                                   --while
+        = "for" id "in" (Range | Listlit | VarExp) ":" Suite     --forIn
+        | "while" Exp ":" Suite                                  --while
     Exp
       = Exp1 "or" Exp1      --binexp
       | Exp1

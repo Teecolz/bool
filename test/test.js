@@ -5,7 +5,7 @@ const ohm = require('ohm-js');
 const assert = require('assert');
 const parse = require('../syntax/parser.js');
 
-const bool = fs.readFileSync('bool.ohm');
+const bool = fs.readFileSync('syntax/bool.ohm');
 const gram = ohm.grammar(bool);
 
 const parseTest = (arg, expected) => {

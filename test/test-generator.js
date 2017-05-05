@@ -365,14 +365,8 @@ describe('Generator Tests', () => {
 
   describe('ListExp Test', () => {
     it('Should properly generate a list expression', (done) => {
-      test = {
-        argFile: 'listexp',
-        expected: {
-          output: [`let a_${getNum(1)} = [1, 2, 3].map((x_${getNum(2)}) => (x_${getNum(2)} + 2));`],
-          numLogs: 1,
-        },
-      };
-      jsGenTest(test);
+      test = 'listexp';
+      jsGenTestWithOutFile(test);
       done();
     });
   });
@@ -382,7 +376,9 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'explist',
         expected: {
-          output: [`let a_${getNum(1)} = [(1 + 4), (8 - 2), (5 * 5), (9 / 3)];`],
+          output: [
+            `let a_${getNum(1)} = [(1 + 4), (8 - 2), (5 * 5), (9 / 3)];`,
+          ],
           numLogs: 1,
         },
       };

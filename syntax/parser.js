@@ -58,7 +58,7 @@ const VariableDeclaration = require('./entities/variabledeclaration.js');
 const VariableExpression = require('./entities/varexp.js');
 const WhileStatement = require('./entities/whilestatement.js');
 
-const grammar = ohm.grammar(fs.readFileSync('bool.ohm'));
+const grammar = ohm.grammar(fs.readFileSync('syntax/bool.ohm'));
 
 /* eslint no-unused-vars: off */
 const semantics = grammar.createSemantics().addOperation('ast', {

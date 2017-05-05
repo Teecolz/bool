@@ -309,7 +309,7 @@ Object.assign(OpAssignment.prototype, {
  ****************/
 Object.assign(SimpleIf.prototype, {
   gen() {
-    return `${this.name}`;
+    return `${this.exp.gen()}`;
   },
 });
 
@@ -491,10 +491,11 @@ Object.assign(ExpList.prototype, {
 Object.assign(ListExpression.prototype, {
   gen() {
     let expression = `.map((${jsName(this.iterator)}) => ${this.exp.gen()})`;
+    const listName = this.lst instanceof VariableExpression ? `${jsName(this.lst.referent)}` : `${this.lst}`;
     if (this.cond[0]) {
-      expression = `${this.lst}.filter(${jsName(this.iterator)} => ${this.cond[0].gen()})${expression}`;
+      expression = `${listName}.filter((${jsName(this.iterator)}) => ${this.cond[0].gen()})${expression}`;
     } else {
-      expression = `${this.lst}${expression}`;
+      expression = `${listName}${expression}`;
     }
     return expression;
   },
