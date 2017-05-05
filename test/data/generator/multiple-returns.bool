@@ -1,0 +1,7 @@
+fun f:string (x):
+  if (x > 5):
+    ret "Greater than 5"
+  elif (x === 5):
+    ret "5"
+  el:
+    ret "Less than 5"

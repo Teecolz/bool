@@ -326,9 +326,9 @@ Object.assign(ConditionalStatement.prototype, {
       emit(`${prefix} (${c.condition.gen()}) {`);
       c.body.gen();
     });
-    if (this.block.length > 0) {
+    if (this.block) {
       emit('} else {');
-      getStatementList(this.block); // this might be wrong
+      this.block.gen(); // this might be wrong
     }
     emit('}');
   },

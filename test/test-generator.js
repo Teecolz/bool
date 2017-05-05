@@ -279,7 +279,7 @@ describe('Generator Tests', () => {
       test = {
         argFile: 'conditional',
         expected: {
-          output: [`let test3_${getNum(1)} = () => {`, '  if (true) {', '    return true;', '  } else {', '      return false;', '  }', '};'],
+          output: [`let test3_${getNum(1)} = () => {`, '  if (true) {', '    return true;', '  } else {', '    return false;', '  }', '};'],
           numLogs: 1,
         },
       };
@@ -406,6 +406,14 @@ describe('Generator Tests', () => {
   describe('Function Literals', () => {
     it('Should properly generate complex function literals', (done) => {
       test = 'funlits';
+      jsGenTestWithOutFile(test);
+      done();
+    });
+  });
+
+  describe('Calls to functions with multiple returns', () => {
+    it('Should properly generate a call of a function with multiple returns', (done) => {
+      test = 'multiple-returns';
       jsGenTestWithOutFile(test);
       done();
     });
