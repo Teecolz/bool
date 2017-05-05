@@ -1,4 +1,4 @@
-const error = require('../error.js');
+const error = require('../../error.js');
 const FunctionLiteral = require('./functionliteral.js');
 const Type = require('./type.js');
 const Undefined = require('./undefined.js');

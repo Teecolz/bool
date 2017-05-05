@@ -1,5 +1,5 @@
 const BooleanLiteral = require('./booleanliteral.js');
-const error = require('../error.js');
+const error = require('../../error.js');
 const FloatLiteral = require('./floatliteral.js');
 const IntegerLiteral = require('./intliteral.js');
 const UnaryExpression = require('./unaryexpression.js');

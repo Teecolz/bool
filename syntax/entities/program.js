@@ -1,6 +1,6 @@
 /* eslint-env node */
 /* eslint spaced-comment: "off" */
-const initialContext = require('../analyzer.js').initialContext;
+const initialContext = require('../../semantics/analyzer.js').initialContext;
 
 class Program {
   constructor(block) {

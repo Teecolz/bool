@@ -1,51 +1,51 @@
-const BinaryExpression = require('./entities/binaryexpression.js');
-const Block = require('./entities/block.js');
-const BooleanLiteral = require('./entities/booleanliteral.js');
-const Break = require('./entities/break.js');
-const Case = require('./entities/case.js');
-const ClassBody = require('./entities/classbody.js');
-const ClassDeclaration = require('./entities/classdecl.js');
-const ClassInstantiation = require('./entities/classinstantiation.js');
-const ClassSuite = require('./entities/classsuite.js');
-const ConditionalStatement = require('./entities/conditionalstatement.js');
-const ConstructorDeclaration = require('./entities/constructordecl.js');
-const Context = require('./analyzer.js');
-const ExpList = require('./entities/explist.js');
-const FieldAssignment = require('./entities/fieldassign.js');
-const FieldDeclaration = require('./entities/fielddecl.js');
-const FieldExpression = require('./entities/fieldexp.js');
-const FieldParameters = require('./entities/fieldparams.js');
-const FloatLiteral = require('./entities/floatliteral.js');
-const ForStatement = require('./entities/forstatement.js');
-const FunctionCall = require('./entities/funcall.js');
-const FunctionDeclaration = require('./entities/fundecl.js');
-const FunctionLiteral = require('./entities/functionliteral.js');
-const FunctionParameters = require('./entities/funparams.js');
-const IdLiteral = require('./entities/idliteral.js');
-const IntegerLiteral = require('./entities/intliteral.js');
-const ListExpression = require('./entities/listexp.js');
-const ListLiteral = require('./entities/listliteral.js');
-const MethodDeclaration = require('./entities/methoddecl.js');
-const MethodParameters = require('./entities/methodparams.js');
-const ObjectAccess = require('./entities/objectaccess.js');
-// const ObjectDeclaration = require('./entities/objdecl.js');
-const ObjectLiteral = require('./entities/objectliteral.js');
-const OpAssignment = require('./entities/opassign.js');
-const ParameterDeclaration = require('./entities/paramdecl.js');
-const Parameters = require('./entities/params.js');
-const Program = require('./entities/program.js');
-const PropertyDeclaration = require('./entities/propertydeclaration.js');
-const RangeExpression = require('./entities/rangeexpression.js');
-const ReturnStatement = require('./entities/returnstatement.js');
-const SimpleIf = require('./entities/simpleif.js');
-const Statement = require('./entities/stmt.js');
-const StringLiteral = require('./entities/stringliteral.js');
-const Suite = require('./entities/suite.js');
-const UnaryExpression = require('./entities/unaryexpression.js');
-const VariableAssignment = require('./entities/varassignment.js');
-const VariableDeclaration = require('./entities/variabledeclaration.js');
-const VariableExpression = require('./entities/varexp.js');
-const WhileStatement = require('./entities/whilestatement.js');
+const BinaryExpression = require('../syntax/entities/binaryexpression.js');
+const Block = require('../syntax/entities/block.js');
+const BooleanLiteral = require('../syntax/entities/booleanliteral.js');
+const Break = require('../syntax/entities/break.js');
+const Case = require('../syntax/entities/case.js');
+const ClassBody = require('../syntax/entities/classbody.js');
+const ClassDeclaration = require('../syntax/entities/classdecl.js');
+const ClassInstantiation = require('../syntax/entities/classinstantiation.js');
+const ClassSuite = require('../syntax/entities/classsuite.js');
+const ConditionalStatement = require('../syntax/entities/conditionalstatement.js');
+const ConstructorDeclaration = require('../syntax/entities/constructordecl.js');
+const Context = require('../semantics/analyzer.js');
+const ExpList = require('../syntax/entities/explist.js');
+const FieldAssignment = require('../syntax/entities/fieldassign.js');
+const FieldDeclaration = require('../syntax/entities/fielddecl.js');
+const FieldExpression = require('../syntax/entities/fieldexp.js');
+const FieldParameters = require('../syntax/entities/fieldparams.js');
+const FloatLiteral = require('../syntax/entities/floatliteral.js');
+const ForStatement = require('../syntax/entities/forstatement.js');
+const FunctionCall = require('../syntax/entities/funcall.js');
+const FunctionDeclaration = require('../syntax/entities/fundecl.js');
+const FunctionLiteral = require('../syntax/entities/functionliteral.js');
+const FunctionParameters = require('../syntax/entities/funparams.js');
+const IdLiteral = require('../syntax/entities/idliteral.js');
+const IntegerLiteral = require('../syntax/entities/intliteral.js');
+const ListExpression = require('../syntax/entities/listexp.js');
+const ListLiteral = require('../syntax/entities/listliteral.js');
+const MethodDeclaration = require('../syntax/entities/methoddecl.js');
+const MethodParameters = require('../syntax/entities/methodparams.js');
+const ObjectAccess = require('../syntax/entities/objectaccess.js');
+const ObjectDeclaration = require('../syntax/entities/objdecl.js');
+const ObjectLiteral = require('../syntax/entities/objectliteral.js');
+const OpAssignment = require('../syntax/entities/opassign.js');
+const ParameterDeclaration = require('../syntax/entities/paramdecl.js');
+const Parameters = require('../syntax/entities/params.js');
+const Program = require('../syntax/entities/program.js');
+const PropertyDeclaration = require('../syntax/entities/propertydeclaration.js');
+const RangeExpression = require('../syntax/entities/rangeexpression.js');
+const ReturnStatement = require('../syntax/entities/returnstatement.js');
+const SimpleIf = require('../syntax/entities/simpleif.js');
+const Statement = require('../syntax/entities/stmt.js');
+const StringLiteral = require('../syntax/entities/stringliteral.js');
+const Suite = require('../syntax/entities/suite.js');
+const UnaryExpression = require('../syntax/entities/unaryexpression.js');
+const VariableAssignment = require('../syntax/entities/varassignment.js');
+const VariableDeclaration = require('../syntax/entities/variabledeclaration.js');
+const VariableExpression = require('../syntax/entities/varexp.js');
+const WhileStatement = require('../syntax/entities/whilestatement.js');
 
 const indentPadding = 2;
 let indentLevel = 0;
@@ -72,9 +72,6 @@ function getOp(op) {
   }
   return op;
 }
-function preEmit(line) {
-  return `${' '.repeat(indentPadding * indentLevel)}${line}`;
-}
 
 function getStatementList(statements) {
   indentLevel += 1;
@@ -84,13 +81,6 @@ function getStatementList(statements) {
     }
   });
   indentLevel -= 1;
-}
-
-function getLinesAsArray(statements) {
-  indentLevel += 1;
-  const lineArray = statements.map(s => preEmit(s.gen()));
-  indentLevel -= 1;
-  return lineArray;
 }
 
 let jsName = (() => {
@@ -130,6 +120,7 @@ function generateLibraryFunctions() {
   }
 
   generateLibraryStub('print', 's', 'console.log(s);');
+  generateLibraryStub('map', ['f', 'arr'], 'return arr.map(f);');
 }
 
 Object.assign(Program.prototype, {
@@ -214,12 +205,6 @@ Object.assign(ClassDeclaration.prototype, {
   },
 });
 
-Object.assign(ClassInstantiation.prototype, {
-  gen() {
-    return `new ${this.id}(${this.params.gen()})`;
-  },
-});
-
 Object.assign(ConstructorDeclaration.prototype, {
   gen() {
     const generatedParams = this.params.gen();
@@ -249,13 +234,13 @@ Object.assign(FieldAssignment.prototype, {
 
 Object.assign(FieldDeclaration.prototype, {
   gen() {
-    return `${this.id.replace(/^_/, '')}`;
+    return `${this.id}`.replace(/^_/, '');
   },
 });
 
 Object.assign(FieldExpression.prototype, {
   gen() {
-    return `this.${this.referent.id.replace(/^_/, '')}`;
+    return `this.${this.id.replace(/^_/, '')}`;
   },
 });
 
@@ -267,7 +252,7 @@ Object.assign(FieldParameters.prototype, {
 
 Object.assign(MethodDeclaration.prototype, {
   gen() {
-    emit(`${this.id}(${this.params.gen()}) {`);
+    emit(`${jsName(this)}(${this.params.gen()}) {`);
     this.block.gen();
     emit('}');
   },
@@ -298,13 +283,13 @@ Object.assign(BinaryExpression.prototype, {
 });
 
 Object.assign(UnaryExpression.prototype, {
-  gen() { return `${this.op}${this.operand}`; },
+  gen() { return `${this.op}${this.operand instanceof VariableExpression ? jsName(this.operand.referent) : this.operand}`; },
 });
 
 Object.assign(ObjectAccess.prototype, {
   gen() {
-    if (this.prop instanceof FunctionCall) {
-      return `${this.container.gen()}.${this.prop.gen(true)}`;
+    if (this.isObjectContext) {
+      return `${this.container.gen()}.${jsName(this.val)}`;
     }
     return `${this.container.gen()}.${this.prop.gen(true)}`;
   },
@@ -366,7 +351,10 @@ Object.assign(ForStatement.prototype, {
     const jsIterator = jsName(this);
     if (list instanceof RangeExpression) {
       const boundsCheck = list.step > 0 ? '<' : '>';
-      emit(`for (let ${jsIterator} = ${list.start}; ${jsIterator} ${boundsCheck} ${list.end}; ${jsIterator} += ${list.step}) {`);
+      const start = list.start instanceof IntegerLiteral ? list.start : jsName(list.start);
+      const end = list.end instanceof IntegerLiteral ? list.end : jsName(list.end);
+      const step = list.step instanceof IntegerLiteral ? list.step : jsName(list.step);
+      emit(`for (let ${jsIterator} = ${start}; ${jsIterator} ${boundsCheck} ${end}; ${jsIterator} += ${step}) {`);
       this.block.gen();
       emit('}');
     } else {
@@ -383,14 +371,13 @@ Object.assign(ForStatement.prototype, {
 
 Object.assign(FunctionLiteral.prototype, {
   gen() {
-    let funText = `(${this.params.gen()}) => `;
+    let funText = `((${this.params.gen()}) => `;
     if (this.body instanceof Suite) {
-      funText += '{\n';
-      const bodyAr = getLinesAsArray(this.body.stmts);
-      bodyAr.forEach((line) => { funText += line; });
-      funText += '}';
+      funText += '{ ';
+      this.body.stmts.forEach((stmt) => { funText += `${stmt.stmt.gen()}; `; });
+      funText += '})';
     } else {
-      funText += `${this.body.gen()}`;
+      funText += `${this.body.gen()})`;
     }
     return funText;
   },
@@ -405,9 +392,9 @@ Object.assign(FunctionDeclaration.prototype, {
 });
 
 Object.assign(FunctionCall.prototype, {
-  gen(isProp) {
-    if (isProp) {
-      return `${this.id}${this.params.map(p => `(${p.gen()})`).join('')}`;
+  gen() {
+    if (this.callee instanceof FunctionLiteral) {
+      return `${this.callee.gen()}${this.params.map(p => `(${p.gen()})`).join('')}`;
     }
     return `${jsName(this.callee)}${this.params.map(p => `(${p.gen()})`).join('')}`;
   },
@@ -448,19 +435,19 @@ Object.assign(Suite.prototype, {
 /* ************
  *  LITERALS  *
  **************/
+
+  /* **************
+   *  SIMPLELITS  *
+   ****************/
 Object.assign(BooleanLiteral.prototype, {
   gen() {
     return `${makeBoolean(this.val)}`;
   },
 });
 
-Object.assign(ExpList.prototype, {
+Object.assign(ClassInstantiation.prototype, {
   gen() {
-    const listElements = [];
-    this.exps.forEach((el) => {
-      listElements.push(el.gen());
-    });
-    return `${listElements.join(', ')}`;
+    return `new ${this.id}(${this.params.gen()})`;
   },
 });
 
@@ -485,13 +472,30 @@ Object.assign(IntegerLiteral.prototype, {
   },
 });
 
+Object.assign(StringLiteral.prototype, {
+  gen() { return `${this}`; },
+});
+  /* *********
+   *  LISTS  *
+   ***********/
+Object.assign(ExpList.prototype, {
+  gen() {
+    const listElements = [];
+    this.exps.forEach((el) => {
+      listElements.push(el.gen());
+    });
+    return `[${listElements.join(', ')}]`;
+  },
+});
+
 Object.assign(ListExpression.prototype, {
   gen() {
-    let expression = `for (${jsName(this.iterator)} of ${this.lst}) `;
+    let expression = `.map((${jsName(this.iterator)}) => ${this.exp.gen()})`;
     if (this.cond[0]) {
-      expression += `if (${this.cond[0].gen()}) `;
+      expression = `${this.lst}.filter(${jsName(this.iterator)} => ${this.cond[0].gen()})${expression}`;
+    } else {
+      expression = `${this.lst}${expression}`;
     }
-    expression += `${this.exp.gen()}`;
     return expression;
   },
 });
@@ -499,29 +503,32 @@ Object.assign(ListExpression.prototype, {
 Object.assign(ListLiteral.prototype, {
   gen() {
     if (this.exp[0]) {
-      return `[${this.exp[0].gen()}]`;
+      return `${this.exp[0].gen()}`;
     }
     return '[]';
   },
 });
 
+  /* ***********
+   *  OBJECTS  *
+   *************/
 Object.assign(PropertyDeclaration.prototype, {
   gen() {
-    return `${this.key}: ${this.val.gen()},`; // TODO: what to do about multiline values?
+    return `${jsName(this)}: ${this.val.gen()}`; // TODO: what to do about multiline values?
   },
 });
 
+Object.assign(ObjectDeclaration.prototype, {
+  gen() {
+    emit(`let ${jsName(this)} = {`);
+    indentLevel += 1;
+    this.propDecls.forEach(p => emit(`${p.gen()},`));
+    indentLevel -= 1;
+    emit('};');
+  },
+});
 Object.assign(ObjectLiteral.prototype, {
   gen() {
-    let objectString = '{\n';
-    getLinesAsArray(this.props).forEach((p) => {
-      objectString += `${p}\n`;
-    });
-    objectString += preEmit('}');
-    return objectString;
+    return `{${this.props.map(p => p.gen()).join(', ')}}`;
   },
-});
-
-Object.assign(StringLiteral.prototype, {
-  gen() { return `${this}`; },
 });

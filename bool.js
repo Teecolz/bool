@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 const fs = require('fs');
-const parse = require('./parser.js');
+const parse = require('./syntax/parser.js');
 const error = require('./error.js');
-require('./generator.js');
+require('./backend/generator.js');
 const argv = require('yargs')
   .usage('$0 [-a] [-g] [-o] filename')
   .boolean(['a', 'g', 'o'])

@@ -19,11 +19,19 @@
 // inheritance
 - fix binary expressions
   // separate access expressions
-  - allow for JS implementations of operators like **
+  // allow for JS implementations of operators like **
   - make sure that comparison operators function correctly
 // allow access of member functions
 // update examples
-- opassign optimization and string concatenation
-- remove <== epressions from binaryexpression
+// opassign optimization and string concatenation
+// remove <== epressions from binaryexpression
 // types in objects
 - add instanceof keyword
+- function return fix
+// cleanup home dir
+- output after semantic analyzer
+- List expressions
+  - allow for varexps
+- Cleanup readme & examples
+  - list expressions
+- compiler usage

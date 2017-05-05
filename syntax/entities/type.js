@@ -1,4 +1,4 @@
-const error = require('../error.js');
+const error = require('../../error.js');
 
 class Type {
   constructor(type, parent) {

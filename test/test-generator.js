@@ -2,10 +2,10 @@
 /* eslint no-void: 0 */
 const fs = require('fs');
 const assert = require('assert');
-const parse = require('../parser.js');
+const parse = require('../syntax/parser.js');
 const sinon = require('sinon');
-require('../generator.js');
-const resetJsName = require('../generator.js').resetJsName;
+require('../backend/generator.js');
+const resetJsName = require('../backend/generator.js').resetJsName;
 
 const LIBRARY_FUNCTIONS = [
   'function print_1(s) {console.log(s);}',

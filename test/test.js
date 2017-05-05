@@ -3,7 +3,7 @@
 const fs = require('fs');
 const ohm = require('ohm-js');
 const assert = require('assert');
-const parse = require('../parser.js');
+const parse = require('../syntax/parser.js');
 
 const bool = fs.readFileSync('bool.ohm');
 const gram = ohm.grammar(bool);

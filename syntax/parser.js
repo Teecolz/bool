@@ -4,7 +4,6 @@
 /************************
 * DO NOT USE FAT ARROWS *
 ************************/
-
 const BinaryExpression = require('./entities/binaryexpression.js');
 const Block = require('./entities/block.js');
 const BooleanLiteral = require('./entities/booleanliteral.js');
@@ -17,7 +16,7 @@ const ClassInstantiation = require('./entities/classinstantiation.js');
 const ClassSuite = require('./entities/classsuite.js');
 const ConditionalStatement = require('./entities/conditionalstatement.js');
 const ConstructorDeclaration = require('./entities/constructordecl.js');
-const error = require('./error');
+const error = require('../error');
 const ExpList = require('./entities/explist.js');
 const FieldAssignment = require('./entities/fieldassign.js');
 const FieldDeclaration = require('./entities/fielddecl.js');
@@ -217,12 +216,6 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   Exp6_prefixOp(op, exp) {
     return new UnaryExpression(op.sourceString, exp.ast());
   },
-  // Exp7_listAccess(e1, _, e2, close) {
-  //   return new BinaryExpression(e1.ast(), '[]', e2.ast());
-  // },
-  // Exp7_access(e1, _, e2) {
-  //   return new ObjectAccess(e1.ast(), e2.ast());
-  // },
   Exp8_parens(_, e, close) {
     return e.ast();
   },

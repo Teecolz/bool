@@ -1,8 +1,8 @@
-const error = require('./error.js');
-const Undefined = require('./entities/undefined.js');
-const FunctionDeclaration = require('./entities/fundecl.js');
-const ParamDecl = require('./entities/paramdecl.js');
-const Parameters = require('./entities/params.js');
+const error = require('../error.js');
+const Undefined = require('../syntax/entities/undefined.js');
+const FunctionDeclaration = require('../syntax/entities/fundecl.js');
+const ParamDecl = require('../syntax/entities/paramdecl.js');
+const Parameters = require('../syntax/entities/params.js');
 
 class AnalysisContext {
   constructor(parent) {
@@ -67,13 +67,6 @@ class AnalysisContext {
         error('Cannot call break statement from outside loop context', location);
       }
     }
-  }
-  lookupFunction(name) {
-    const func = this.symTable[name];
-    if (func) {
-      return func;
-    }
-    return false;
   }
   lookupField(name) {
     const variable = this.symTable[name];
