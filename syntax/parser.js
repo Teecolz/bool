@@ -180,8 +180,8 @@ const semantics = grammar.createSemantics().addOperation('ast', {
   Objlit_multiline(_, nl, ind, props, nl2, ded, close) {
     return new ObjectLiteral(props.ast());
   },
-  Funlit(open, params, _, s, close) {
-    return new FunctionLiteral(params.ast(), s.ast());
+  Funlit(tilde, type, open, params, _, s, close) {
+    return new FunctionLiteral(params.ast(), s.ast(), type.ast());
   },
   Range(_, exp, close) {
     return exp.ast();

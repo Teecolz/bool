@@ -15,12 +15,10 @@ class Suite {
       }
     });
   }
-
   optimize() {
     this.stmts = this.stmts.map(s => s.optimize());
     return this;
   }
-
   toString() {
     return `(Suite ${this.stmts.join(', ').replace(/, $/, '')})`;
   }

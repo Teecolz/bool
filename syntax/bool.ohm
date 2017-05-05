@@ -1,6 +1,5 @@
 Bool {
     Program = Block
-
     // single line comments must exist on their own lines for now
     // multi line comments must either exist on their own or at the terminus
     // of a line
@@ -149,7 +148,7 @@ Bool {
       = "{" PropertyDecl? ("," PropertyDecl)* "}" --singleline
       | "{" newline indent (PropertyDecl newline)* dedent "}" --multiline
     Funlit
-      = "~(" Params ":" (Exp | Suite) ")"
+      = "~" Type? "(" Params ":" (Exp | Suite) ")"
     reserved
       = "tru" | "fal" | "fun" | "if" | "elif" | "el" | "for" | "do"
       | "while" | "until" | "build" | "class" | "isa" | "in" | "new" | "#" | "ret"

@@ -15,3 +15,7 @@ let ay = ~((who what):
   print(what('brack')(10))
   ret 'ay'
 )('Harris' slang)
+
+let bowlOfBereal:string = ~:string((brand) :
+  ret (brand + ' is some good ass bereal.')
+)('Lucky Bharms')
