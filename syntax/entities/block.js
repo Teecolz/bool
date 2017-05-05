@@ -5,7 +5,6 @@ class Block {
   constructor(statements) {
     this.body = statements;
   }
-
   analyze(context) {
     const localContext = context.createChildContext();
     this.body.forEach((stmt) => {
@@ -15,12 +14,7 @@ class Block {
     });
   }
   optimize() {
-    this.body = this.body.map((stmt) => {
-      if (stmt) {
-        return stmt.optimize();
-      }
-      return null;
-    });
+    this.body = this.body.filter(s => s !== '').map(stmt => stmt.optimize());
     return this;
   }
   toString() {

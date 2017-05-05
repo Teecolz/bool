@@ -31,12 +31,12 @@
 // add semantics errors tests for multiple returns with clashing types
 // get rid of returnValues
 // cleanup home dir
-- output after semantic analyzer
+// output after semantic analyzer
 // List expressions
   // allow for varexps
 - Cleanup readme & examples
   - list expressions
-- compiler usage
+- compiler usage in docs
 - fully paramterized types
   - i.e. <function<int> -> int>
   - will probably need to make parameterized types mandatory for functions

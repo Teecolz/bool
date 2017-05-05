@@ -6,7 +6,6 @@ class ClassDeclaration {
     this.isa = isa;
     this.body = body;
   }
-
   analyze(context) {
     context.mustNotBeLocal(this.id);
     const classContext = context.createClassContext();

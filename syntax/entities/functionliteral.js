@@ -43,7 +43,9 @@ class FunctionLiteral {
     this.type = Type.FUNCTION;
   }
   optimize() {
-    this.body = this.body.optimize();
+    if (this.body) {
+      this.body = this.body.optimize();
+    }
     return this;
   }
   toString() {

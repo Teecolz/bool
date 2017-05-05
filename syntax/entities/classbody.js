@@ -3,7 +3,6 @@ class ClassBody {
     this.builder = builder;
     this.methods = methods;
   }
-
   analyze(context) {
     this.builder.analyze(context);
     this.methods.forEach((m) => {

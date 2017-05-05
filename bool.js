@@ -3,13 +3,14 @@
 const fs = require('fs');
 const parse = require('./syntax/parser.js');
 const error = require('./error.js');
+const util = require('util');
 require('./backend/generator.js');
 const argv = require('yargs')
-  .usage('$0 [-a] [-g] [-o] filename')
-  .boolean(['a', 'g', 'o'])
+  .usage('$0 [-a] [-i] [-o] filename')
+  .boolean(['a', 'i', 'o'])
   .describe('a', 'show abstract syntax tree after parsing then stop')
-  .describe('g', 'generate and show intermediate code then stop')
-  .describe('o', 'generate and show optimized code then stop')
+  .describe('i', 'generate and show the decorated abstract syntax tree then stop')
+  .describe('o', 'do optimizations and show generated code')
   .demand(1)
   .argv;
 
@@ -19,8 +20,7 @@ fs.readFile(argv._[0], 'utf-8', (err, text) => {
     return;
   }
   if (argv.a) {
-    console.log(program.toString());
-    program.toString();
+    console.log(util.inspect(program, false, null));
     return;
   }
   program.analyze();
@@ -30,7 +30,9 @@ fs.readFile(argv._[0], 'utf-8', (err, text) => {
   if (argv.o) {
     program.optimize();
   }
-  if (argv.g || argv.o) {
-    program.gen();
+  if (argv.i) {
+    console.log(util.inspect(program, false, null));
+    return;
   }
+  program.gen();
 });

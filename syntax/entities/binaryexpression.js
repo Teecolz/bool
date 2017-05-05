@@ -113,7 +113,6 @@ class BinaryExpression {
     this.op = op;
     this.right = right;
   }
-
   analyze(context) {
     this.left.analyze(context);
     this.right.analyze(context);
@@ -307,7 +306,6 @@ class BinaryExpression {
     }
     return this;
   }
-
   operandsAreInstanceOf(instanceClass) {
     return this.left instanceof instanceClass && this.right instanceof instanceClass;
   }

@@ -15,9 +15,6 @@ class ReturnStatement {
     this.isReturn = true;
   }
   optimize() {
-    if (this.returnValue) {
-      this.returnValue = this.returnValue.optimize();
-    }
     return this;
   }
   toString() {

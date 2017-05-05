@@ -18,7 +18,7 @@ class Suite {
     });
   }
   optimize() {
-    this.stmts = this.stmts.map(s => s.optimize());
+    this.stmts = this.stmts.filter(s => s !== '').map(s => s.optimize());
     return this;
   }
   toString() {

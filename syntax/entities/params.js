@@ -4,7 +4,6 @@ class Parameters {
     this.params = params === [[]] ? [] : params;
     this.length = params.length;
   }
-
   analyze(context) {
     this.params.forEach((param) => {
       param.analyze(context);

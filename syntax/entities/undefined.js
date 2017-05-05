@@ -5,6 +5,9 @@ class Undefined {
     this.name = 'undefined';
     this.type = Type.ARBITRARY;
   }
+  optimize() {
+    return this;
+  }
 }
 
 module.exports = Undefined;

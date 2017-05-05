@@ -18,7 +18,6 @@ class RangeExpression {
       this.step = step[0];
     }
   }
-
   analyze(context) {
     const errorMessage = 'Cannot create non-integral range.';
     if (this.start instanceof IdLiteral) {
@@ -39,7 +38,6 @@ class RangeExpression {
     this.type = Type.Construct('[int]');
     this.elementType = Type.INT;
   }
-
   optimize() {
     return this;
   }
