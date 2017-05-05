@@ -123,13 +123,9 @@ function generateLibraryFunctions() {
   generateLibraryStub('map', ['f', 'arr'], 'return arr.map(f);');
 }
 
-Object.assign(Program.prototype, {
-  gen() {
-    generateLibraryFunctions();
-    this.block.gen();
-  },
-});
-
+/* *****************
+   * BASE ENTITIES *
+   *****************/
 Object.assign(Block.prototype, {
   gen() {
     this.body.forEach((stmt) => {
@@ -137,14 +133,6 @@ Object.assign(Block.prototype, {
         stmt.gen();
       }
     });
-  },
-});
-
-Object.assign(FunctionDeclaration.prototype, {
-  gen() {
-    emit(`function ${jsName(this)} (${this.params.params.map(p => p.gen()).join(', ')}) {`);
-    genStatementList(this.body);
-    emit('}');
   },
 });
 
@@ -160,6 +148,13 @@ Object.assign(Parameters.prototype, {
 Object.assign(ParameterDeclaration.prototype, {
   gen() {
     return jsName(this);
+  },
+});
+
+Object.assign(Program.prototype, {
+  gen() {
+    generateLibraryFunctions();
+    this.block.gen();
   },
 });
 
@@ -264,26 +259,13 @@ Object.assign(MethodParameters.prototype, {
   },
 });
 
-
 /* ***************
    * EXPRESSIONS *
    ***************/
-
-Object.assign(VariableExpression.prototype, {
-  gen() {
-    return jsName(this.referent);  // will break before analysis
-  },
-});
-
-
 Object.assign(BinaryExpression.prototype, {
   gen() {
     return `(${this.left.gen()} ${getOp(this.op)} ${this.right.gen()})`;
   },
-});
-
-Object.assign(UnaryExpression.prototype, {
-  gen() { return `${this.op}${this.operand instanceof VariableExpression ? jsName(this.operand.referent) : this.operand}`; },
 });
 
 Object.assign(ObjectAccess.prototype, {
@@ -294,6 +276,7 @@ Object.assign(ObjectAccess.prototype, {
     return `${this.container.gen()}.${this.prop.gen(true)}`;
   },
 });
+
 Object.assign(OpAssignment.prototype, {
   gen() {
     let targetString = `${this.target.gen()}`;
@@ -304,15 +287,19 @@ Object.assign(OpAssignment.prototype, {
   },
 });
 
-/* **************
- * CONDITIONALS *
- ****************/
-Object.assign(SimpleIf.prototype, {
+Object.assign(UnaryExpression.prototype, {
+  gen() { return `${this.op}${this.operand instanceof VariableExpression ? jsName(this.operand.referent) : this.operand}`; },
+});
+
+Object.assign(VariableExpression.prototype, {
   gen() {
-    return `${this.exp.gen()}`;
+    return jsName(this.referent);  // will break before analysis
   },
 });
 
+/* ****************
+   * CONDITIONALS *
+   ****************/
 Object.assign(Case.prototype, {
   gen() {
 
@@ -334,17 +321,15 @@ Object.assign(ConditionalStatement.prototype, {
   },
 });
 
-/* *******
- * LOOPS *
- *********/
-Object.assign(WhileStatement.prototype, {
+Object.assign(SimpleIf.prototype, {
   gen() {
-    emit(`while ${this.condition.gen()} {`);
-    this.body.gen();
-    emit('}');
+    return `${this.exp.gen()}`;
   },
 });
 
+/* *********
+   * LOOPS *
+   *********/
 Object.assign(ForStatement.prototype, {
   gen() {
     const list = this.list;
@@ -365,9 +350,34 @@ Object.assign(ForStatement.prototype, {
   },
 });
 
-/* ************
- *  FUNCTIONS *
- **************/
+Object.assign(WhileStatement.prototype, {
+  gen() {
+    emit(`while ${this.condition.gen()} {`);
+    this.body.gen();
+    emit('}');
+  },
+});
+
+/* *************
+   * FUNCTIONS *
+   *************/
+
+Object.assign(FunctionCall.prototype, {
+  gen() {
+    if (this.callee instanceof FunctionLiteral) {
+      return `${this.callee.gen()}${this.params.map(p => `(${p.gen()})`).join('')}`;
+    }
+    return `${jsName(this.callee)}${this.params.map(p => `(${p.gen()})`).join('')}`;
+  },
+});
+
+Object.assign(FunctionDeclaration.prototype, {
+  gen() {
+    emit(`let ${jsName(this)} = (${this.params.gen()}) => {`);
+    this.body.gen();
+    emit('};');
+  },
+});
 
 Object.assign(FunctionLiteral.prototype, {
   gen() {
@@ -383,32 +393,15 @@ Object.assign(FunctionLiteral.prototype, {
   },
 });
 
-Object.assign(FunctionDeclaration.prototype, {
-  gen() {
-    emit(`let ${jsName(this)} = (${this.params.gen()}) => {`);
-    this.body.gen();
-    emit('};');
-  },
-});
-
-Object.assign(FunctionCall.prototype, {
-  gen() {
-    if (this.callee instanceof FunctionLiteral) {
-      return `${this.callee.gen()}${this.params.map(p => `(${p.gen()})`).join('')}`;
-    }
-    return `${jsName(this.callee)}${this.params.map(p => `(${p.gen()})`).join('')}`;
-  },
-});
-
 Object.assign(FunctionParameters.prototype, {
   gen() {
     return this.params.map(p => p.gen()).join(', ');
   },
 });
 
-/* ************
- * STATEMENTS *
- **************/
+/* **************
+   * STATEMENTS *
+   **************/
 Object.assign(Break.prototype, {
   gen() { return 'break'; },
 });
@@ -433,12 +426,12 @@ Object.assign(Suite.prototype, {
 });
 
 /* ************
- *  LITERALS  *
- **************/
+   * LITERALS *
+   ************/
 
-  /* **************
-   *  SIMPLELITS  *
-   ****************/
+  /* ************
+   * SIMPLELITS *
+   **************/
 Object.assign(BooleanLiteral.prototype, {
   gen() {
     return `${makeBoolean(this.val)}`;
@@ -475,9 +468,10 @@ Object.assign(IntegerLiteral.prototype, {
 Object.assign(StringLiteral.prototype, {
   gen() { return `${this}`; },
 });
+
   /* *********
-   *  LISTS  *
-   ***********/
+     * LISTS *
+     *********/
 Object.assign(ExpList.prototype, {
   gen() {
     const listElements = [];
@@ -511,8 +505,8 @@ Object.assign(ListLiteral.prototype, {
 });
 
   /* ***********
-   *  OBJECTS  *
-   *************/
+     * OBJECTS *
+     ***********/
 Object.assign(PropertyDeclaration.prototype, {
   gen() {
     return `${jsName(this)}: ${this.val.gen()}`; // TODO: what to do about multiline values?
@@ -528,6 +522,7 @@ Object.assign(ObjectDeclaration.prototype, {
     emit('};');
   },
 });
+
 Object.assign(ObjectLiteral.prototype, {
   gen() {
     return `{${this.props.map(p => p.gen()).join(', ')}}`;
