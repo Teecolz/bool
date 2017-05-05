@@ -30,8 +30,11 @@
 - function return fix
 // cleanup home dir
 - output after semantic analyzer
-- List expressions
-  - allow for varexps
+// List expressions
+  // allow for varexps
 - Cleanup readme & examples
   - list expressions
 - compiler usage
+- fully paramterized types
+  - i.e. <function<int> -> int>
+  - will probably need to make parameterized types mandatory for functions

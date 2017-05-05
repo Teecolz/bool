@@ -3,10 +3,12 @@ class Suite {
     this.stmts = statements;
   }
   analyze(context) {
+    this.returnStatements = [];
     this.stmts.forEach((stmt) => {
       if (stmt) {
         stmt.analyze(context);
         if (stmt.isReturn) {
+          this.returnStatements.push(stmt);
           this.type = stmt.type;
           this.returnValue = stmt.stmt.returnValue;
         }
