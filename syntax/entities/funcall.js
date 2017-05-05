@@ -9,12 +9,9 @@ class FunctionCall {
     this.id = id;
     this.params = params;
   }
-
   toString() {
     return `(FunCall ${this.id} ${this.params.join(', ').replace(/, $/, '')})`;
   }
-
-  // Still need to analyze chained calls... this is going to be an issue
   analyze(context) {
     if (this.id instanceof FunctionLiteral) {
       this.id.analyze(context);
@@ -77,10 +74,6 @@ class FunctionCall {
       this.type = Type.ARBITRARY;
       this.val = new Undefined();
     }
-    // Chain function calls if necessary
-    if (this.type.name === '<function>') {
-      curFun = this.val;
-    }
   }
   optimize() {
     this.params = this.params.map(paramGroup => paramGroup.optimize());
@@ -92,7 +85,6 @@ class FunctionCall {
         return 'error';
       }
     }
-
     return false;
   }
 }

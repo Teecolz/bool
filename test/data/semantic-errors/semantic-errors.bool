@@ -76,3 +76,18 @@ let listComprehension3:[string] = ["" + x for x in lilList if x]
 let listComprehension4:[string] = [x for x in lilList if x > 0]
 
 ret "Shouldn't be able to do this"
+
+fun f:string (x):
+  if x > 1:
+    ret tru
+  el:
+    ret 1
+
+let g = ~:bool((x) : "Hello")
+
+let h = ~:bool((x) :
+  if (x > 2):
+    ret tru
+  el:
+    ret 3
+)

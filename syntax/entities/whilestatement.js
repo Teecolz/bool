@@ -10,6 +10,7 @@ class WhileStatement {
     this.condition.type.mustBeBoolean(errorMessage, this.condition);
     const localContext = context.createLoopContext();
     this.body.analyze(localContext);
+    this.returnStatements = [].concat(this.body.returnStatements);
   }
   optimize() {
     this.condition = this.condition.optimize();

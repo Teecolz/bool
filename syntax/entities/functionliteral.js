@@ -1,6 +1,7 @@
 const Suite = require('./suite.js');
 const Type = require('./type.js');
 const error = require('../../error');
+
 class FunctionLiteral {
   constructor(params, body, returnType) {
     this.params = params;
@@ -11,9 +12,17 @@ class FunctionLiteral {
     const localContext = context.createFunctionContext();
     this.params.analyze(localContext);
     this.body.analyze(localContext);
-    this.returnType = Type.ARBITRARY;
     if (!(this.body instanceof Suite)) {
-      this.returnType = this.body.type;
+      const curErrorCount = error.count;
+      if (this.returnType) {
+        const errorMessage = `Incompatible return type: Expected ${this.returnType}, got ${this.body.type}`;
+        this.returnType.mustBeCompatibleWith(this.body.type, errorMessage, this.body);
+      } else {
+        this.returnType = Type.ARBITRARY;
+      }
+      if (error.count > curErrorCount) {
+        this.returnType = Type.ARBITRARY;
+      }
       this.returnValue = this.body;
     } else if (this.returnType) {
         /* If we declare a type for our literal, all returns within its
@@ -21,8 +30,9 @@ class FunctionLiteral {
       let errorMessage;
       const curErrorCount = error.count;
       this.body.returnStatements.forEach((ret) => {
-        errorMessage = `Incompatible types: Expected ${this.returnType}, got ${ret.type}`;
-        this.returnType.mustBeCompatibleWith(ret.type, errorMessage, ret);
+        const retStmt = ret.stmt;
+        errorMessage = `Incompatible return type: Expected ${this.returnType}, got ${retStmt.type}`;
+        this.returnType.mustBeCompatibleWith(retStmt.type, errorMessage, ret);
       });
       if (error.count > curErrorCount) {
           /* We know that there was a conflicting return statement type, so set

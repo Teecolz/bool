@@ -13,6 +13,7 @@ class ForStatement {
     this.type = this.list.type.getElementType();
     localContext.addVariable(this.iterator, this);
     this.block.analyze(localContext);
+    this.returnStatements = [].concat(this.block.returnStatements);
   }
   optimize() {
     this.list = this.list.optimize();

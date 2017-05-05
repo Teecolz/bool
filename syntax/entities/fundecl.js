@@ -12,7 +12,6 @@ class FunctionDeclaration {
     this.params = params;
     this.body = block;
   }
-
   analyze(context) {
     context.mustNotBeLocal(this.id);
     const localContext = context.createFunctionContext();
@@ -23,7 +22,7 @@ class FunctionDeclaration {
         const currentErrorCount = error.count;
         // make sure all return statements in the body match with type declared in function
         this.body.returnStatements.forEach((ret) => {
-          const errorMessage = `Incompatible return type. Expected ${this.returnType}, got ${ret.type}}`;
+          const errorMessage = `Incompatible return type. Expected ${this.returnType}, got ${ret.type}`;
           this.returnType.mustBeCompatibleWith(ret.type, errorMessage, ret.type);
         });
         if (error.count > currentErrorCount) {
@@ -33,17 +32,6 @@ class FunctionDeclaration {
       }
     }
     this.type = Type.FUNCTION;
-    // If function returns a value, assign that value's type to function name
-    // if (this.body) {
-    //   if (this.returnType) {
-    //     const errorMessage = `Incompatible return type. Expected ${this.returnType}, got ${this.body.type}.`;
-    //     this.returnType.mustBeCompatibleWith(this.body.type, errorMessage, this.returnType);
-    //   }
-    //   this.returnType = this.body.type;
-    //   this.returnValue = this.body.returnValue;
-    // } else {
-    //   this.returnType = Type.ARBITRARY; // may want to switch to void
-    // }
     this.localContext = localContext;
     context.addVariable(this.id, this);
   }

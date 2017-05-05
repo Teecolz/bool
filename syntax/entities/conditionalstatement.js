@@ -5,10 +5,15 @@ class ConditionalStatement {
     this.block = block[0];
   }
   analyze(context) {
+    this.returnStatements = [];
     this.cases.forEach((curCase) => {
       curCase.analyze(context);
+      this.returnStatements = this.returnStatements.concat(curCase.returnStatements);
     });
-    if (this.block) { this.block.analyze(context); }
+    if (this.block) {
+      this.block.analyze(context);
+      this.returnStatements = this.returnStatements.concat(this.block.returnStatements);
+    }
   }
   optimize() {
     this.block = this.block ? this.block.optimize() : this.block;

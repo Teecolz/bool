@@ -27,7 +27,9 @@
 // remove <== epressions from binaryexpression
 // types in objects
 - add instanceof keyword
-- function return fix
+// function return fix
+// add semantics errors tests for multiple returns with clashing types
+// get rid of returnValues
 // cleanup home dir
 - output after semantic analyzer
 // List expressions

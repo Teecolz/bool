@@ -11,6 +11,8 @@ class Suite {
           this.returnStatements.push(stmt);
           this.type = stmt.type;
           this.returnValue = stmt.stmt.returnValue;
+        } else if (stmt.stmt.returnStatements) {
+          this.returnStatements = this.returnStatements.concat(stmt.stmt.returnStatements);
         }
       }
     });
