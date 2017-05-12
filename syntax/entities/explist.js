@@ -23,7 +23,7 @@ class ExpList {
     });
   }
   optimize() {
-    this.exps = this.exps.map(e => e.gen());
+    this.exps = this.exps.map(e => e.optimize());
     return this;
   }
   toString() {
