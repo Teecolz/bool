@@ -6,7 +6,7 @@ Often, programmers will fall in love with Bool because of its similarity to Pyth
 
 For Bool, security is a high concern, and so we tried to adopt many of the same things that worked for the two parent languages that ensure some degree of protection and help for the programmer.
 
-Feel free to check out [Bool's homepage](https://teecolz.github.io/bool/)to view code examples, syntax diagrams, and semantic error messages.
+Feel free to check out [Bool's homepage](https://teecolz.github.io/bool/) to view code examples, syntax diagrams, and semantic error messages.
 
 ## Features
 - Compilation to Javascript
